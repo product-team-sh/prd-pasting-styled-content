@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pasting styled content</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#ffffff; --bg-secondary:#F9FAFB; --bg-tertiary:#F3F4F6;
+  --border:#E5E7EB; --border-strong:#D1D5DB;
+  --ink:#111827; --ink-secondary:#374151; --ink-tertiary:#6B7280; --ink-quiet:#9CA3AF;
+  --primary:#1D4ED8; --primary-hover:#1E40AF; --primary-tint:#EFF6FF; --primary-tint-border:#BFDBFE;
+  --success:#047857; --success-tint:#ECFDF5; --success-border:#A7F3D0;
+  --warning:#B45309; --warning-tint:#FFFBEB; --warning-border:#FDE68A;
+  --danger:#B91C1C; --danger-tint:#FEF2F2; --danger-border:#FECACA;
+  --radius-sm:4px; --radius-md:8px; --radius-lg:12px;
+  --content-w:760px;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:15.5px;line-height:1.68;letter-spacing:-.001em;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  font-feature-settings:'cv11','ss01';text-rendering:optimizeLegibility}
+code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:.86em;
+  background:var(--bg-tertiary);color:#B91C1C;padding:.1em .4em;border-radius:4px;border:1px solid var(--border)}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+::selection{background:var(--primary-tint-border)}
+
+.progress-rail{position:fixed;top:0;left:0;height:3px;background:var(--primary);
+  z-index:50;width:0%;transition:width .1s linear}
+
+.top-btn{position:fixed;right:28px;bottom:28px;width:42px;height:42px;border-radius:50%;
+  background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(17,24,39,.22);opacity:0;pointer-events:none;
+  transition:opacity .18s,transform .18s;font-size:16px;z-index:40;text-decoration:none}
+.top-btn.show{opacity:1;pointer-events:auto}
+.top-btn:hover{transform:translateY(-2px);text-decoration:none}
+
+.shell{display:flex;max-width:1240px;margin:0 auto}
+.sidebar{width:248px;flex-shrink:0;position:sticky;top:0;align-self:flex-start;
+  height:100vh;overflow-y:auto;padding:32px 16px 32px 24px;border-right:1px solid var(--border)}
+.sidebar-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-quiet);margin:0 0 12px 8px}
+.toc-l2{display:block;padding:7px 8px;border-radius:6px;font-size:13.5px;font-weight:600;
+  color:var(--ink-secondary)}
+.toc-l2:hover{background:var(--bg-secondary);text-decoration:none;color:var(--ink)}
+.toc-l2.active{background:var(--primary-tint);color:var(--primary-hover)}
+.toc-l3{display:block;padding:5px 8px 5px 22px;border-radius:6px;font-size:12.5px;
+  color:var(--ink-tertiary);border-left:2px solid transparent}
+.toc-l3:hover{background:var(--bg-secondary);text-decoration:none;color:var(--ink-secondary)}
+.toc-l3.active{color:var(--primary-hover);font-weight:600;border-left-color:var(--primary)}
+.toc-num{display:inline-block;min-width:20px;font-family:ui-monospace,monospace;font-size:.85em;
+  color:var(--primary);margin-right:4px}
+
+.main{flex:1;min-width:0;padding:56px 48px 120px}
+.content-col{max-width:var(--content-w)}
+
+.doc-header{max-width:var(--content-w);margin-bottom:8px;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--primary);margin:0 0 12px}
+.eyebrow::before{content:'';width:16px;height:2px;border-radius:1px;background:var(--primary)}
+.doc-header h1{font-size:36px;line-height:1.14;margin:0 0 4px;letter-spacing:-.02em;text-wrap:balance}
+
+.proto-embed{display:flex;align-items:center;gap:16px;max-width:var(--content-w);margin:28px 0 44px;
+  padding:18px 20px;border:1px solid var(--primary-tint-border);border-radius:var(--radius-lg);
+  background:var(--primary-tint);text-decoration:none;transition:background .12s}
+.proto-embed:hover{background:var(--primary-tint-border);text-decoration:none}
+.proto-embed-icon{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--primary);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700}
+.proto-embed-title{margin:0 0 3px;font-size:14px;font-weight:700;color:var(--primary-hover)}
+.proto-embed-sub{margin:0;font-size:12.5px;color:var(--ink-secondary);max-width:520px}
+
+.sec{max-width:var(--content-w);padding-top:8px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin:52px 0 20px}
+.sec:first-of-type .sec-head{margin-top:8px}
+.sec-num{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
+  width:31px;height:31px;border-radius:9px;background:linear-gradient(155deg,var(--primary),var(--primary-hover));
+  color:#fff;font-size:14px;font-weight:700;font-family:ui-monospace,monospace;
+  box-shadow:0 2px 6px rgba(29,78,216,.28)}
+.sec-head h2{font-size:22px;margin:0}
+
+.subsec{margin:36px 0}
+.subsec h3{font-size:16.5px;display:flex;align-items:center;gap:9px;margin:0 0 14px}
+.subsec-num{font-family:ui-monospace,monospace;font-size:12px;font-weight:700;color:var(--primary);
+  background:var(--primary-tint);border:1px solid var(--primary-tint-border);
+  padding:2px 7px;border-radius:5px}
+
+h4{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-tertiary);margin:36px 0 14px;padding-top:20px}
+h4::before{content:'';flex-shrink:0;width:14px;height:14px;border-radius:4px;
+  background:var(--primary-tint);border:1px solid var(--primary-tint-border)}
+h4::after{content:'';flex:1;height:1px;background:var(--border)}
+
+p{margin:0 0 15px;text-wrap:pretty}
+ul,ol{margin:0 0 15px;padding-left:21px}
+li{margin:0 0 9px;padding-left:2px}
+li::marker{color:var(--ink-quiet)}
+ul.nested{margin:9px 0 0;padding-left:19px}
+ul.nested li{margin-bottom:6px;font-size:.95em;color:var(--ink-secondary)}
+strong{font-weight:650;color:var(--ink)}
+em{color:var(--ink-secondary);font-style:italic}
+
+.hr{height:1px;background:var(--border);margin:32px 0 0;max-width:var(--content-w)}
+.hr + .sec .sec-head{margin-top:40px}
+
+figure{margin:20px 0;max-width:900px}
+figure img{width:100%;display:block;border:1px solid var(--border);border-radius:var(--radius-md);
+  box-shadow:0 1px 3px rgba(17,24,39,.06)}
+figcaption{margin-top:9px;font-size:12.5px;color:var(--ink-tertiary);font-style:italic;line-height:1.5}
+
+.tbl-wrap{max-width:100%;overflow-x:auto;margin:16px 0 22px;border:1px solid var(--border);
+  border-radius:var(--radius-md)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13.5px}
+th{text-align:left;background:var(--bg-secondary);color:var(--ink-tertiary);
+  font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:10px 14px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--ink-secondary)}
+tr:last-child td{border-bottom:none}
+tr.row-quiet td{color:var(--ink-tertiary)}
+tr:hover td{background:var(--bg-secondary)}
+
+.id-pill{display:inline-block;font-family:ui-monospace,monospace;font-size:11.5px;font-weight:700;
+  color:var(--primary);background:var(--primary-tint);border:1px solid var(--primary-tint-border);
+  padding:2px 7px;border-radius:5px;white-space:nowrap}
+.id-pill.struck{color:var(--ink-quiet);background:var(--bg-tertiary);border-color:var(--border);
+  text-decoration:line-through}
+
+.pri-cell{white-space:nowrap}
+.pri{display:inline-flex;align-items:center;font-size:11px;font-weight:700;letter-spacing:.03em;
+  padding:3px 8px;border-radius:5px;font-family:ui-monospace,monospace}
+.pri-P0{color:var(--danger);background:var(--danger-tint);border:1px solid var(--danger-border)}
+.pri-P1{color:var(--warning);background:var(--warning-tint);border:1px solid var(--warning-border)}
+.pri-P2{color:var(--ink-tertiary);background:var(--bg-tertiary);border:1px solid var(--border)}
+.pri-note{font-size:10.5px;color:var(--ink-tertiary);margin-top:4px;font-weight:500;
+  font-family:'Inter',sans-serif;max-width:130px;line-height:1.35}
+
+.stepper{display:flex;align-items:flex-start;max-width:var(--content-w);margin:8px 0 28px;
+  padding:20px 8px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.step{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:76px}
+.step-dot{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  font-family:ui-monospace,monospace;flex-shrink:0}
+.step-final .step-dot{background:var(--ink);}
+.step-label{margin-top:8px;font-size:11px;text-align:center;color:var(--ink-tertiary);
+  line-height:1.35;font-weight:600}
+.step-line{flex:1;height:2px;background:var(--border-strong);margin-top:17px;min-width:8px}
+
+@media (max-width: 980px){
+  .sidebar{display:none}
+  .main{padding:32px 20px 80px}
+}
+</style>
+</head>
+<body>
+<div class="progress-rail"></div>
+<div class="shell">
+  <nav class="sidebar">
+    <p class="sidebar-title">Contents</p>
+<a class="toc-l2" href="#0-what-changed-since-v22"><span class="toc-num">0</span>What changed since v2.2</a>
+<a class="toc-l2" href="#1-problem"><span class="toc-num">1</span>Problem</a>
+<a class="toc-l2" href="#2-why-this-approach"><span class="toc-num">2</span>Why this approach</a>
+<a class="toc-l2" href="#3-what-were-building"><span class="toc-num">3</span>What we're building</a>
+<a class="toc-l2" href="#4-user-stories"><span class="toc-num">4</span>User stories</a>
+<a class="toc-l2" href="#5-decisions"><span class="toc-num">5</span>Decisions</a>
+<a class="toc-l2" href="#6-surfaces"><span class="toc-num">6</span>Surfaces</a>
+<a class="toc-l3" href="#61-sequence-settings-safety-settings"><span class="toc-num">6.1</span>Sequence → Settings → Safety Settings</a>
+<a class="toc-l3" href="#62-the-step-editor-email-body"><span class="toc-num">6.2</span>The step editor: email body</a>
+<a class="toc-l3" href="#63-the-spintax-editor-add-spintax"><span class="toc-num">6.3</span>The spintax editor (Add Spintax)</a>
+<a class="toc-l2" href="#7-reconciliation-with-existing-behaviour"><span class="toc-num">7</span>Reconciliation with existing behaviour</a>
+<a class="toc-l2" href="#8-cross-cutting"><span class="toc-num">8</span>Cross-cutting</a>
+<a class="toc-l2" href="#9-implementation-notes"><span class="toc-num">9</span>Implementation notes</a>
+<a class="toc-l2" href="#10-measurement"><span class="toc-num">10</span>Measurement</a>
+<a class="toc-l2" href="#11-rollout"><span class="toc-num">11</span>Rollout</a>
+<a class="toc-l2" href="#12-open-questions"><span class="toc-num">12</span>Open questions</a>
+<a class="toc-l2" href="#13-priority-timeline"><span class="toc-num">13</span>Priority &amp; timeline</a>
+<a class="toc-l2" href="#appendix-reference-index"><span class="toc-num">–</span>Appendix – reference index</a>
+  </nav>
+  <main class="main">
+<header class="doc-header"><p class="eyebrow">Product Requirements Document</p><h1>PRD – Pasting styled content: one rule, Remove Styling</h1></header>
+<p><strong>Design of record:</strong> <a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">prototype</a> · <strong>Status:</strong> Ready for dev review</p>
+
+<section id="0-what-changed-since-v22" class="sec"><div class="sec-head"><span class="sec-num">0</span><h2>What changed since v2.2</h2></div>
+
+<p>v2.2 (<a href="https://product-team-sh.github.io/prd-paste-as-plain-text/">still live, unchanged</a>) was built as <a href="https://github.com/saleshandy/saleshandy-webui/pull/8129">webui PR #8129</a> and <a href="https://github.com/saleshandy/saleshandy-edge/pull/11339">edge PR #11339</a>. Dev raised five points against it (<a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873#__recording_10371718163">Sunny, 5 Oct</a>). This version resolves all five.</p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>v2.2 said</th>
+<th>v3 says</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>A workspace setting, Admin Settings → Pasting content, decides what a paste becomes</td>
+<td>The sequence's existing <strong>Remove Styling Automatically</strong> is the only rule. No new setting anywhere</td>
+<td>Remove Styling is already on for 81.9% of new sequences (measured). Two rules in two places disagreed (Sunny, points 2 and 5)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>A rich paste is converted to plain text on the way in</td>
+<td>A styled paste lands as pasted, and the existing <strong>Styling Detected</strong> bar asks: Remove Styling or Keep Styling</td>
+<td>The editor only holds HTML, so "plain text" was never true (Sunny, point 1). One surface now covers every source of styling</td>
+</tr>
+<tr>
+<td>3</td>
+<td>A toast reports each paste; a standing "Rule:" chip and a first-run spotlight state the rule</td>
+<td>The Styling Detected bar reports. The existing "Styling Removes Automatically" badge states the rule</td>
+<td>One surface for every source of styling, already in production</td>
+</tr>
+<tr>
+<td>4</td>
+<td>The toast offers "Always keep formatting" / "Always paste as plain text", which write the workspace setting</td>
+<td>Nothing in the editor writes any setting</td>
+<td>A writer must not change a rule by accident while editing one email (Sunny, point 4)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Spintax variants have their own rule, inheriting the editor's unless unticked</td>
+<td>Variants follow the sequence's Remove Styling, with the same bar and both buttons</td>
+<td>One rule per sequence. Safety Settings states it for variants</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Behaviour under "Send emails as text only" not specified</td>
+<td>Text-only steps paste plain, with no bar</td>
+<td>Nothing to choose: text only removes all formatting on save and at send (Sunny, point 3)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Production today: Keep Styling silently turns Remove Styling <strong>off for the whole sequence</strong>, then hides the bar for the rest of the session (verified 7 Oct)</td>
+<td>Keep Styling keeps the styling <strong>for that occurrence only</strong>, never writes the setting, and the bar asks again every time</td>
+<td>Same principle as change 4, at sequence level</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Void from v2.2.</strong> These IDs tested a structure that no longer exists: the workspace setting, plain-text conversion, the toast, the rule chip, the enrol, and the variant inheritance model.</p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Void IDs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Admin Settings card</td>
+<td>§5.1 entirely: S1-1 to S1-26</td>
+</tr>
+<tr>
+<td>User stories</td>
+<td>US-3, US-5, US-6, US-9, US-10</td>
+</tr>
+<tr>
+<td>Plain-text conversion</td>
+<td>S2-1 to S2-4, S2-12a to S2-12d, S2-37</td>
+</tr>
+<tr>
+<td>Toast, flip and enrol</td>
+<td>S2-11, S2-16 to S2-28, S2-39 to S2-44, S2-F0, S2-F2, S2-F4, S2-F5, S2-F5a, S2-F5b</td>
+</tr>
+<tr>
+<td>Rule chip and spotlight</td>
+<td>S2-33, S2-33a, S2-34, S2-34a, S2-34b, S2-35</td>
+</tr>
+<tr>
+<td>Replaced by §6.2</td>
+<td>S2-38</td>
+</tr>
+<tr>
+<td>Spintax</td>
+<td>§5.3 entirely: S3-1 to S3-13</td>
+</tr>
+<tr>
+<td>Measurement and rollout</td>
+<td>Every v2.2 §8 event except <code>paste_performed</code>; every §8b to §8e metric tied to the toast, chip, enrol, spotlight or variant inheritance; rollout stage 1b</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>v2.2 §10, For Customer Support</td>
+</tr>
+<tr>
+<td>Decisions</td>
+<td>v2.2 D1 (workspace scope), D3 (variant own rule) and D7 (standing chip)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Carried forward unchanged:</strong> US-1, US-7 and US-8. Chip integrity X-1 to X-12; X-8 and X-12 are reworded to "any Remove Styling state", since there is no plain/keep setting any more. The <code>⌘⇧V</code> keyboard invariant and the sanitisation floor (S2-8, S2-9). <code>⌘Z</code> is redefined in §8, because there is no conversion left to undo. Also S2-5, S2-6, S2-7, S2-13, S2-14a to S2-14c, S2-15, S2-29 to S2-32 and S2-36.</p>
+
+</section>
+<section id="1-problem" class="sec"><div class="sec-head"><span class="sec-num">1</span><h2>Problem</h2></div>
+
+<p><strong>Pasting brings styling the writer did not choose.</strong> Writers paste into the step editor from Word, Google Docs and old emails. Word content arrives with its fonts, colours, sizes and highlights, plus hidden markup the writer cannot see. In a sequence with Remove Styling on, that styling is stripped at send, so the editor shows something the prospect never receives. In a sequence with Remove Styling off, it goes out as pasted.</p>
+<p><strong>Tokens in a paste arrive broken.</strong> Spintax and merge-tag syntax in pasted text, from an external doc or AI-written copy, lands as literal braces instead of chips. A customer escalated after literal spintax text reached prospects (<a href="https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915">CS thread</a>).</p>
+<p><strong>Today's Styling Detected bar undoes the sequence's rule.</strong> Production already shows the bar when styling appears. But one click on Keep Styling silently switches Remove Styling off for every email in the sequence. The bar then stops asking for the rest of the session (verified on my.saleshandy.com, 7 Oct). The writer meant "keep it here" and changed the sequence's deliverability setting.</p>
+<p><strong>v2.2 added a second rule in a second place.</strong> A workspace paste setting beside the sequence's own Remove Styling meant two answers to one question, and the toast could say "Formatting kept" while send stripped it.</p>
+
+</section>
+<section id="2-why-this-approach" class="sec"><div class="sec-head"><span class="sec-num">2</span><h2>Why this approach</h2></div>
+
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Rejected on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v2.2: workspace paste setting, toast, rule chip</td>
+<td>Duplicates Remove Styling, which is on for 81.9% of new sequences (measured). The two can disagree, and they live in two places</td>
+</tr>
+<tr>
+<td>Clean styling automatically as it lands</td>
+<td>The writer does not see or choose what was removed (Hitesh, 7 Oct). It also leaves toolbar styling handled differently from pasted styling</td>
+</tr>
+<tr>
+<td><strong>Reuse the Styling Detected bar for every source of styling</strong></td>
+<td>Chosen. Already in production, already understood, and it covers paste, toolbar and existing content with one surface</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Evidence</strong></p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Figure</th>
+<th>Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>New sequences default to Remove Styling on (<a href="https://github.com/saleshandy/saleshandy-edge/blob/d908da065793036a3663b4f83b62c7f2a65078a6/src/sequence/enums/sequence-setting.ts#L57">edge <code>sequence-setting.ts#L57</code></a>)</td>
+<td>measured, code</td>
+</tr>
+<tr>
+<td>81.9% Remove Styling, 16.6% off, 1.5% text only, of 64,928 sequences created since 1 Jul 2026</td>
+<td>measured, Metabase, created sequences rather than active ones</td>
+</tr>
+<tr>
+<td>With Remove Styling on, a Word paste and toolbar colour both land styled and show the bar. Keep Styling saves <code>text-only-email = 0</code>. Remove Styling saves <code>1</code>, sent twice</td>
+<td>measured, live app, 7 Oct</td>
+</tr>
+<tr>
+<td>A non-Word HTML paste already loses its inline styles</td>
+<td>measured, one synthetic paste, 7 Oct</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>We do not claim</strong> any inbox-placement improvement. We claim only that the writer decides what styling stays, and that the sequence's rule is never changed by accident.</p>
+
+</section>
+<section id="3-what-were-building" class="sec"><div class="sec-head"><span class="sec-num">3</span><h2>What we're building</h2></div>
+
+<ol>
+<li><strong>Remove Styling Automatically is the one rule for styling, per sequence, at paste and at send.</strong> No new setting anywhere.</li>
+<li><strong>The existing Styling Detected bar flags styled content from every source, every time, with both buttons</strong>, in the email body and in spintax variants. Remove Styling and Keep Styling act on that content only and never write the setting.</li>
+<li><strong>Literal merge-tag and spintax tokens in a paste become chips, in every state.</strong></li>
+</ol>
+<p>Invariant in every state: the sanitisation floor (scripts, frames, event handlers and stylesheet blocks are never inserted), and <code>⌘⇧V</code> always pastes plain.</p>
+
+</section>
+<section id="4-user-stories" class="sec"><div class="sec-head"><span class="sec-num">4</span><h2>User stories</h2></div>
+
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Story</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US-1</td>
+<td>As an SDR pasting from Word, I want to know my paste carried styling and choose what happens to it, so my email doesn't carry styling I didn't pick. <em>(Reworded: told and asked, not converted silently)</em></td>
+</tr>
+<tr>
+<td>US-7</td>
+<td>As any user, I want merge tags and spintax recognised through a paste: chips stay chips, and literal tokens become chips. <em>(Carried)</em></td>
+</tr>
+<tr>
+<td>US-8</td>
+<td>As any user, I want <code>⌘⇧V</code> to always paste plain and <code>⌘Z</code> never to lose content. <em>(Carried)</em></td>
+</tr>
+<tr>
+<td><strong>US-11</strong></td>
+<td><strong>As a writer, I want to keep styling in one email without switching off styling removal for the whole sequence.</strong> <em>(New. The reason this version exists)</em></td>
+</tr>
+<tr>
+<td><strong>US-12</strong></td>
+<td><strong>As a writer in the spintax editor, I want styled content handled exactly as in the email body.</strong> <em>(New)</em></td>
+</tr>
+<tr>
+<td><strong>US-13</strong></td>
+<td><strong>As a sequence owner, I want to set styling once per sequence and see that it covers spintax variants.</strong> <em>(New)</em></td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+<section id="5-decisions" class="sec"><div class="sec-head"><span class="sec-num">5</span><h2>Decisions</h2></div>
+
+<p><strong>D8 – One rule: Remove Styling Automatically, per sequence.</strong> <em>Reverses v2.2 D1.</em> It is already the default and already where the sequence owner sets deliverability. <strong>Consequence to accept explicitly:</strong> there is no workspace-wide paste rule. Workspace control stays limited to the existing default for new sequences.</p>
+<p><strong>D9 – Styled content lands as is, and the bar asks. Nothing is removed automatically.</strong> <em>Reverses v2.2's plain-by-default conversion.</em> The writer sees and chooses. <strong>Consequence to accept explicitly:</strong> a writer who ignores the bar sends styled HTML in a sequence with Remove Styling off. With it on, send still strips styling, so the editor can differ from what is sent until they click.</p>
+<p><strong>D10 – Keep Styling acts on that occurrence only, never writes the setting, and the bar asks again every time styling appears.</strong> <em>Reverses production behaviour since 24 Sep (commit <code>551500a10b</code>): silent switch-off plus suppression for the session.</em> <strong>Consequence to accept explicitly:</strong> a writer who keeps styling often sees the bar often. §10 measures this.</p>
+<p><strong>D11 – Spintax variants follow the sequence's Remove Styling, with the same bar and both buttons.</strong> <em>Reverses v2.2 D3 and PR #8129's always-plain variants.</em> <strong>Consequence to accept explicitly:</strong> styling can be kept inside a variant, so spin parsing must survive it (V-5, Q2).</p>
+<p><strong>D12 – Text-only steps paste plain, with no bar.</strong> This covers "Send emails as text only" on all emails, or on step 1 when it is set to first email only. Text only removes all formatting on save and at send, so there is nothing to ask. <strong>Consequence to accept explicitly:</strong> no Keep Styling path exists in text-only steps.</p>
+
+</section>
+<section id="6-surfaces" class="sec"><div class="sec-head"><span class="sec-num">6</span><h2>Surfaces</h2></div>
+
+<p>Visual record: the <a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">prototype</a>, tabs 1 to 3. Copy below is literal.</p>
+<h3 id="61-sequence-settings-safety-settings">6.1 Sequence → Settings → Safety Settings</h3>
+<p><strong>What it's for.</strong> The single place the rule is set, per sequence. Unchanged except for two lines.</p>
+<p><strong>What it must do</strong></p>
+<ul>
+<li>Append one sentence to the Remove Styling Automatically description: <em>"Styling you paste or add in the editor is flagged there, with an option to remove it."</em></li>
+<li>Under Remove Styling, show <em>"Spintax variants: same as above"</em> with a tag giving the resolved value, <strong>On</strong> or <strong>Off</strong>. It is a statement, not a control.</li>
+<li>Everything else on the card behaves as today, including Remove Styling showing on but disabled when text only is set to all emails.</li>
+</ul>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Case</th>
+<th>Expected</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S-1</td>
+<td>Open Safety Settings, Remove Styling on</td>
+<td>Description carries the added sentence; spintax line reads "same as above" with tag <strong>On</strong></td>
+<td>P1</td>
+</tr>
+<tr>
+<td>S-2</td>
+<td>Turn Remove Styling off</td>
+<td>Spintax tag reads <strong>Off</strong> immediately, before Save</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>S-3</td>
+<td>Text only set to all emails</td>
+<td>Remove Styling shows on and disabled (as today); spintax tag reads <strong>On</strong></td>
+<td>P2</td>
+</tr>
+<tr>
+<td>S-4</td>
+<td>Inspect the spintax line</td>
+<td>It is not focusable or clickable: no checkbox, no toggle</td>
+<td>P1</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="62-the-step-editor-email-body">6.2 The step editor: email body</h3>
+<p><strong>What it's for.</strong> Where styling enters. The writer sees it, is asked, and decides for this email.</p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Remove Styling</th>
+<th>Styled paste or toolbar styling</th>
+<th>Bar</th>
+<th>Keep Styling</th>
+<th>Remove Styling</th>
+<th>×</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>On</strong></td>
+<td>Lands as is</td>
+<td><code>Styling Detected (Remove to avoid spam filters):</code> · <strong>Remove Styling</strong> · <strong>Keep Styling</strong> · <code>×</code></td>
+<td>Keeps it in this email. Setting untouched. Bar asks again next time</td>
+<td>Removes styling from this email; bold, italic, underline, links and lists stay. No setting write</td>
+<td>Removes styling, as today</td>
+</tr>
+<tr>
+<td><strong>Off</strong></td>
+<td>Lands as is</td>
+<td>Same bar, same copy, both buttons</td>
+<td>Same as On</td>
+<td>Removes styling from this email. <strong>Whether it also turns the setting on is Q1</strong></td>
+<td>Dismisses the bar, as today</td>
+</tr>
+<tr>
+<td><strong>Text only</strong></td>
+<td>Lands as plain text</td>
+<td>None</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>What it must do</strong></p>
+<ul>
+<li>Show the bar every time styled content appears: on paste, on toolbar styling, and on opening a step that contains styling. There is no suppression for the rest of the session after Keep.</li>
+<li>Show <strong>both</strong> buttons whenever the bar shows.</li>
+<li>Keep the "Styling Removes Automatically" / "Text only email" badge visible while the bar is up. Today the bar hides it.</li>
+<li>Decide whether a step is text only from the sequence's settings for that step. No workspace value is read.</li>
+<li>Remove PR #8129's toast, rule chip, spotlight and Admin Settings card. Re-enable the bar in step editors, since the PR switches it off.</li>
+</ul>
+<p><strong>Explicitly out of scope:</strong> the template editor (Q3), and changes to send-time stripping. Known send-time gaps, such as <code>&lt;font&gt;</code> and <code>&lt;style&gt;</code> surviving Remove Styling, belong on a separate card.</p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Case</th>
+<th>Expected</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B-1</td>
+<td>Remove Styling <strong>on</strong>: paste Word content with font, colour and highlight</td>
+<td>Content lands with its styling; bar shows with both buttons; nothing removed</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-2</td>
+<td>Remove Styling <strong>on</strong>: apply a text colour from the toolbar</td>
+<td>Colour stays; bar shows with both buttons</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-3</td>
+<td>Remove Styling <strong>off</strong>: repeat B-1 and B-2</td>
+<td>Same bar, same copy, both buttons</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-4</td>
+<td>Any state where the bar renders</td>
+<td>Remove Styling <strong>and</strong> Keep Styling both visible</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-5</td>
+<td>Click <strong>Keep Styling</strong>, Remove Styling on</td>
+<td>Bar closes, styling stays. <strong>No request is sent to <code>PATCH /sequences/{id}/settings</code>.</strong> Read back with <code>GET /sequences/{id}/config</code>: <code>text-only-email</code> unchanged at <code>1</code>; badge still shown</td>
+<td><strong>P0, sign off by name. Owner: TBD</strong></td>
+</tr>
+<tr>
+<td>B-6</td>
+<td>After Keep Styling, paste styled content or apply toolbar styling again, same session</td>
+<td>Bar shows again</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-7</td>
+<td>After Keep Styling, save, close and reopen the step</td>
+<td>Bar shows for the kept styling</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>B-8</td>
+<td>Click <strong>Remove Styling</strong>, Remove Styling on</td>
+<td>Styling removed from this email; bold, italic, underline, links and lists stay; no settings request (today it is sent twice)</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-9</td>
+<td>Click <strong>×</strong>, Remove Styling on</td>
+<td>Styling removed (as today)</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>B-10</td>
+<td>Click <strong>×</strong>, Remove Styling off</td>
+<td>Bar closes; styling stays; no settings request</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>B-11</td>
+<td>Paste plain text, or copy and paste within Saleshandy</td>
+<td>No bar</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-12</td>
+<td>Text only (all emails), or step 1 with first email only: paste Word content</td>
+<td>Lands as plain text; no bar; "Text only email" badge shown</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-13</td>
+<td>Bar is up</td>
+<td>Corner badge remains visible and unobscured</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>B-14</td>
+<td><code>⌘⇧V</code> in any state</td>
+<td>Plain; no bar</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>B-15</td>
+<td>Admin Settings page</td>
+<td>No "Pasting content" card; no workspace paste value stored</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="63-the-spintax-editor-add-spintax">6.3 The spintax editor (Add Spintax)</h3>
+<p><strong>What it's for.</strong> Variants are part of the email and follow the same rule.</p>
+<p><strong>What it must do</strong></p>
+<ul>
+<li>Apply §6.2 inside each variant field: same bar, same copy, both buttons, same semantics, shown in that variant's field.</li>
+<li>Scope each action to its own variant. Keep or Remove in variant 1 does not touch variant 2 or the email body.</li>
+</ul>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Case</th>
+<th>Expected</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V-1</td>
+<td>Remove Styling on or off: paste styled content, or apply toolbar styling, in variant 1</td>
+<td>Bar shows in variant 1 with both buttons; styling stays until a button is clicked</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>V-2</td>
+<td>Keep Styling in variant 1</td>
+<td>Styling stays in variant 1 only; variant 2 and the body untouched; no settings request</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>V-3</td>
+<td>Text only: paste Word content into a variant</td>
+<td>Plain; no bar</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>V-4</td>
+<td>Literal <code>{{First Name}}</code> pasted into a variant</td>
+<td>Becomes a merge-tag chip (X-7 applies)</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>V-5</td>
+<td>Keep styling inside a variant, then Save → reopen the modal → save the step → send a test</td>
+<td>The spin still parses and spins. The chosen variant arrives styled under Remove Styling off, or stripped under on. No literal <code>{spin}</code> text in any output. <strong>Depends on Q2</strong></td>
+<td><strong>P0, release blocker</strong></td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+<section id="7-reconciliation-with-existing-behaviour" class="sec"><div class="sec-head"><span class="sec-num">7</span><h2>Reconciliation with existing behaviour</h2></div>
+
+<p><strong>Scope map</strong></p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Where styling comes from</th>
+<th>What catches it</th>
+<th>Covered by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Paste from Word</td>
+<td>Bar, in the editor</td>
+<td>§6.2, §6.3</td>
+</tr>
+<tr>
+<td>Paste from web or Docs</td>
+<td>Already arrives without inline styles in Chrome (measured, one synthetic paste); the bar shows if any remain</td>
+<td>§6.2</td>
+</tr>
+<tr>
+<td>Toolbar font, size or colour</td>
+<td>Bar</td>
+<td>§6.2</td>
+</tr>
+<tr>
+<td>Opening a step with styled content</td>
+<td>Bar</td>
+<td>§6.2, B-7</td>
+</tr>
+<tr>
+<td>AI-generated content or templates applied to a step</td>
+<td>Bar, if styled</td>
+<td>§6.2; template editor itself is Q3</td>
+</tr>
+<tr>
+<td>What is sent</td>
+<td>Remove Styling strips at send; text only converts on save and at send</td>
+<td>Unchanged</td>
+</tr>
+</tbody>
+</table></div>
+<p>Nothing is deleted from Safety Settings. The one line of copy that makes the relationship legible is S-1.</p>
+
+</section>
+<section id="8-cross-cutting" class="sec"><div class="sec-head"><span class="sec-num">8</span><h2>Cross-cutting</h2></div>
+
+<p><strong>Chip integrity – release blocker.</strong> X-1 to X-12 are carried from v2.2 unchanged in substance. X-8 and X-12 now read "in any Remove Styling state" in place of "setting on/off". The order of operations still holds: sanitise first, then promote tokens. Promotion applies whether styling is kept or removed.</p>
+<p><strong>Keyboard invariants</strong></p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>⌘⇧V</code> / <code>Ctrl+Shift+V</code></td>
+<td>Always plain, no bar, every surface</td>
+</tr>
+<tr>
+<td><code>⌘Z</code></td>
+<td>First press after a paste removes the paste. After Remove Styling, the first press restores the styling</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Sanitisation floor.</strong> Scripts, embedded frames, event handlers and stylesheet blocks are never inserted, in every state (S2-8, S2-9 carried).</p>
+
+</section>
+<section id="9-implementation-notes" class="sec"><div class="sec-head"><span class="sec-num">9</span><h2>Implementation notes</h2></div>
+
+<ul>
+<li><strong>From PR #8129, keep:</strong></li>
+<li>The paste sanitiser</li>
+<li>Token promotion and the internal-copy marker</li>
+<li><code>⌘⇧V</code> handling</li>
+<li>Undo</li>
+<li>Analytics plumbing</li>
+<li><strong>From PR #8129, remove:</strong></li>
+<li>Plain-text conversion of the body</li>
+<li>The toast, rule chip and spotlight</li>
+<li>The Admin Settings card and the <code>/user/meta</code> paste rule</li>
+<li>The switch-off of the Styling Detected bar in step editors</li>
+<li>Always-plain variants</li>
+<li><strong>Close <a href="https://github.com/saleshandy/saleshandy-edge/pull/11339">edge #11339</a></strong> unmerged. It cites Jira DE-4596, which our Jira login cannot open.</li>
+<li><strong>Change the existing bar</strong> (<a href="https://github.com/saleshandy/saleshandy-webui/blob/a6e04a32782a2814da502d455366b160405ea310/src/components/sequence/shared/modals/email-modal/components/styling-detected-action-bar/styling-detected-action-bar.tsx#L27"><code>styling-detected-action-bar.tsx</code></a>) so that:</li>
+<li>Keep Styling stops writing <code>text-only-email</code>.</li>
+<li>No suppression persists after Keep.</li>
+<li>Remove Styling stops the duplicate settings write.</li>
+<li><strong>Add the bar to the variant field</strong> in the spintax modal. This is new UI, using the same component.</li>
+<li><strong>Resolve before estimation:</strong> whether the spin parser and send path tolerate markup inside <code>{spin}…{endspin}</code> (Q2). A known bug says they do not (<a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">to-do</a>). If that is unfixed, D11 includes that fix, and an estimate without it is wrong rather than approximate.</li>
+</ul>
+
+</section>
+<section id="10-measurement" class="sec"><div class="sec-head"><span class="sec-num">10</span><h2>Measurement</h2></div>
+
+<p><strong>Never log pasted content:</strong> counts and enum labels only.</p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Fires when</th>
+<th>Properties</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>paste_performed</code></td>
+<td>Any paste into an editor surface</td>
+<td><code>surface</code> (body/subject/variant) · <code>had_styling</code> · <code>remove_styling_state</code> (on/off/text_only) · <code>internal_copy</code> · <code>used_plain_shortcut</code> · <code>tokens_promoted</code></td>
+</tr>
+<tr>
+<td><code>styling_detected_shown</code></td>
+<td>The bar renders</td>
+<td><code>surface</code> · <code>source</code> (paste/toolbar/open) · <code>remove_styling_state</code> · <code>shown_index_in_session</code></td>
+</tr>
+<tr>
+<td><code>styling_detected_action</code></td>
+<td>A bar control is used</td>
+<td><code>action</code> (remove/keep/close) · <code>surface</code> · <code>remove_styling_state</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Instrumentation ships with the feature; the gates below cannot be read without it.</p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Leading indicator, day 1 to 14</th>
+<th>Healthy</th>
+<th>Investigate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Settings writes from the editor</strong></td>
+<td><strong>0 (target)</strong></td>
+<td><strong>Any – D10 is broken. The single most important early signal</strong></td>
+</tr>
+<tr>
+<td>Keep rate (keep ÷ shown), Remove Styling on</td>
+<td>No base rate; discovery</td>
+<td>High and sustained – writers want styling the sequence strips at send; review the default</td>
+</tr>
+<tr>
+<td>Bar shows per session, 90th percentile</td>
+<td>≤ 5 (assumed; confirm at day 14)</td>
+<td>Higher – the bar reads as nagging under D10</td>
+</tr>
+</tbody>
+</table></div>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Lagging, day 30</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Share of new sequences with Remove Styling on</td>
+<td>≥ 81.9% (target, the measured baseline): Keep no longer switches it off, so it should not fall</td>
+</tr>
+<tr>
+<td>"Formatting" support tickets per 1,000 active users</td>
+<td>No increase vs. the 4 weeks before release</td>
+</tr>
+</tbody>
+</table></div>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Guardrail</th>
+<th>Threshold</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chip corruption</td>
+<td>Any</td>
+<td>Roll back</td>
+</tr>
+<tr>
+<td>Spin fails to parse after styling kept in a variant</td>
+<td>Any</td>
+<td>Roll back</td>
+</tr>
+<tr>
+<td>Editor JS error rate on paste</td>
+<td>Rise vs. baseline</td>
+<td>Halt</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Success at day 30, 100% exposure:</strong> zero settings writes from the editor; zero chip or spin corruption; no ticket rise. All three are non-negotiable.</p>
+
+</section>
+<section id="11-rollout" class="sec"><div class="sec-head"><span class="sec-num">11</span><h2>Rollout</h2></div>
+
+<p>The change is per sequence and shows the same UI to everyone, so staged exposure is blast-radius control, not an A/B cohort. No stage starts until B-5 is signed off and V-5 passes.</p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Who</th>
+<th>Gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Internal</td>
+<td>All P0 criteria pass on the build; B-5 signed off by name; V-5 checked with a real test send</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5% of workspaces</td>
+<td>One week, no guardrail breached, settings writes from the editor = 0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>100%</td>
+<td>Stage 2 clean</td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+<section id="12-open-questions" class="sec"><div class="sec-head"><span class="sec-num">12</span><h2>Open questions</h2></div>
+
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Why it matters</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1</td>
+<td>With Remove Styling <strong>off</strong>, should <strong>Remove Styling</strong> in the bar also switch the sequence's setting on? (It does today)</td>
+<td>It is the same class of silent sequence-wide change D10 removes for Keep</td>
+<td><strong>This email only</strong>, consistent with D10. <strong>Blocking for build.</strong> Hitesh</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Does the spin parser tolerate styling inside a variant through save, reopen and send?</td>
+<td>D11 allows it. A known bug says it breaks</td>
+<td>Rajat confirms before estimation; if it breaks, the fix ships with this. <strong>Blocking for estimation</strong></td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>Template editor: no sequence, so no rule</td>
+<td>A template can carry styling into many sequences</td>
+<td>Leave as today; the bar applies once the template is used in a step. Revisit if tickets appear</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td>Text-only paste behaviour was not checked in production</td>
+<td>D12 may differ from what ships today</td>
+<td>Verify at TA; build to D12</td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+<section id="13-priority-timeline" class="sec"><div class="sec-head"><span class="sec-num">13</span><h2>Priority &amp; timeline</h2></div>
+
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Status</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Priority</td>
+<td>Not set</td>
+<td>Hemanshu</td>
+</tr>
+<tr>
+<td>Target date</td>
+<td>Not set until Q2 is answered</td>
+<td>Rajat</td>
+</tr>
+<tr>
+<td>Release gate</td>
+<td>§8 chip integrity, B-5 named sign-off, V-5</td>
+<td>Rajat</td>
+</tr>
+<tr>
+<td>Q1</td>
+<td>Blocking for build</td>
+<td>Hitesh</td>
+</tr>
+<tr>
+<td>PR #8129 rework, edge #11339 closure</td>
+<td>Dev</td>
+<td>Sunny</td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+<section id="appendix-reference-index" class="sec"><div class="sec-head"><span class="sec-num">–</span><h2>Appendix – reference index</h2></div>
+
+<p><strong>Design</strong>
+- <a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">Prototype</a> – design of record: tab 1 is §6.1, tab 2 is §6.2, tab 3 is §6.3.
+- Saleshandy Design System v3 tokens, as used across the canvas.</p>
+<p><strong>Evidence</strong>
+- Production behaviour checked live on 7 Oct on sequence 964458: bar, Keep and Remove writes, and the duplicate request.
+- Metabase query, Leo db: <code>sequence</code> joined to <code>sequence_setting</code> on <code>code = 'text-only-email'</code>, created ≥ 1 Jul 2026, run 6 Oct.</p>
+<p><strong>Related</strong>
+- <a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873">Card</a>
+- <a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873#__recording_10371718163">Sunny's five points</a>
+- <a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">Spintax styling bug</a></p>
+<p><strong>Superseded</strong>
+- <a href="https://product-team-sh.github.io/prd-paste-as-plain-text/">PRD v2.2</a>, with <a href="https://product-team-sh.github.io/prd-paste-as-plain-text/prototype/">its prototype</a>.</p></section>
+
+  </main>
+</div>
+<a href="#" class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">&uarr;</a>
+
+<script>
+(function(){
+  var rail = document.querySelector('.progress-rail');
+  var topBtn = document.querySelector('.top-btn');
+  function onScroll(){
+    var h = document.documentElement;
+    var pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    if (rail) rail.style.width = pct + '%';
+    if (topBtn) topBtn.classList.toggle('show', h.scrollTop > 600);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var links = Array.from(document.querySelectorAll('.toc-l2, .toc-l3'));
+  var targets = links.map(function(l){ return document.getElementById(l.getAttribute('href').slice(1)); }).filter(Boolean);
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var link = links[targets.indexOf(e.target)];
+      if (!link) return;
+      if (e.isIntersecting) {
+        links.forEach(function(l){ l.classList.remove('active'); });
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin: '-10% 0px -75% 0px'});
+  targets.forEach(function(t){ io.observe(t); });
+})();
+</script>
+
+</body>
+</html>

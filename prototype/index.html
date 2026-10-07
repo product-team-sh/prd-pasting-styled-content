@@ -1,0 +1,490 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    /* Saleshandy DS v3 tokens – same block as Prototype.dc.html */
+    :root {
+      --sh-primary-50:#eff6ff; --sh-primary-100:#dbeafe; --sh-primary-200:#bfdbfe; --sh-primary-300:#93c5fd;
+      --sh-primary-700:#1d4ed8; --sh-primary-800:#1e40af;
+      --sh-gray-50:#f9fafb; --sh-gray-100:#f3f4f6; --sh-gray-200:#e5e7eb; --sh-gray-300:#d1d5db;
+      --sh-gray-400:#9ca3af; --sh-gray-500:#6b7280; --sh-gray-600:#4b5563; --sh-gray-700:#374151;
+      --sh-gray-800:#1f2937; --sh-gray-900:#111827;
+      --sh-green-50:#ecfdf5; --sh-green-700:#047857; --sh-yellow-100:#fef3c7; --sh-yellow-700:#b45309;
+      --sh-fg-primary:#1f2937; --sh-fg-secondary:#6b7280; --sh-fg-tertiary:#9ca3af; --sh-fg-link:#1d4ed8;
+      --sh-border-default:#e5e7eb; --sh-border-light:#f3f4f6; --sh-border-dark:#d1d5db;
+      --sh-radius-sm:4px; --sh-radius-md:8px; --sh-radius-full:9999px;
+      --sh-shadow-sm:0 1px 4px 0 rgba(229,231,235,1.0);
+      --sh-transition-fast:150ms ease-in-out;
+    }
+    body { margin:0; font-family:'Inter',-apple-system,'Segoe UI',sans-serif; font-size:14px; line-height:20px;
+           color:var(--sh-fg-primary); background:var(--sh-gray-100); -webkit-font-smoothing:antialiased; }
+    p { margin:0; }
+    button { font-family:inherit; border:none; background:none; cursor:pointer; padding:0; color:inherit; }
+    .proto-bar { display:flex; align-items:center; gap:8px; height:38px; padding:0 16px; background:var(--sh-gray-800); flex-shrink:0; }
+    .proto-lbl { font-size:10px; line-height:12px; letter-spacing:.08em; color:var(--sh-gray-400); text-transform:uppercase; }
+    .proto-tab { display:inline-flex; align-items:center; height:24px; padding:0 10px; border-radius:var(--sh-radius-sm);
+                 font-size:12px; font-weight:500; color:var(--sh-gray-400); }
+    .proto-tab:hover { color:#fff; }
+    .proto-tab-on { color:#fff; background:rgba(255,255,255,.14); }
+    .cap { font-size:12px; line-height:16px; color:var(--sh-fg-secondary); }
+    .row { display:flex; align-items:center; gap:8px; }
+    .div { width:1px; height:16px; background:var(--sh-border-default); flex-shrink:0; }
+    .sw { display:inline-flex; align-items:center; height:28px; padding:0 10px; border:1px solid var(--sh-border-default);
+          background:#fff; font-size:12px; font-weight:500; color:var(--sh-fg-secondary); white-space:nowrap; }
+    .sw:first-child { border-radius:4px 0 0 4px; } .sw:last-child { border-radius:0 4px 4px 0; }
+    .sw + .sw { margin-left:-1px; }
+    .sw:hover { background:var(--sh-gray-50); color:var(--sh-fg-primary); }
+    .sw-on, .sw-on:hover { position:relative; z-index:1; color:var(--sh-primary-700); background:var(--sh-primary-50); border-color:var(--sh-primary-300); }
+    .btn { display:inline-flex; align-items:center; justify-content:center; height:28px; padding:0 10px; border-radius:var(--sh-radius-sm);
+           font-size:12px; font-weight:500; white-space:nowrap; }
+    .btn-sec { border:1px solid var(--sh-border-default); background:#fff; color:var(--sh-gray-700); }
+    .btn-sec:hover { background:var(--sh-gray-100); }
+    .btn-primary { height:32px; padding:0 16px; font-size:14px; background:var(--sh-primary-700); color:#fff; }
+    .lnk { font-size:12px; font-weight:500; color:var(--sh-fg-link); white-space:nowrap; }
+    .lnk:hover { text-decoration:underline; }
+    .ins { background:var(--sh-yellow-100); color:var(--sh-gray-800); border-radius:2px; padding:0 2px; }
+
+    /* ── settings screen ── */
+    .seq-head { display:flex; align-items:center; gap:16px; height:50px; padding:0 20px; background:#fff; border-bottom:1px solid var(--sh-border-default); flex-shrink:0; }
+    .seq-title { font-size:16px; line-height:24px; font-weight:600; }
+    .seq-tabs { display:flex; gap:24px; height:44px; padding:0 20px; background:#fff; border-bottom:1px solid var(--sh-border-default); flex-shrink:0; }
+    .seq-tab { display:flex; align-items:center; font-size:14px; color:var(--sh-fg-secondary); border-bottom:2px solid transparent; }
+    .seq-tab-on { color:var(--sh-primary-700); font-weight:500; border-bottom-color:var(--sh-primary-700); }
+    .tgl { position:relative; width:32px; height:18px; border-radius:var(--sh-radius-full); background:var(--sh-gray-400); flex-shrink:0; margin-top:1px;
+           transition:background var(--sh-transition-fast); }
+    .tgl::after { content:""; position:absolute; left:2px; top:2px; width:14px; height:14px; border-radius:50%; background:#fff;
+                  box-shadow:0 1px 2px rgba(0,0,0,.1); transition:left var(--sh-transition-fast); }
+    .tgl-on { background:var(--sh-primary-700); } .tgl-on::after { left:16px; }
+    .tgl-dis { opacity:.35; cursor:not-allowed; }
+    .srow { display:flex; align-items:flex-start; gap:10px; }
+    .srow-click { cursor:pointer; }
+    .lbl { font-size:14px; line-height:20px; font-weight:500; }
+    .desc { margin-top:2px; font-size:12px; line-height:18px; color:var(--sh-fg-secondary); max-width:600px; }
+    .radio { width:16px; height:16px; border-radius:50%; border:1px solid var(--sh-border-dark); box-sizing:border-box; flex-shrink:0; margin-top:2px; background:#fff; }
+    .radio-on { border:5px solid var(--sh-primary-700); }
+    .rec { display:inline-flex; align-items:center; height:16px; padding:0 6px; border-radius:4px; background:var(--sh-primary-50);
+           color:var(--sh-primary-700); font-size:10px; line-height:12px; font-weight:600; margin-left:6px; vertical-align:2px; }
+    .side { width:300px; flex-shrink:0; }
+    .side-card { border:1px solid var(--sh-border-default); border-radius:var(--sh-radius-md); background:#fff; padding:16px; }
+    .side-h { font-size:14px; line-height:20px; font-weight:600; }
+    .side-p { margin-top:6px; font-size:12px; line-height:18px; color:var(--sh-fg-secondary); }
+
+    /* ── composer ── */
+    .frame { display:flex; flex-grow:1; min-height:0; background:#fff; border:1px solid var(--sh-border-default);
+             border-radius:var(--sh-radius-sm); box-shadow:var(--sh-shadow-sm); overflow:hidden; }
+    .glyphbtn { display:flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:var(--sh-radius-sm);
+                font-family:'Courier New',monospace; font-size:12px; font-weight:500; color:var(--sh-fg-secondary); white-space:nowrap; }
+    .tb { display:flex; align-items:center; justify-content:center; width:24px; height:28px; border-radius:var(--sh-radius-sm); font-size:14px; color:var(--sh-gray-700); }
+    .body-p { font-size:14px; line-height:22px; }
+    .body-p + .body-p { margin-top:10px; }
+    .chip { display:inline; padding:0 4px; border-radius:4px; background:#eff6ff; border:1px solid #bfdbfe; color:#3b82f6;
+            font-family:'Inter',sans-serif; font-size:14px; font-weight:400; }
+    .word { font-family:'Times New Roman',Times,serif; font-size:16px; line-height:26px; }
+    .word-link { font-family:Calibri,Inter,sans-serif; color:#0563C1; text-decoration:underline; }
+    .word-hl { background:var(--sh-yellow-100); }
+    .link { color:var(--sh-fg-link); text-decoration:underline; }
+    .empty-hint { border:1px dashed var(--sh-border-dark); border-radius:var(--sh-radius-sm); padding:16px; text-align:center; }
+
+    /* toast – Prototype's .rtoast */
+    .rtoast-wrap { position:absolute; left:12px; right:12px; bottom:44px; display:flex; justify-content:center; z-index:40; pointer-events:none; }
+    .rtoast { pointer-events:auto; display:flex; align-items:center; gap:8px; height:38px; padding:0 12px; max-width:100%; box-sizing:border-box;
+              border:1px solid var(--sh-border-default); border-radius:var(--sh-radius-md); background:#fff;
+              box-shadow:0 6.479px 4.859px 0 rgba(4,21,76,0.08), 0 0 3.239px 0 rgba(4,21,76,0.22); animation:in var(--sh-transition-fast); }
+    .rtoast-txt { font-size:12px; line-height:16px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .rtoast-gap { width:16px; flex-shrink:0; }
+    .xbtn { display:flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:var(--sh-radius-sm);
+            color:var(--sh-gray-500); font-size:14px; line-height:1; flex-shrink:0; }
+    .xbtn:hover { background:var(--sh-gray-100); }
+    @keyframes in { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:none} }
+
+    /* production corner badge (_email-modal.scss .text-only-email-badge) */
+    .badge { position:absolute; right:8px; bottom:8px; display:flex; align-items:center; gap:4px; height:22px; padding:0 8px;
+             border-radius:11px; background:#fff; cursor:pointer; z-index:30; }
+    .badge:hover { background:var(--sh-gray-50); }
+    .badge-dot { width:8px; height:8px; border-radius:50%; background:#34d399; }
+    .badge-txt { font-size:12px; line-height:16px; color:#9ca3af; white-space:nowrap; }
+    .pop { position:absolute; right:8px; bottom:36px; width:300px; padding:12px; background:#fff; border:1px solid var(--sh-border-default);
+           border-radius:var(--sh-radius-md); box-shadow:0 16px 48px -4px rgba(4,21,76,0.18),0 4px 24px 0 rgba(4,21,76,0.08); z-index:50;
+           font-size:12px; line-height:18px; color:var(--sh-gray-700); animation:in var(--sh-transition-fast); }
+
+    /* preview sidebar */
+    .side-tabs { display:flex; gap:16px; height:48px; padding:0 16px; border-bottom:1px solid var(--sh-border-default); flex-shrink:0; }
+    .side-tab { display:flex; align-items:center; font-size:14px; color:var(--sh-fg-secondary); border-bottom:2px solid transparent; }
+    .side-tab-on { color:var(--sh-primary-700); font-weight:500; border-bottom-color:var(--sh-primary-700); }
+    .tag { display:inline-flex; align-items:center; height:20px; padding:0 8px; border-radius:var(--sh-radius-sm);
+           font-size:12px; line-height:16px; font-weight:500; white-space:nowrap; background:var(--sh-gray-100); color:var(--sh-gray-600); }
+    .match { display:inline-flex; align-items:center; gap:4px; font-size:12px; line-height:16px; font-weight:500; color:var(--sh-green-700); }
+    .mail { border:1px solid var(--sh-border-default); border-radius:var(--sh-radius-sm); overflow:hidden; }
+    .mail-h { padding:8px 12px; background:var(--sh-gray-50); border-bottom:1px solid var(--sh-border-light); }
+    .mail-h p { font-size:12px; line-height:18px; color:var(--sh-fg-secondary); }
+    .mail-h b { color:var(--sh-fg-primary); font-weight:500; }
+    .mail-b { padding:12px; min-height:120px; }
+    .plain { white-space:pre-wrap; font-size:14px; line-height:22px; }
+    .note { border-radius:var(--sh-radius-sm); background:var(--sh-primary-50); border:1px solid var(--sh-primary-200); padding:12px; }
+    .note-h { font-size:12px; line-height:16px; font-weight:600; color:var(--sh-primary-800); }
+    .note p.note-t { margin-top:4px; font-size:12px; line-height:18px; color:var(--sh-primary-800); }
+    /* ── merged model additions ── */
+    /* production Styling Detected bar: band along the editor's bottom edge */
+    .sbar { display:flex; align-items:center; gap:12px; height:36px; flex-shrink:0; padding:0 12px;
+            border-top:1px solid var(--sh-border-default); background:#fff; animation:in var(--sh-transition-fast); }
+    .sbar-lbl { font-size:12px; line-height:16px; font-weight:500; color:var(--sh-gray-700); white-space:nowrap; }
+    .sbar-lbl span { font-weight:400; color:var(--sh-fg-secondary); }
+    .sbar-btn { display:inline-flex; align-items:center; gap:6px; font-size:12px; line-height:16px; font-weight:600; color:var(--sh-gray-800); white-space:nowrap; }
+    .sbar-btn:hover { color:var(--sh-primary-700); }
+    .sbar-ok { display:inline-flex; align-items:center; gap:6px; font-size:12px; line-height:16px; font-weight:500; color:var(--sh-gray-800); white-space:nowrap; }
+    .tb-off { opacity:.35; cursor:not-allowed; }
+    .colour-word { color:#dc2626; }
+    .warn-txt { white-space:nowrap; display:inline-flex; align-items:center; gap:4px; font-size:12px; line-height:16px; font-weight:500; color:var(--sh-yellow-700); }
+    .lock { display:flex; align-items:flex-start; gap:8px; margin:10px 0 0 42px; }
+    .cbx { width:16px; height:16px; border-radius:4px; background:var(--sh-primary-700); flex-shrink:0; margin-top:2px; position:relative; opacity:.6; }
+    .cbx::after { content:""; position:absolute; left:5px; top:2px; width:4px; height:8px; border:solid #fff; border-width:0 1.5px 1.5px 0; transform:rotate(40deg); }
+    .vfield { border:1px solid var(--sh-border-default); border-radius:var(--sh-radius-sm); }
+    .vfield-h { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid var(--sh-border-light); background:var(--sh-gray-50); }
+    .vfield-b { padding:12px; min-height:48px; font-size:14px; line-height:22px; }
+  </style>
+</helmet>
+
+<div style="height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--sh-gray-100)">
+
+  <div class="proto-bar">
+    <span class="proto-lbl">Pasting styled content &middot; prototype for PRD v3</span>
+    <div style="flex-grow:1"></div>
+    <button class="proto-tab {{n.c1}}" onClick="{{n.to1}}">1 &middot; Safety Settings</button>
+    <button class="proto-tab {{n.c2}}" onClick="{{n.to2}}">2 &middot; Composer</button>
+    <button class="proto-tab {{n.c3}}" onClick="{{n.to3}}">3 &middot; Spintax variant</button>
+  </div>
+
+  <!-- ════════ 1 · SAFETY SETTINGS ════════ -->
+  <sc-if value="{{n.s1}}" hint-placeholder-val="{{ false }}">
+    <div style="height:calc(100vh - 38px);display:flex;flex-direction:column;overflow:hidden">
+      <div class="seq-head"><span class="seq-title">Sequence &rsaquo; New Sequence &ndash; Mon 5th Oct</span></div>
+      <div class="seq-tabs"><span class="seq-tab">Steps</span><span class="seq-tab">Prospects</span><span class="seq-tab seq-tab-on">Settings</span><span class="seq-tab">Subsequence</span></div>
+      <div style="flex-grow:1;min-height:0;overflow-y:auto;display:flex;gap:20px;padding:20px">
+        <div style="flex-grow:1;min-width:0;background:#fff;border:1px solid var(--sh-border-default);border-radius:var(--sh-radius-sm);padding:24px">
+          <p style="font-size:16px;line-height:24px;font-weight:600;margin-bottom:20px">Safety Settings</p>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <div class="srow"><span class="tgl tgl-on"></span><div><p class="lbl">Stop sending follow-ups, if the reply is received</p><p class="desc">It will stop sending follow-up emails once the recipient replies, so they don't get unnecessary emails and you can continue your conversation directly.</p></div></div>
+            <div class="srow"><span class="tgl"></span><div><p class="lbl" style="font-weight:400">Track email opens</p><p class="desc">It lets you see if your email was opened. However, tracking emails can sometimes cause your email to end up in the "Promotions" or "Spam".</p></div></div>
+            <div>
+              <div class="srow srow-click" onClick="{{set.rsToggle}}">
+                <span class="tgl {{set.rsCls}}"></span>
+                <div><p class="lbl">Remove Styling Automatically</p>
+                  <p class="desc">Send your emails without any special formatting, like colors or fonts. This makes them look more human-like and helps them land directly in the inbox. <span class="ins">Styling you paste or add in the editor is flagged there, with an option to remove it.</span></p></div>
+              </div>
+              <div class="lock" style="align-items:center">
+                <span style="color:var(--sh-fg-tertiary);font-size:14px;line-height:20px">&#8627;</span>
+                <p class="lbl" style="font-weight:400"><span class="ins">Spintax variants: same as above</span></p>
+                <span class="tag" style="{{set.spinTagStyle}}">{{set.spinTag}}</span>
+              </div>
+            </div>
+            <div class="srow"><span class="tgl"></span><div><p class="lbl" style="font-weight:400">Only trigger one subsequence per prospect</p><p class="desc">A prospect will enter only one matching subsequence and will never move into another subsequence of this sequence.</p></div></div>
+            <div>
+              <div class="srow srow-click" onClick="{{set.toToggle}}">
+                <span class="tgl {{set.toCls}}"></span>
+                <div><p class="lbl" style="font-weight:400">Send emails as text only</p>
+                  <p class="desc">Sends emails without any HTML, images or links, matching what a person would type by hand.</p></div>
+              </div>
+              <sc-if value="{{set.toOn}}" hint-placeholder-val="{{ false }}">
+                <div style="margin:12px 0 0 42px;display:flex;flex-direction:column;gap:12px">
+                  <div class="srow srow-click" onClick="{{set.pickFirst}}"><span class="radio {{set.firstCls}}"></span><div><p class="lbl" style="font-weight:400">Only first email<span class="rec">RECOMMENDED</span></p><p class="desc">Sends your first email as plain text to improve inbox placement, while still being able to include demo links in follow-ups.</p></div></div>
+                  <div class="srow srow-click" onClick="{{set.pickAll}}"><span class="radio {{set.allCls}}"></span><div><p class="lbl" style="font-weight:400">All emails</p><p class="desc">Sends all emails as text only, without any HTML, images, or links. This helps them land in the inbox more easily.</p></div></div>
+                </div>
+              </sc-if>
+            </div>
+            <div><button class="btn btn-primary" style="width:80px">Save</button></div>
+          </div>
+        </div>
+        <div class="side">
+          <div class="side-card">
+            <p class="side-h">What changes on this screen</p>
+            <p class="side-p">One sentence in the Remove Styling description, and a spintax line under it that always shows the same value as Remove Styling (highlighted). No separate spintax control. Everything else is production as it is today.</p>
+          </div>
+          <div class="side-card" style="margin-top:12px">
+            <p class="side-h">Rule for step 1</p>
+            <p style="margin-top:8px"><span class="tag" style="background:var(--sh-primary-50);color:var(--sh-primary-700)">{{set.ruleName}}</span></p>
+            <p class="side-p">{{set.ruleWhy}}</p>
+            <p style="margin-top:12px"><button class="lnk" onClick="{{n.to2}}">Paste into step 1 &rarr;</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ════════ 2 · COMPOSER ════════ -->
+  <sc-if value="{{n.s2}}" hint-placeholder-val="{{ true }}">
+    <div style="height:calc(100vh - 38px);box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;padding:16px">
+      <div class="row" style="margin-bottom:12px;gap:12px">
+        <span class="cap">Remove Styling:</span>
+        <div style="display:flex">
+          <button class="sw {{c.segRs}}" onClick="{{c.useRs}}">On</button>
+          <button class="sw {{c.segOff}}" onClick="{{c.useOff}}">Off</button>
+          <button class="sw {{c.segTo}}" onClick="{{c.useTo}}">Text only</button>
+        </div>
+        <button class="lnk" onClick="{{n.to1}}">Safety Settings</button>
+        <div style="flex-grow:1"></div>
+        <span class="cap">Simulate</span>
+        <button class="btn btn-sec" onClick="{{c.paste}}">Paste from Word</button>
+        <button class="btn btn-sec" onClick="{{c.colour}}">Colour a word</button>
+        <button class="btn btn-sec" onClick="{{c.shortcut}}">&#8984;&#8679;V</button>
+        <button class="btn btn-sec" onClick="{{c.clear}}">Clear</button>
+      </div>
+
+      <div class="frame">
+        <div style="flex-grow:1;min-width:0;display:flex;flex-direction:column">
+          <div class="row" style="gap:12px;height:48px;flex-shrink:0;padding:0 16px;border-bottom:1px solid var(--sh-border-default)">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--sh-radius-sm);background:var(--sh-gray-100);font-weight:500">Step 1 <span style="padding:0 5px;border-radius:4px;background:#fff;font-size:12px">A</span></span>
+            <span style="color:var(--sh-primary-700);font-weight:500">Email</span>
+          </div>
+          <div style="padding:16px 16px 0">
+            <div class="row" style="height:36px;padding:0 12px;border:1px solid var(--sh-border-default);border-radius:var(--sh-radius-sm)">
+              <span class="cap">Subject</span><span class="div"></span><span>Quick question about Pune</span>
+              <div style="flex-grow:1"></div><span class="glyphbtn">&#123;&#123;&#125;&#125;</span><span class="glyphbtn">&#123;|&#125;</span>
+            </div>
+          </div>
+          <div style="margin:12px 16px 16px;flex-grow:1;min-height:0;display:flex;flex-direction:column;border:1.5px solid var(--sh-primary-700);border-radius:var(--sh-radius-sm);overflow:hidden;position:relative">
+            <div class="row" style="gap:2px;height:38px;flex-shrink:0;padding:0 8px;border-bottom:1px solid var(--sh-border-default)">
+              <span class="cap {{c.styleCtl}}" style="padding:0 6px" title="{{c.ctlTip}}">Inter,sans&hellip; &#9662;</span>
+              <span class="cap {{c.styleCtl}}" style="padding:0 6px" title="{{c.ctlTip}}">13px &#9662;</span><span class="div"></span>
+              <span class="tb {{c.emCtl}}" style="font-weight:700">B</span><span class="tb {{c.emCtl}}" style="font-style:italic">I</span><span class="tb {{c.emCtl}}" style="text-decoration:underline">U</span>
+              <span class="tb {{c.styleCtl}}" style="text-decoration:underline;text-decoration-color:#dc2626;text-decoration-thickness:2px" title="{{c.ctlTip}}">A</span>
+              <sc-if value="{{c.ctlNote}}" hint-placeholder-val="{{ true }}"><span class="cap" style="margin-left:8px;color:var(--sh-fg-tertiary)">{{c.ctlTip}}</span></sc-if>
+              <div style="flex-grow:1"></div><span class="glyphbtn">&#123;&#123;&#125;&#125;</span><button class="glyphbtn" onClick="{{n.to3}}" title="Add Spintax">&#123;|&#125;</button>
+            </div>
+            <div style="flex-grow:1;min-height:0;overflow-y:auto;padding:14px 16px 40px;position:relative">
+              <sc-if value="{{c.spinSaved}}" hint-placeholder-val="{{ false }}">
+                <p class="body-p" style="margin-bottom:10px">I see Northwind <span class="chip" style="color:#6d28d9;background:#f5f3ff;border-color:#ddd6fe">spin</span> <span class="{{c.spinV1Cls}}">{{c.spinV1}}</span> <span style="color:var(--sh-fg-tertiary)">|</span> just doubled its warehouse space <span class="chip" style="color:#6d28d9;background:#f5f3ff;border-color:#ddd6fe">endspin</span></p>
+              </sc-if>
+              <sc-if value="{{c.empty}}" hint-placeholder-val="{{ true }}">
+                <p class="cap empty-hint">Set Remove Styling above, then press <b>Paste from Word</b> or <b>Colour a word</b>. The Word text has a literal &#123;<span></span>&#123;First Name&#125;<span></span>&#125;, a link, bold, a highlight and Word's own font.</p>
+              </sc-if>
+              <sc-if value="{{c.showPlain}}" hint-placeholder-val="{{ false }}">
+                <div><p class="body-p">Hi <span class="chip">First Name</span>,</p><p class="body-p">I noticed Northwind just opened a second warehouse in Pune &ndash; congratulations.</p><p class="body-p">Worth a 15-minute call next week?</p></div>
+              </sc-if>
+              <sc-if value="{{c.showClean}}" hint-placeholder-val="{{ false }}">
+                <div><p class="body-p">Hi <span class="chip">First Name</span>,</p><p class="body-p">I noticed <span class="link">Northwind</span> just opened a <b>second warehouse</b> in <span class="{{c.colourCls}}">Pune</span> &ndash; congratulations.</p><p class="body-p">Worth a 15-minute call next week?</p></div>
+              </sc-if>
+              <sc-if value="{{c.showWord}}" hint-placeholder-val="{{ false }}">
+                <div class="word"><p>Hi <span class="chip">First Name</span>,</p><p style="margin-top:8px">I noticed <span class="word-link">Northwind</span> just opened a <b class="word-hl">second warehouse</b> in <span class="{{c.colourCls}}">Pune</span> &ndash; congratulations.</p><p style="margin-top:8px">Worth a 15-minute call next week?</p></div>
+              </sc-if>
+            </div>
+            <sc-if value="{{c.badgeOn}}" hint-placeholder-val="{{ true }}">
+              <div class="badge" style="bottom:{{c.badgeBottom}}"><span class="badge-dot"></span><span class="badge-txt">{{c.badgeText}}</span></div>
+            </sc-if>
+
+            <!-- the existing Styling Detected bar is now the only surface -->
+            <sc-if value="{{c.barDetected}}" hint-placeholder-val="{{ false }}">
+              <div class="sbar">
+                <span class="sbar-lbl">Styling Detected <span>{{c.detectedHint}}</span>:</span>
+                <button class="sbar-btn" onClick="{{c.remove}}"><span style="font-family:Georgia,serif;font-weight:700">T</span><span style="margin-left:-5px;font-size:10px">&times;</span> Remove Styling</button>
+                <sc-if value="{{c.keepOn}}" hint-placeholder-val="{{ true }}">
+                  <span class="div"></span>
+                  <button class="sbar-btn" onClick="{{c.keep}}">&#10227; Keep Styling</button>
+                </sc-if>
+                <div style="flex-grow:1"></div>
+                <button class="xbtn" onClick="{{c.dismiss}}">&times;</button>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="width:360px;flex-shrink:0;border-left:1px solid var(--sh-border-default);display:flex;flex-direction:column">
+          <div class="side-tabs"><span class="side-tab">Content Guide</span><span class="side-tab side-tab-on">Email Preview</span></div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:12px;flex-grow:1;min-height:0;overflow-y:auto">
+            <div class="row" style="justify-content:space-between">
+              <span class="tag">{{c.sendLabel}}</span>
+              <sc-if value="{{c.matchOn}}" hint-placeholder-val="{{ false }}"><span class="match">&#10003; Same as the editor</span></sc-if>
+              <sc-if value="{{c.differs}}" hint-placeholder-val="{{ false }}"><span class="warn-txt">&#9888; Differs from editor</span></sc-if>
+            </div>
+            <div class="mail">
+              <div class="mail-h"><p>To <b>Priya Shah</b></p><p>Subject <b>Quick question about Pune</b></p></div>
+              <div class="mail-b">
+                <sc-if value="{{c.pvSpinOn}}" hint-placeholder-val="{{ false }}"><p class="body-p" style="margin-bottom:10px">I see Northwind <span class="{{c.pvSpinCls}}">just opened a second warehouse in Pune</span>.</p></sc-if>
+                <sc-if value="{{c.pvEmpty}}" hint-placeholder-val="{{ true }}"><p class="cap">Nothing in the email yet.</p></sc-if>
+                <sc-if value="{{c.pvText}}" hint-placeholder-val="{{ false }}"><p class="plain">Hi Priya,
+
+I noticed Northwind just opened a second warehouse in Pune &ndash; congratulations.
+
+Worth a 15-minute call next week?</p></sc-if>
+                <sc-if value="{{c.pvPlain}}" hint-placeholder-val="{{ false }}"><div><p class="body-p">Hi Priya,</p><p class="body-p">I noticed Northwind just opened a second warehouse in Pune &ndash; congratulations.</p><p class="body-p">Worth a 15-minute call next week?</p></div></sc-if>
+                <sc-if value="{{c.pvClean}}" hint-placeholder-val="{{ false }}"><div><p class="body-p">Hi Priya,</p><p class="body-p">I noticed <span class="link">Northwind</span> just opened a <b>second warehouse</b> in <span class="{{c.pvColourCls}}">Pune</span> &ndash; congratulations.</p><p class="body-p">Worth a 15-minute call next week?</p></div></sc-if>
+                <sc-if value="{{c.pvWord}}" hint-placeholder-val="{{ false }}"><div class="word"><p>Hi Priya,</p><p style="margin-top:8px">I noticed <span class="word-link">Northwind</span> just opened a <b class="word-hl">second warehouse</b> in <span class="{{c.pvColourCls}}">Pune</span> &ndash; congratulations.</p><p style="margin-top:8px">Worth a 15-minute call next week?</p></div></sc-if>
+              </div>
+            </div>
+            <div class="note"><p class="note-h">How this is handled</p><p class="note-t">{{c.note}}</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ════════ 3 · SPINTAX VARIANT – follows the sequence's Remove Styling ════════ -->
+  <sc-if value="{{n.s3}}" hint-placeholder-val="{{ false }}">
+    <div style="height:calc(100vh - 38px);box-sizing:border-box;display:flex;align-items:flex-start;justify-content:center;padding:32px 20px;overflow:hidden;background:rgba(31,41,55,.45)">
+      <div style="width:680px;background:#fff;border-radius:var(--sh-radius-md);overflow:hidden">
+        <div class="row" style="justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--sh-border-default)">
+          <span style="font-size:16px;line-height:24px;font-weight:600">Add Spintax</span>
+          <div class="row" style="gap:8px"><span class="cap">Remove Styling:</span>
+            <div style="display:flex"><button class="sw {{c.segRs}}" onClick="{{s.useRs}}">On</button><button class="sw {{c.segOff}}" onClick="{{s.useOff}}">Off</button><button class="sw {{c.segTo}}" onClick="{{s.useTo}}">Text only</button></div></div>
+        </div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:12px">
+          <div class="row"><span class="cap">Simulate in variant 1</span><button class="btn btn-sec" onClick="{{s.paste}}">Paste from Word</button><button class="btn btn-sec" onClick="{{s.colour}}">Colour a word</button><button class="btn btn-sec" onClick="{{s.clear}}">Clear</button></div>
+          <div class="vfield" style="overflow:hidden">
+            <div class="vfield-h"><span class="cap" style="font-weight:600">VARIANT 1</span></div>
+            <div class="vfield-b">
+              <sc-if value="{{s.empty}}" hint-placeholder-val="{{ true }}"><span class="cap">Empty</span></sc-if>
+              <sc-if value="{{s.showPlain}}" hint-placeholder-val="{{ false }}"><span>just opened a second warehouse in <span class="{{s.colourCls}}">Pune</span></span></sc-if>
+              <sc-if value="{{s.showClean}}" hint-placeholder-val="{{ false }}"><span>just opened a <b>second warehouse</b> in <span class="{{s.colourCls}}">Pune</span></span></sc-if>
+              <sc-if value="{{s.showWord}}" hint-placeholder-val="{{ false }}"><span class="word">just opened a <b class="word-hl">second warehouse</b> in <span class="{{s.colourCls}}">Pune</span></span></sc-if>
+            </div>
+            <sc-if value="{{s.barOn}}" hint-placeholder-val="{{ false }}">
+              <div class="sbar">
+                <span class="sbar-lbl">Styling Detected <span>(Remove to avoid spam filters)</span>:</span>
+                <button class="sbar-btn" onClick="{{s.remove}}"><span style="font-family:Georgia,serif;font-weight:700">T</span><span style="margin-left:-5px;font-size:10px">&times;</span> Remove Styling</button>
+                <span class="div"></span>
+                <button class="sbar-btn" onClick="{{s.keep}}">&#10227; Keep Styling</button>
+                <div style="flex-grow:1"></div>
+                <button class="xbtn" onClick="{{s.dismiss}}">&times;</button>
+              </div>
+            </sc-if>
+          </div>
+          <div class="vfield"><div class="vfield-h"><span class="cap" style="font-weight:600">VARIANT 2</span></div><div class="vfield-b">just doubled its warehouse space</div></div>
+          <div class="note"><p class="note-h">How this is handled</p><p class="note-t">{{s.note}}</p></div>
+        </div>
+        <div class="row" style="justify-content:flex-end;padding:12px 20px;border-top:1px solid var(--sh-border-default)"><button class="btn btn-sec" onClick="{{s.cancel}}">Cancel</button><button class="btn btn-primary" onClick="{{s.save}}">Save</button></div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1300,"height":880}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    // Matches production as checked on my.saleshandy.com, 7 Oct 2026 (sequence 964458).
+    // rs = Remove Styling Automatically; to = text only: 'off' | 'first' | 'all'. The composer is step 1.
+    // content: 'plain' | 'clean' (styling removed: bold, link stay) | 'word' (Word's own styling)
+    this.state = { screen:'s2', rs:true, to:'off', stage:'empty', content:'clean', coloured:false, bar:null,
+                   last:null, keptSession:false, spinStage:null, spinColoured:false, spinBar:false, spinLast:null, flash:null };
+  }
+  rule() { const s = this.state; return s.to !== 'off' ? 'text' : (s.rs ? 'strip' : 'off'); }
+  setRule(extra) { this.setState(Object.assign({ stage:'empty', bar:null, coloured:false, last:null, keptSession:false, spinStage:null, spinColoured:false, spinBar:false, spinLast:null, flash:null }, extra)); }
+  renderVals() {
+    const s = this.state, rule = this.rule(), filled = s.stage === 'filled';
+    const ruleName = rule === 'strip' ? 'On' : rule === 'text' ? 'Text only' : 'Off';
+    const ruleWhy = rule === 'strip' ? 'Styled pastes and toolbar styling land as they are; the Styling Detected bar offers to remove them. Send strips them either way.'
+      : rule === 'text' ? (s.to === 'first' ? 'First email only, and this is step 1: pastes land as plain text.' : 'Pastes land as plain text.')
+      : 'Styled pastes and toolbar styling land as they are; the same bar offers to remove them.';
+    const spinStyled = !!s.spinSaved && (s.savedStage === 'word' || s.savedColoured);
+    const differs = (filled && rule === 'strip' && (s.content === 'word' || s.coloured)) || (rule === 'strip' && spinStyled);
+    const pvContent = rule === 'strip' && s.content === 'word' ? 'clean' : s.content;
+    const barFor = () => 'detected';  // v3: the bar asks every time styling appears
+
+    let note;
+    if (s.flash === 'spinSaved') note = 'Spintax saved into the email. Variant 1 keeps whatever you chose in the bar; at send, this sequence\u2019s Remove Styling applies to variants exactly as to the body.';
+    else if (s.flash === 'spinCancel') note = 'Spintax cancelled. Nothing changed in the email.';
+    else if (!filled) note = 'v3: production’s Styling Detected bar, but it asks every time styling appears and Keep Styling never changes the sequence setting. New: literal tokens become chips; spintax variants follow the same setting and get the same bar.';
+    else if (s.last === 'shortcut') note = 'Cmd+Shift+V always pastes plain text, with no bar, whatever the setting.';
+    else if (rule === 'text') note = 'Text only: pastes land as plain text, no bar. Not checked in production in this pass; shown as proposed. The literal {{First Name}} became a chip.';
+    else if (s.flash === 'keepOn') note = 'Kept in this email. Remove Styling stays on for the sequence (production today silently turns it off; v3 doesn’t). Send still strips it, so the preview differs. Paste or colour again: the bar asks again.';
+    else if (s.flash === 'removeOff') note = 'Production today: Remove Styling also switches the sequence’s Remove Styling ON (it saves text-only-email = 1). One click here changes the rule for every email in this sequence.';
+    else if (s.flash === 'removeOn') note = 'Styling removed from this email; bold and the link stay. Production also re-saves Remove Styling = on, and sends that save twice.';
+    else if (s.flash === 'xOn') note = 'Production today: with Remove Styling on, closing the bar with × also removes the styling. It doesn’t just dismiss.';
+    else if (s.flash === 'keepOff') note = 'Kept in this email; the setting is untouched. The bar asks again the next time styling is pasted or added (production today hides it for the rest of the session).';
+    else if (s.bar === 'detected' && s.last === 'colour') note = 'Toolbar styling gets the same bar, whether Remove Styling is on or off (production). The toolbar is not greyed out.';
+    else if (rule === 'strip' && s.bar === 'detected') note = 'Production today: with Remove Styling on, a Word paste lands with its styling and this bar asks. Nothing is removed until you click Remove Styling or ×. The preview already shows it stripped, because send strips it. The literal {{First Name}} became a chip (new).';
+    else if (rule === 'off' && s.bar === 'detected') note = 'Remove Styling off: the same bar, the same copy, the same two buttons. The literal {{First Name}} became a chip (new).';
+    else if (differs) note = 'Styling kept in the editor; this sequence strips it at send, so the preview differs.';
+    else note = 'The editor and the preview agree.';
+
+    return {
+      n: { s1:s.screen==='s1', s2:s.screen==='s2', s3:s.screen==='s3',
+           c1:s.screen==='s1'?'proto-tab-on':'', c2:s.screen==='s2'?'proto-tab-on':'', c3:s.screen==='s3'?'proto-tab-on':'',
+           to1:()=>this.setState({screen:'s1'}), to2:()=>this.setState({screen:'s2'}), to3:()=>this.setState({screen:'s3'}) },
+      set: {
+        rsCls:(s.to==='all'||s.rs?'tgl-on':'')+(s.to==='all'?' tgl-dis':''),
+        rsToggle:()=>{ if (s.to!=='all') this.setRule({rs:!s.rs}); },
+        toOn:s.to!=='off', toCls:s.to!=='off'?'tgl-on':'',
+        toToggle:()=>this.setRule({to:s.to==='off'?'first':'off'}),
+        firstCls:s.to==='first'?'radio-on':'', allCls:s.to==='all'?'radio-on':'',
+        pickFirst:()=>this.setRule({to:'first'}), pickAll:()=>this.setRule({to:'all'}),
+        spinTag: (s.to==='all'||s.rs) ? 'On' : 'Off',
+        spinTagStyle: (s.to==='all'||s.rs) ? 'background:var(--sh-primary-50);color:var(--sh-primary-700)' : '',
+        ruleName, ruleWhy,
+      },
+      c: {
+        segRs:rule==='strip'?'sw-on':'', segOff:rule==='off'?'sw-on':'', segTo:rule==='text'?'sw-on':'',
+        useRs:()=>this.setRule({rs:true,to:'off'}), useOff:()=>this.setRule({rs:false,to:'off'}), useTo:()=>this.setRule({to:'all'}),
+        paste:()=>this.setState({ stage:'filled', coloured:false, last:'paste', flash:null,
+          content: rule==='text' ? 'plain' : 'word', bar: rule==='text' ? null : barFor() }),
+        shortcut:()=>this.setState({ stage:'filled', content:'plain', coloured:false, bar:null, last:'shortcut', flash:null }),
+        colour:()=>{ if (rule==='text') return;
+          this.setState({ stage:'filled', content: filled ? s.content : 'clean', coloured:true, bar:barFor(), last:'colour', flash:null }); },
+        clear:()=>this.setState({ stage:'empty', bar:null, coloured:false, last:null, flash:null }),
+        remove:()=>this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, last:'remove',
+          rs:true, flash: rule==='off' ? 'removeOff' : 'removeOn' }),
+        // v3: Keep Styling keeps this styling only. The sequence setting is never touched.
+        keep:()=>this.setState({ bar:null, last:'keep', flash: rule==='strip' ? 'keepOn' : 'keepOff' }),
+        dismiss:()=>{ if (rule==='strip') this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, flash:'xOn' });
+          else this.setState({ bar:null, flash:null }); },
+        empty:!filled, showPlain:filled&&s.content==='plain', showClean:filled&&s.content==='clean', showWord:filled&&s.content==='word',
+        colourCls:s.coloured?'colour-word':'',
+        styleCtl: rule==='text' ? 'tb-off' : '', emCtl: rule==='text' ? 'tb-off' : '', ctlTip: rule==='text' ? 'Text only email' : '', ctlNote: rule==='text',
+        badgeOn: rule!=='off', badgeText: rule==='strip' ? 'Styling Removes Automatically' : 'Text only email',
+        badgeBottom: filled && s.bar ? '44px' : '8px',
+        barDetected: filled && s.bar==='detected',
+        detectedHint: '(Remove to avoid spam filters)',
+        keepOn: true,
+        sendLabel: rule==='text' ? 'Sent as plain text' : rule==='strip' ? 'Sent as HTML, styling removed' : 'Sent as HTML, as written',
+        matchOn: (filled || !!s.spinSaved) && !differs, differs,
+        pvSpinOn: !!s.spinSaved,
+        pvSpinCls: rule==='off' ? ((s.savedStage==='word' ? 'word word-hl' : '') + (s.savedColoured ? ' colour-word' : '')) : '',
+        pvEmpty: !filled && !s.spinSaved,
+        pvText: filled && rule==='text',
+        pvPlain: filled && rule!=='text' && pvContent==='plain',
+        pvClean: filled && rule!=='text' && pvContent==='clean',
+        pvWord: filled && rule==='off' && pvContent==='word',
+        pvColourCls: rule==='off' && s.coloured ? 'colour-word' : '',
+        note,
+        spinSaved: !!s.spinSaved,
+        spinV1: s.spinSaved && s.savedStage !== null ? 'just opened a second warehouse in Pune' : '',
+        spinV1Cls: !s.spinSaved ? '' : (s.savedStage==='word' ? 'word word-hl' : '') + (s.savedColoured ? ' colour-word' : ''),
+      },
+      s: {
+        // variants follow the sequence's Remove Styling: same bar, same two buttons, asks every time
+        useRs:()=>this.setRule({rs:true,to:'off'}), useOff:()=>this.setRule({rs:false,to:'off'}), useTo:()=>this.setRule({to:'all'}),
+        empty: !s.spinStage, showPlain: s.spinStage==='plain', showClean: s.spinStage==='clean', showWord: s.spinStage==='word',
+        colourCls: s.spinColoured ? 'colour-word' : '',
+        barOn: !!s.spinBar,
+        paste:()=>this.setState(rule==='text' ? { spinStage:'plain', spinColoured:false, spinBar:false, spinLast:'paste' }
+                                              : { spinStage:'word', spinColoured:false, spinBar:true, spinLast:'paste' }),
+        colour:()=>{ if (rule==='text') return; this.setState({ spinStage: s.spinStage || 'clean', spinColoured:true, spinBar:true, spinLast:'colour' }); },
+        remove:()=>this.setState({ spinStage: s.spinStage==='plain' ? 'plain' : 'clean', spinColoured:false, spinBar:false, spinLast:'remove' }),
+        keep:()=>this.setState({ spinBar:false, spinLast:'keep' }),
+        dismiss:()=>{ if (rule==='strip') this.setState({ spinStage: s.spinStage==='plain' ? 'plain' : 'clean', spinColoured:false, spinBar:false, spinLast:'x' });
+                      else this.setState({ spinBar:false, spinLast:'x' }); },
+        clear:()=>this.setState({ spinStage:null, spinColoured:false, spinBar:false, spinLast:null }),
+        // Cancel discards this modal's changes; Save puts the spintax into the email body. Both close the modal.
+        cancel:()=>this.setState({ screen:'s2', spinStage:null, spinColoured:false, spinBar:false, spinLast:null, flash:'spinCancel' }),
+        save:()=>this.setState({ screen:'s2', spinSaved:true, savedStage: s.spinStage || 'plain', savedColoured: s.spinColoured, spinBar:false, flash:'spinSaved' }),
+        note: !s.spinStage ? 'Variants follow this sequence\u2019s Remove Styling, exactly like the email body. Paste from Word or colour a word in variant 1.'
+            : rule==='text' ? 'Text only: the paste lands as plain text, no bar, same as the email body.'
+            : s.spinLast==='keep' ? 'Kept in this variant; the setting is untouched. The bar asks again the next time styling is pasted or added.'
+            : s.spinLast==='remove' ? 'Styling removed from this variant; bold stays, as in the email body.'
+            : s.spinBar ? 'Same bar as the email body, with both buttons. Remove Styling is ' + (rule==='strip' ? 'on' : 'off') + ' for this sequence, and variants follow it.'
+            : 'Done.',
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>
