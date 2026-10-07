@@ -31,6 +31,10 @@ These prototype elements are review aids, not product UI:
 - Replace the Remove Styling Automatically description with: *"Removes colors, fonts and other styling, including from pasted content and spintax variants, so emails look human-written and land in the inbox."*
 - Everything else stays as it is.
 
+![Safety Settings with Remove Styling Automatically on and its new one-sentence description.](screens/01-safety-settings.png)
+
+*The new description, highlighted. Nothing else on the card changes.*
+
 ## 4. Email editor (prototype tab 2)
 
 In this section, **"the setting"** means the sequence's Remove Styling Automatically. **Remove Styling** and **Keep Styling** in bold are the bar's buttons.
@@ -48,6 +52,28 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 | Removed on paste | *"✓ Styling removed from your paste (Remove Styling is on for this sequence):"* | **Keep Styling** · `×` |
 | Styling Detected | *"Styling Detected (Remove to avoid spam filters):"* | **Remove Styling** · **Keep Styling** · `×` |
 | After Keep, with the setting on | *"ⓘ Styling kept. Remove Styling is now off for this sequence."* | **Undo** · `×` |
+
+**Screens**
+
+![Setting on: the paste has landed without Word's styling, and the bar reads Styling removed from your paste, with Keep Styling and the badge on the same row.](screens/02-on-paste-removed.png)
+
+*Setting on, after a Word paste: styling removed as it landed. Bold and the link stay.*
+
+![After Keep Styling: Word's styling is back and the bar reads Styling kept. Remove Styling is now off for this sequence, with Undo.](screens/03-on-keep-setting-off.png)
+
+*After "Keep Styling": styling restored, the setting is off, and Undo is offered. The badge is gone because the setting is now off.*
+
+![Setting off: the paste keeps Word's styling and the Styling Detected bar shows Remove Styling and Keep Styling.](screens/04-off-paste-detected.png)
+
+*Setting off, after a Word paste: lands as is, and the Styling Detected bar offers both buttons.*
+
+![Setting on: a word coloured red from the toolbar, and the Styling Detected bar with both buttons and the badge on the same row.](screens/05-on-toolbar-detected.png)
+
+*Setting on, toolbar colour: the colour stays and the Styling Detected bar asks.*
+
+![Text only: the paste lands as plain text, styling controls are disabled, and the Text only email badge shows.](screens/06-text-only.png)
+
+*Text only: plain text, no bar, styling controls disabled.*
 
 **Actions**
 
@@ -70,6 +96,14 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 - **Same as §4 inside each variant field:** same bars, same actions, following the sequence's setting.
 - **Keep Styling in a variant, with the setting on,** turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.
 - **Literal tokens pasted into a variant become chips.**
+
+![Spintax variant 1 after a Word paste with the setting on: styling removed, and the bar inside the variant field with Keep Styling.](screens/07-spintax-removed.png)
+
+*Setting on, paste into variant 1: the same "removed" bar, inside the variant field.*
+
+![Spintax variant 1 after Keep Styling: styling restored, and the bar reads Styling kept. Remove Styling is now off for this sequence, with Undo.](screens/08-spintax-kept.png)
+
+*After "Keep Styling" in a variant: the setting turns off for the whole sequence, body included.*
 
 ---
 

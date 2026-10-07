@@ -203,6 +203,7 @@ tr:hover td{background:var(--bg-secondary)}
 <li>Replace the Remove Styling Automatically description with: <em>"Removes colors, fonts and other styling, including from pasted content and spintax variants, so emails look human-written and land in the inbox."</em></li>
 <li>Everything else stays as it is.</li>
 </ul>
+<figure><img src="screens/01-safety-settings.png" style="max-width:660px" alt="Safety Settings with Remove Styling Automatically on and its new one-sentence description." loading="lazy"><figcaption>The new description, highlighted. Nothing else on the card changes.</figcaption></figure>
 </section>
 <section id="4-email-editor-prototype-tab-2" class="sec"><div class="sec-head"><span class="sec-num">4</span><h2>Email editor (prototype tab 2)</h2></div>
 
@@ -260,6 +261,12 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 </tbody>
 </table></div>
+<p><strong>Screens</strong></p>
+<figure><img src="screens/02-on-paste-removed.png" style="max-width:885px" alt="Setting on: the paste has landed without Word's styling, and the bar reads Styling removed from your paste, with Keep Styling and the badge on the same row." loading="lazy"><figcaption>Setting on, after a Word paste: styling removed as it landed. Bold and the link stay.</figcaption></figure>
+<figure><img src="screens/03-on-keep-setting-off.png" style="max-width:885px" alt="After Keep Styling: Word's styling is back and the bar reads Styling kept. Remove Styling is now off for this sequence, with Undo." loading="lazy"><figcaption>After "Keep Styling": styling restored, the setting is off, and Undo is offered. The badge is gone because the setting is now off.</figcaption></figure>
+<figure><img src="screens/04-off-paste-detected.png" style="max-width:885px" alt="Setting off: the paste keeps Word's styling and the Styling Detected bar shows Remove Styling and Keep Styling." loading="lazy"><figcaption>Setting off, after a Word paste: lands as is, and the Styling Detected bar offers both buttons.</figcaption></figure>
+<figure><img src="screens/05-on-toolbar-detected.png" style="max-width:885px" alt="Setting on: a word coloured red from the toolbar, and the Styling Detected bar with both buttons and the badge on the same row." loading="lazy"><figcaption>Setting on, toolbar colour: the colour stays and the Styling Detected bar asks.</figcaption></figure>
+<figure><img src="screens/06-text-only.png" style="max-width:885px" alt="Text only: the paste lands as plain text, styling controls are disabled, and the Text only email badge shows." loading="lazy"><figcaption>Text only: plain text, no bar, styling controls disabled.</figcaption></figure>
 <p><strong>Actions</strong></p>
 <ul>
 <li><strong>Keep Styling, with the setting on:</strong><ul>
@@ -286,6 +293,8 @@ tr:hover td{background:var(--bg-secondary)}
 <li><strong>Keep Styling in a variant, with the setting on,</strong> turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.</li>
 <li><strong>Literal tokens pasted into a variant become chips.</strong></li>
 </ul>
+<figure><img src="screens/07-spintax-removed.png" style="max-width:656px" alt="Spintax variant 1 after a Word paste with the setting on: styling removed, and the bar inside the variant field with Keep Styling." loading="lazy"><figcaption>Setting on, paste into variant 1: the same "removed" bar, inside the variant field.</figcaption></figure>
+<figure><img src="screens/08-spintax-kept.png" style="max-width:656px" alt="Spintax variant 1 after Keep Styling: styling restored, and the bar reads Styling kept. Remove Styling is now off for this sequence, with Undo." loading="lazy"><figcaption>After "Keep Styling" in a variant: the setting turns off for the whole sequence, body included.</figcaption></figure>
 
 </section>
 <section id="6-acceptance-criteria" class="sec"><div class="sec-head"><span class="sec-num">6</span><h2>Acceptance criteria</h2></div>
