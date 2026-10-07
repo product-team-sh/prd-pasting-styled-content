@@ -27,7 +27,7 @@ These prototype elements are review aids, not product UI:
 
 ## 3. Safety Settings (prototype tab 1)
 
-- Add one sentence to the Remove Styling Automatically description: *"Styling is also removed from content you paste, including in spintax variants."*
+- Replace the Remove Styling Automatically description with: *"Removes colors, fonts and other styling, including from pasted content and spintax variants, so emails look human-written and land in the inbox."*
 - Everything else stays as it is.
 
 ## 4. Email editor (prototype tab 2)
@@ -84,7 +84,7 @@ These prototype elements are review aids, not product UI:
 | A8 | Paste plain text, or copy and paste within Saleshandy | No bar; chips stay chips | P0 |
 | A9 | Paste literal `{{First Name}}` or `{spin}a\|b{endspin}` | Becomes a chip, in the body and in variants | P0 |
 | A10 | `⌘⇧V` in any state | Plain; no bar | P0 |
-| A11 | Safety Settings | Remove Styling description carries the new sentence; no separate spintax control | P1 |
+| A11 | Safety Settings | Remove Styling description reads exactly as in §3; no separate spintax control | P1 |
 | A12 | Spintax, Remove Styling on: paste into variant 1, then Keep | Variant 1 restored; Remove Styling off for the sequence; "Styling kept" bar in variant 1 | P0 |
 | A13 | Spintax: keep styling in a variant, save, reopen, send a test | The spin still parses and spins; no literal `{spin}` in any output | **P0, release blocker** |
 
