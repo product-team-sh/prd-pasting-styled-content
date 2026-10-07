@@ -154,7 +154,7 @@
 <div style="height:100%;display:flex;flex-direction:column;overflow:hidden;background:var(--sh-gray-100)">
 
   <div class="proto-bar">
-    <span class="proto-lbl">Pasting styled content &middot; prototype for PRD v3</span>
+    <span class="proto-lbl">Pasting styled content &middot; prototype</span>
     <div style="flex-grow:1"></div>
     <button class="proto-tab {{n.c1}}" onClick="{{n.to1}}">1 &middot; Safety Settings</button>
     <button class="proto-tab {{n.c2}}" onClick="{{n.to2}}">2 &middot; Composer</button>
@@ -204,7 +204,7 @@
         <div class="side">
           <div class="side-card">
             <p class="side-h">What changes on this screen</p>
-            <p class="side-p">One sentence in the Remove Styling description, and a spintax line under it that always shows the same value as Remove Styling (highlighted). No separate spintax control. Everything else is production as it is today.</p>
+            <p class="side-p">One sentence in the Remove Styling description, and a spintax line under it that always shows the same value as Remove Styling (highlighted). No separate spintax control. Everything else stays as it is.</p>
           </div>
           <div class="side-card" style="margin-top:12px">
             <p class="side-h">Rule for step 1</p>
@@ -369,7 +369,7 @@ Worth a 15-minute call next week?</p></sc-if>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    // Matches production as checked on my.saleshandy.com, 7 Oct 2026 (sequence 964458).
+    // Prototype for the PRD: Pasting styled content.
     // rs = Remove Styling Automatically; to = text only: 'off' | 'first' | 'all'. The composer is step 1.
     // content: 'plain' | 'clean' (styling removed: bold, link stay) | 'word' (Word's own styling)
     this.state = { screen:'s2', rs:true, to:'off', stage:'empty', content:'clean', coloured:false, bar:null,
@@ -386,22 +386,22 @@ class Component extends DCLogic {
     const spinStyled = !!s.spinSaved && (s.savedStage === 'word' || s.savedColoured);
     const differs = (filled && rule === 'strip' && (s.content === 'word' || s.coloured)) || (rule === 'strip' && spinStyled);
     const pvContent = rule === 'strip' && s.content === 'word' ? 'clean' : s.content;
-    const barFor = () => 'detected';  // v3: the bar asks every time styling appears
+    const barFor = () => 'detected';  // the bar asks every time styling appears
 
     let note;
     if (s.flash === 'spinSaved') note = 'Spintax saved into the email. Variant 1 keeps whatever you chose in the bar; at send, this sequence\u2019s Remove Styling applies to variants exactly as to the body.';
     else if (s.flash === 'spinCancel') note = 'Spintax cancelled. Nothing changed in the email.';
-    else if (!filled) note = 'v3: production’s Styling Detected bar, but it asks every time styling appears and Keep Styling never changes the sequence setting. New: literal tokens become chips; spintax variants follow the same setting and get the same bar.';
+    else if (!filled) note = 'Styled content from any source is flagged by the Styling Detected bar, every time, with both buttons. Keep Styling never changes the sequence setting. Literal tokens become chips.';
     else if (s.last === 'shortcut') note = 'Cmd+Shift+V always pastes plain text, with no bar, whatever the setting.';
-    else if (rule === 'text') note = 'Text only: pastes land as plain text, no bar. Not checked in production in this pass; shown as proposed. The literal {{First Name}} became a chip.';
-    else if (s.flash === 'keepOn') note = 'Kept in this email. Remove Styling stays on for the sequence (production today silently turns it off; v3 doesn’t). Send still strips it, so the preview differs. Paste or colour again: the bar asks again.';
-    else if (s.flash === 'removeOff') note = 'Production today: Remove Styling also switches the sequence’s Remove Styling ON (it saves text-only-email = 1). One click here changes the rule for every email in this sequence.';
-    else if (s.flash === 'removeOn') note = 'Styling removed from this email; bold and the link stay. Production also re-saves Remove Styling = on, and sends that save twice.';
-    else if (s.flash === 'xOn') note = 'Production today: with Remove Styling on, closing the bar with × also removes the styling. It doesn’t just dismiss.';
-    else if (s.flash === 'keepOff') note = 'Kept in this email; the setting is untouched. The bar asks again the next time styling is pasted or added (production today hides it for the rest of the session).';
-    else if (s.bar === 'detected' && s.last === 'colour') note = 'Toolbar styling gets the same bar, whether Remove Styling is on or off (production). The toolbar is not greyed out.';
-    else if (rule === 'strip' && s.bar === 'detected') note = 'Production today: with Remove Styling on, a Word paste lands with its styling and this bar asks. Nothing is removed until you click Remove Styling or ×. The preview already shows it stripped, because send strips it. The literal {{First Name}} became a chip (new).';
-    else if (rule === 'off' && s.bar === 'detected') note = 'Remove Styling off: the same bar, the same copy, the same two buttons. The literal {{First Name}} became a chip (new).';
+    else if (rule === 'text') note = 'Text only: pastes land as plain text, with no bar. The literal {{First Name}} became a chip.';
+    else if (s.flash === 'keepOn') note = 'Kept in this email. Remove Styling stays on for the sequence, and send still strips the styling, so the preview differs. Paste or colour again: the bar asks again.';
+    else if (s.flash === 'removeOff') note = 'Styling removed from this email only. The sequence’s Remove Styling stays off (PRD Q1).';
+    else if (s.flash === 'removeOn') note = 'Styling removed from this email; bold and the link stay. The setting is not touched.';
+    else if (s.flash === 'xOn') note = 'With Remove Styling on, closing the bar with × also removes the styling.';
+    else if (s.flash === 'keepOff') note = 'Kept in this email; the setting is untouched. The bar asks again the next time styling is pasted or added.';
+    else if (s.bar === 'detected' && s.last === 'colour') note = 'Toolbar styling gets the same bar, whether Remove Styling is on or off.';
+    else if (rule === 'strip' && s.bar === 'detected') note = 'With Remove Styling on, a Word paste lands with its styling and the bar asks. Nothing is removed until you click Remove Styling or ×. The preview shows it stripped, because send strips it. The literal {{First Name}} became a chip.';
+    else if (rule === 'off' && s.bar === 'detected') note = 'Remove Styling off: the same bar, the same copy, the same two buttons. The literal {{First Name}} became a chip.';
     else if (differs) note = 'Styling kept in the editor; this sequence strips it at send, so the preview differs.';
     else note = 'The editor and the preview agree.';
 
@@ -430,8 +430,8 @@ class Component extends DCLogic {
           this.setState({ stage:'filled', content: filled ? s.content : 'clean', coloured:true, bar:barFor(), last:'colour', flash:null }); },
         clear:()=>this.setState({ stage:'empty', bar:null, coloured:false, last:null, flash:null }),
         remove:()=>this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, last:'remove',
-          rs:true, flash: rule==='off' ? 'removeOff' : 'removeOn' }),
-        // v3: Keep Styling keeps this styling only. The sequence setting is never touched.
+          flash: rule==='off' ? 'removeOff' : 'removeOn' }),
+        // Keep Styling keeps this styling only. The sequence setting is never touched.
         keep:()=>this.setState({ bar:null, last:'keep', flash: rule==='strip' ? 'keepOn' : 'keepOff' }),
         dismiss:()=>{ if (rule==='strip') this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, flash:'xOn' });
           else this.setState({ bar:null, flash:null }); },

@@ -161,7 +161,6 @@ tr:hover td{background:var(--bg-secondary)}
 <div class="shell">
   <nav class="sidebar">
     <p class="sidebar-title">Contents</p>
-<a class="toc-l2" href="#0-what-changed-since-v22"><span class="toc-num">0</span>What changed since v2.2</a>
 <a class="toc-l2" href="#1-problem"><span class="toc-num">1</span>Problem</a>
 <a class="toc-l2" href="#2-why-this-approach"><span class="toc-num">2</span>Why this approach</a>
 <a class="toc-l2" href="#3-what-were-building"><span class="toc-num">3</span>What we're building</a>
@@ -184,123 +183,15 @@ tr:hover td{background:var(--bg-secondary)}
 <header class="doc-header"><p class="eyebrow">Product Requirements Document</p><h1>PRD – Pasting styled content: one rule, Remove Styling</h1></header>
 <p><strong>Design of record:</strong> <a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">prototype</a> · <strong>Status:</strong> Ready for dev review</p>
 
-<section id="0-what-changed-since-v22" class="sec"><div class="sec-head"><span class="sec-num">0</span><h2>What changed since v2.2</h2></div>
-
-<p>v2.2 (<a href="https://product-team-sh.github.io/prd-paste-as-plain-text/">still live, unchanged</a>) was built as <a href="https://github.com/saleshandy/saleshandy-webui/pull/8129">webui PR #8129</a> and <a href="https://github.com/saleshandy/saleshandy-edge/pull/11339">edge PR #11339</a>. Dev raised five points against it (<a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873#__recording_10371718163">Sunny, 5 Oct</a>). This version resolves all five.</p>
-<div class="tbl-wrap"><table>
-<thead>
-<tr>
-<th>#</th>
-<th>v2.2 said</th>
-<th>v3 says</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>A workspace setting, Admin Settings → Pasting content, decides what a paste becomes</td>
-<td>The sequence's existing <strong>Remove Styling Automatically</strong> is the only rule. No new setting anywhere</td>
-<td>Remove Styling is already on for 81.9% of new sequences (measured). Two rules in two places disagreed (Sunny, points 2 and 5)</td>
-</tr>
-<tr>
-<td>2</td>
-<td>A rich paste is converted to plain text on the way in</td>
-<td>A styled paste lands as pasted, and the existing <strong>Styling Detected</strong> bar asks: Remove Styling or Keep Styling</td>
-<td>The editor only holds HTML, so "plain text" was never true (Sunny, point 1). One surface now covers every source of styling</td>
-</tr>
-<tr>
-<td>3</td>
-<td>A toast reports each paste; a standing "Rule:" chip and a first-run spotlight state the rule</td>
-<td>The Styling Detected bar reports. The existing "Styling Removes Automatically" badge states the rule</td>
-<td>One surface for every source of styling, already in production</td>
-</tr>
-<tr>
-<td>4</td>
-<td>The toast offers "Always keep formatting" / "Always paste as plain text", which write the workspace setting</td>
-<td>Nothing in the editor writes any setting</td>
-<td>A writer must not change a rule by accident while editing one email (Sunny, point 4)</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Spintax variants have their own rule, inheriting the editor's unless unticked</td>
-<td>Variants follow the sequence's Remove Styling, with the same bar and both buttons</td>
-<td>One rule per sequence. Safety Settings states it for variants</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Behaviour under "Send emails as text only" not specified</td>
-<td>Text-only steps paste plain, with no bar</td>
-<td>Nothing to choose: text only removes all formatting on save and at send (Sunny, point 3)</td>
-</tr>
-<tr>
-<td>7</td>
-<td>Production today: Keep Styling silently turns Remove Styling <strong>off for the whole sequence</strong>, then hides the bar for the rest of the session (verified 7 Oct)</td>
-<td>Keep Styling keeps the styling <strong>for that occurrence only</strong>, never writes the setting, and the bar asks again every time</td>
-<td>Same principle as change 4, at sequence level</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Void from v2.2.</strong> These IDs tested a structure that no longer exists: the workspace setting, plain-text conversion, the toast, the rule chip, the enrol, and the variant inheritance model.</p>
-<div class="tbl-wrap"><table>
-<thead>
-<tr>
-<th>Area</th>
-<th>Void IDs</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Admin Settings card</td>
-<td>§5.1 entirely: S1-1 to S1-26</td>
-</tr>
-<tr>
-<td>User stories</td>
-<td>US-3, US-5, US-6, US-9, US-10</td>
-</tr>
-<tr>
-<td>Plain-text conversion</td>
-<td>S2-1 to S2-4, S2-12a to S2-12d, S2-37</td>
-</tr>
-<tr>
-<td>Toast, flip and enrol</td>
-<td>S2-11, S2-16 to S2-28, S2-39 to S2-44, S2-F0, S2-F2, S2-F4, S2-F5, S2-F5a, S2-F5b</td>
-</tr>
-<tr>
-<td>Rule chip and spotlight</td>
-<td>S2-33, S2-33a, S2-34, S2-34a, S2-34b, S2-35</td>
-</tr>
-<tr>
-<td>Replaced by §6.2</td>
-<td>S2-38</td>
-</tr>
-<tr>
-<td>Spintax</td>
-<td>§5.3 entirely: S3-1 to S3-13</td>
-</tr>
-<tr>
-<td>Measurement and rollout</td>
-<td>Every v2.2 §8 event except <code>paste_performed</code>; every §8b to §8e metric tied to the toast, chip, enrol, spotlight or variant inheritance; rollout stage 1b</td>
-</tr>
-<tr>
-<td>Support</td>
-<td>v2.2 §10, For Customer Support</td>
-</tr>
-<tr>
-<td>Decisions</td>
-<td>v2.2 D1 (workspace scope), D3 (variant own rule) and D7 (standing chip)</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>Carried forward unchanged:</strong> US-1, US-7 and US-8. Chip integrity X-1 to X-12; X-8 and X-12 are reworded to "any Remove Styling state", since there is no plain/keep setting any more. The <code>⌘⇧V</code> keyboard invariant and the sanitisation floor (S2-8, S2-9). <code>⌘Z</code> is redefined in §8, because there is no conversion left to undo. Also S2-5, S2-6, S2-7, S2-13, S2-14a to S2-14c, S2-15, S2-29 to S2-32 and S2-36.</p>
-
-</section>
 <section id="1-problem" class="sec"><div class="sec-head"><span class="sec-num">1</span><h2>Problem</h2></div>
 
-<p><strong>Pasting brings styling the writer did not choose.</strong> Writers paste into the step editor from Word, Google Docs and old emails. Word content arrives with its fonts, colours, sizes and highlights, plus hidden markup the writer cannot see. In a sequence with Remove Styling on, that styling is stripped at send, so the editor shows something the prospect never receives. In a sequence with Remove Styling off, it goes out as pasted.</p>
-<p><strong>Tokens in a paste arrive broken.</strong> Spintax and merge-tag syntax in pasted text, from an external doc or AI-written copy, lands as literal braces instead of chips. A customer escalated after literal spintax text reached prospects (<a href="https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915">CS thread</a>).</p>
-<p><strong>Today's Styling Detected bar undoes the sequence's rule.</strong> Production already shows the bar when styling appears. But one click on Keep Styling silently switches Remove Styling off for every email in the sequence. The bar then stops asking for the rest of the session (verified on my.saleshandy.com, 7 Oct). The writer meant "keep it here" and changed the sequence's deliverability setting.</p>
-<p><strong>v2.2 added a second rule in a second place.</strong> A workspace paste setting beside the sequence's own Remove Styling meant two answers to one question, and the toast could say "Formatting kept" while send stripped it.</p>
+<p><strong>Pasting brings in styling the writer did not choose.</strong> Writers paste into the step editor from Word, Google Docs and old emails. Word content arrives with its fonts, colours, sizes and highlights, plus hidden markup the writer cannot see.</p>
+<ul>
+<li>With Remove Styling on, that styling is stripped at send, so the editor shows something the prospect never receives.</li>
+<li>With Remove Styling off, it goes out as pasted.</li>
+</ul>
+<p><strong>Tokens in a paste arrive broken.</strong> Spintax and merge-tag syntax in pasted text lands as literal braces instead of chips. That text comes from external docs or AI-written copy. A customer escalated after literal spintax text reached prospects (<a href="https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915">CS thread</a>).</p>
+<p><strong>Keeping styling in one email switches off styling removal for the whole sequence.</strong> One click on Keep Styling in the Styling Detected bar silently turns Remove Styling off for every email in the sequence. The bar then stops asking for the rest of the session. The writer meant "keep it here" and changed the sequence's deliverability setting instead.</p>
 
 </section>
 <section id="2-why-this-approach" class="sec"><div class="sec-head"><span class="sec-num">2</span><h2>Why this approach</h2></div>
@@ -314,16 +205,16 @@ tr:hover td{background:var(--bg-secondary)}
 </thead>
 <tbody>
 <tr>
-<td>v2.2: workspace paste setting, toast, rule chip</td>
-<td>Duplicates Remove Styling, which is on for 81.9% of new sequences (measured). The two can disagree, and they live in two places</td>
+<td>Clean styling automatically as it lands</td>
+<td>The writer neither sees nor chooses what was removed, and toolbar styling would be handled differently from pasted styling</td>
 </tr>
 <tr>
-<td>Clean styling automatically as it lands</td>
-<td>The writer does not see or choose what was removed (Hitesh, 7 Oct). It also leaves toolbar styling handled differently from pasted styling</td>
+<td>A separate paste setting</td>
+<td>It duplicates Remove Styling, which is on for 81.9% of new sequences (measured), and the two could disagree</td>
 </tr>
 <tr>
 <td><strong>Reuse the Styling Detected bar for every source of styling</strong></td>
-<td>Chosen. Already in production, already understood, and it covers paste, toolbar and existing content with one surface</td>
+<td>Chosen. It is already in the product and already understood, and one surface covers paste, toolbar and existing content</td>
 </tr>
 </tbody>
 </table></div>
@@ -341,11 +232,11 @@ tr:hover td{background:var(--bg-secondary)}
 <td>measured, code</td>
 </tr>
 <tr>
-<td>81.9% Remove Styling, 16.6% off, 1.5% text only, of 64,928 sequences created since 1 Jul 2026</td>
-<td>measured, Metabase, created sequences rather than active ones</td>
+<td>Of 64,928 sequences created since 1 Jul 2026: 81.9% Remove Styling, 16.6% off, 1.5% text only</td>
+<td>measured, Metabase. Covers created sequences, not active ones</td>
 </tr>
 <tr>
-<td>With Remove Styling on, a Word paste and toolbar colour both land styled and show the bar. Keep Styling saves <code>text-only-email = 0</code>. Remove Styling saves <code>1</code>, sent twice</td>
+<td>A Word paste and toolbar colour both land styled and show the bar. Keep Styling saves <code>text-only-email = 0</code>. Remove Styling saves <code>1</code>, sent twice</td>
 <td>measured, live app, 7 Oct</td>
 </tr>
 <tr>
@@ -354,17 +245,21 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 </tbody>
 </table></div>
-<p><strong>We do not claim</strong> any inbox-placement improvement. We claim only that the writer decides what styling stays, and that the sequence's rule is never changed by accident.</p>
+<p><strong>We do not claim</strong> any inbox-placement improvement. We claim only that the writer decides what styling stays, and that the sequence's rule never changes by accident.</p>
 
 </section>
 <section id="3-what-were-building" class="sec"><div class="sec-head"><span class="sec-num">3</span><h2>What we're building</h2></div>
 
 <ol>
-<li><strong>Remove Styling Automatically is the one rule for styling, per sequence, at paste and at send.</strong> No new setting anywhere.</li>
-<li><strong>The existing Styling Detected bar flags styled content from every source, every time, with both buttons</strong>, in the email body and in spintax variants. Remove Styling and Keep Styling act on that content only and never write the setting.</li>
+<li><strong>Remove Styling Automatically is the one rule for styling, per sequence, at paste and at send.</strong> There is no other setting.</li>
+<li><strong>The Styling Detected bar flags styled content from every source, every time, with both buttons.</strong> This applies in the email body and in spintax variants. Remove Styling and Keep Styling act on that content only and never change the setting.</li>
 <li><strong>Literal merge-tag and spintax tokens in a paste become chips, in every state.</strong></li>
 </ol>
-<p>Invariant in every state: the sanitisation floor (scripts, frames, event handlers and stylesheet blocks are never inserted), and <code>⌘⇧V</code> always pastes plain.</p>
+<p>These hold in every state:</p>
+<ul>
+<li><strong>The sanitisation floor:</strong> scripts, frames, event handlers and stylesheet blocks are never inserted.</li>
+<li><strong><code>⌘⇧V</code> always pastes plain.</strong></li>
+</ul>
 
 </section>
 <section id="4-user-stories" class="sec"><div class="sec-head"><span class="sec-num">4</span><h2>User stories</h2></div>
@@ -379,27 +274,27 @@ tr:hover td{background:var(--bg-secondary)}
 <tbody>
 <tr>
 <td>US-1</td>
-<td>As an SDR pasting from Word, I want to know my paste carried styling and choose what happens to it, so my email doesn't carry styling I didn't pick. <em>(Reworded: told and asked, not converted silently)</em></td>
+<td>As an SDR pasting from Word, I want to know my paste carried styling and choose what happens to it, so my email doesn't carry styling I didn't pick</td>
 </tr>
 <tr>
-<td>US-7</td>
-<td>As any user, I want merge tags and spintax recognised through a paste: chips stay chips, and literal tokens become chips. <em>(Carried)</em></td>
+<td>US-2</td>
+<td>As a writer, I want to keep styling in one email without switching off styling removal for the whole sequence</td>
 </tr>
 <tr>
-<td>US-8</td>
-<td>As any user, I want <code>⌘⇧V</code> to always paste plain and <code>⌘Z</code> never to lose content. <em>(Carried)</em></td>
+<td>US-3</td>
+<td>As a writer in the spintax editor, I want styled content handled exactly as in the email body</td>
 </tr>
 <tr>
-<td><strong>US-11</strong></td>
-<td><strong>As a writer, I want to keep styling in one email without switching off styling removal for the whole sequence.</strong> <em>(New. The reason this version exists)</em></td>
+<td>US-4</td>
+<td>As a sequence owner, I want to set styling once per sequence and see that it covers spintax variants</td>
 </tr>
 <tr>
-<td><strong>US-12</strong></td>
-<td><strong>As a writer in the spintax editor, I want styled content handled exactly as in the email body.</strong> <em>(New)</em></td>
+<td>US-5</td>
+<td>As any user, I want merge tags and spintax recognised through a paste: chips stay chips, and literal tokens become chips</td>
 </tr>
 <tr>
-<td><strong>US-13</strong></td>
-<td><strong>As a sequence owner, I want to set styling once per sequence and see that it covers spintax variants.</strong> <em>(New)</em></td>
+<td>US-6</td>
+<td>As any user, I want <code>⌘⇧V</code> to always paste plain and <code>⌘Z</code> never to lose content</td>
 </tr>
 </tbody>
 </table></div>
@@ -407,23 +302,23 @@ tr:hover td{background:var(--bg-secondary)}
 </section>
 <section id="5-decisions" class="sec"><div class="sec-head"><span class="sec-num">5</span><h2>Decisions</h2></div>
 
-<p><strong>D8 – One rule: Remove Styling Automatically, per sequence.</strong> <em>Reverses v2.2 D1.</em> It is already the default and already where the sequence owner sets deliverability. <strong>Consequence to accept explicitly:</strong> there is no workspace-wide paste rule. Workspace control stays limited to the existing default for new sequences.</p>
-<p><strong>D9 – Styled content lands as is, and the bar asks. Nothing is removed automatically.</strong> <em>Reverses v2.2's plain-by-default conversion.</em> The writer sees and chooses. <strong>Consequence to accept explicitly:</strong> a writer who ignores the bar sends styled HTML in a sequence with Remove Styling off. With it on, send still strips styling, so the editor can differ from what is sent until they click.</p>
-<p><strong>D10 – Keep Styling acts on that occurrence only, never writes the setting, and the bar asks again every time styling appears.</strong> <em>Reverses production behaviour since 24 Sep (commit <code>551500a10b</code>): silent switch-off plus suppression for the session.</em> <strong>Consequence to accept explicitly:</strong> a writer who keeps styling often sees the bar often. §10 measures this.</p>
-<p><strong>D11 – Spintax variants follow the sequence's Remove Styling, with the same bar and both buttons.</strong> <em>Reverses v2.2 D3 and PR #8129's always-plain variants.</em> <strong>Consequence to accept explicitly:</strong> styling can be kept inside a variant, so spin parsing must survive it (V-5, Q2).</p>
-<p><strong>D12 – Text-only steps paste plain, with no bar.</strong> This covers "Send emails as text only" on all emails, or on step 1 when it is set to first email only. Text only removes all formatting on save and at send, so there is nothing to ask. <strong>Consequence to accept explicitly:</strong> no Keep Styling path exists in text-only steps.</p>
+<p><strong>D1 – One rule: Remove Styling Automatically, per sequence.</strong> It is already the default and already where the sequence owner sets deliverability. <strong>Consequence to accept explicitly:</strong> there is no workspace-wide paste rule. Workspace control is limited to the default for new sequences.</p>
+<p><strong>D2 – Styled content lands as is, and the bar asks. Nothing is removed automatically.</strong> The writer sees the styling and chooses. <strong>Consequence to accept explicitly:</strong> a writer who ignores the bar sends styled HTML when Remove Styling is off. When it is on, the editor shows styling that send will strip, until they act.</p>
+<p><strong>D3 – Keep Styling acts on that occurrence only and never writes the setting. The bar asks again every time styling appears.</strong> <strong>Consequence to accept explicitly:</strong> a writer who keeps styling often will see the bar often. §10 measures this.</p>
+<p><strong>D4 – Spintax variants follow the sequence's Remove Styling, with the same bar and both buttons.</strong> <strong>Consequence to accept explicitly:</strong> styling can be kept inside a variant, so spin parsing must survive it (V-5, Q2).</p>
+<p><strong>D5 – Text-only steps paste plain, with no bar.</strong> This covers "Send emails as text only" for all emails, and step 1 when it is set to first email only. Text only removes all formatting on save and at send, so there is nothing to ask. <strong>Consequence to accept explicitly:</strong> a text-only step has no way to keep styling.</p>
 
 </section>
 <section id="6-surfaces" class="sec"><div class="sec-head"><span class="sec-num">6</span><h2>Surfaces</h2></div>
 
-<p>Visual record: the <a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">prototype</a>, tabs 1 to 3. Copy below is literal.</p>
+<p>The visual record is the <a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">prototype</a>, tabs 1 to 3. Copy below is literal.</p>
 <h3 id="61-sequence-settings-safety-settings">6.1 Sequence → Settings → Safety Settings</h3>
-<p><strong>What it's for.</strong> The single place the rule is set, per sequence. Unchanged except for two lines.</p>
+<p><strong>What it's for.</strong> The single place the rule is set, per sequence.</p>
 <p><strong>What it must do</strong></p>
 <ul>
 <li>Append one sentence to the Remove Styling Automatically description: <em>"Styling you paste or add in the editor is flagged there, with an option to remove it."</em></li>
 <li>Under Remove Styling, show <em>"Spintax variants: same as above"</em> with a tag giving the resolved value, <strong>On</strong> or <strong>Off</strong>. It is a statement, not a control.</li>
-<li>Everything else on the card behaves as today, including Remove Styling showing on but disabled when text only is set to all emails.</li>
+<li>Everything else on the card stays as it is, including Remove Styling showing on but disabled when text only is set to all emails.</li>
 </ul>
 <div class="tbl-wrap"><table>
 <thead>
@@ -450,19 +345,19 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>S-3</td>
 <td>Text only set to all emails</td>
-<td>Remove Styling shows on and disabled (as today); spintax tag reads <strong>On</strong></td>
+<td>Remove Styling on and disabled; spintax tag reads <strong>On</strong></td>
 <td>P2</td>
 </tr>
 <tr>
 <td>S-4</td>
 <td>Inspect the spintax line</td>
-<td>It is not focusable or clickable: no checkbox, no toggle</td>
+<td>Not focusable or clickable: no checkbox, no toggle</td>
 <td>P1</td>
 </tr>
 </tbody>
 </table></div>
 <h3 id="62-the-step-editor-email-body">6.2 The step editor: email body</h3>
-<p><strong>What it's for.</strong> Where styling enters. The writer sees it, is asked, and decides for this email.</p>
+<p><strong>What it's for.</strong> This is where styling enters. The writer sees it, is asked, and decides for this email.</p>
 <div class="tbl-wrap"><table>
 <thead>
 <tr>
@@ -479,17 +374,17 @@ tr:hover td{background:var(--bg-secondary)}
 <td><strong>On</strong></td>
 <td>Lands as is</td>
 <td><code>Styling Detected (Remove to avoid spam filters):</code> · <strong>Remove Styling</strong> · <strong>Keep Styling</strong> · <code>×</code></td>
-<td>Keeps it in this email. Setting untouched. Bar asks again next time</td>
-<td>Removes styling from this email; bold, italic, underline, links and lists stay. No setting write</td>
-<td>Removes styling, as today</td>
+<td>Keeps it in this email; setting untouched; bar asks again next time</td>
+<td>Removes styling from this email; bold, italic, underline, links and lists stay; setting untouched</td>
+<td>Removes styling</td>
 </tr>
 <tr>
 <td><strong>Off</strong></td>
 <td>Lands as is</td>
 <td>Same bar, same copy, both buttons</td>
 <td>Same as On</td>
-<td>Removes styling from this email. <strong>Whether it also turns the setting on is Q1</strong></td>
-<td>Dismisses the bar, as today</td>
+<td>Removes styling from this email; <strong>effect on the setting is Q1</strong></td>
+<td>Closes the bar; styling stays</td>
 </tr>
 <tr>
 <td><strong>Text only</strong></td>
@@ -503,13 +398,12 @@ tr:hover td{background:var(--bg-secondary)}
 </table></div>
 <p><strong>What it must do</strong></p>
 <ul>
-<li>Show the bar every time styled content appears: on paste, on toolbar styling, and on opening a step that contains styling. There is no suppression for the rest of the session after Keep.</li>
+<li>Show the bar every time styled content appears: on paste, on toolbar styling, and on opening a step that contains styling. Keep Styling never silences it for the rest of the session.</li>
 <li>Show <strong>both</strong> buttons whenever the bar shows.</li>
-<li>Keep the "Styling Removes Automatically" / "Text only email" badge visible while the bar is up. Today the bar hides it.</li>
-<li>Decide whether a step is text only from the sequence's settings for that step. No workspace value is read.</li>
-<li>Remove PR #8129's toast, rule chip, spotlight and Admin Settings card. Re-enable the bar in step editors, since the PR switches it off.</li>
+<li>Keep the "Styling Removes Automatically" / "Text only email" badge visible while the bar is up.</li>
+<li>Decide whether a step is text only from the sequence's settings for that step.</li>
 </ul>
-<p><strong>Explicitly out of scope:</strong> the template editor (Q3), and changes to send-time stripping. Known send-time gaps, such as <code>&lt;font&gt;</code> and <code>&lt;style&gt;</code> surviving Remove Styling, belong on a separate card.</p>
+<p><strong>Explicitly out of scope:</strong> the template editor (Q3), and send-time stripping, which stays as it is.</p>
 <div class="tbl-wrap"><table>
 <thead>
 <tr>
@@ -547,7 +441,7 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>B-5</td>
 <td>Click <strong>Keep Styling</strong>, Remove Styling on</td>
-<td>Bar closes, styling stays. <strong>No request is sent to <code>PATCH /sequences/{id}/settings</code>.</strong> Read back with <code>GET /sequences/{id}/config</code>: <code>text-only-email</code> unchanged at <code>1</code>; badge still shown</td>
+<td>Bar closes, styling stays. <strong>No request is sent to <code>PATCH /sequences/{id}/settings</code>.</strong> Read back with <code>GET /sequences/{id}/config</code>: <code>text-only-email</code> stays <code>1</code>, and the badge still shows</td>
 <td><strong>P0, sign off by name. Owner: TBD</strong></td>
 </tr>
 <tr>
@@ -565,13 +459,13 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>B-8</td>
 <td>Click <strong>Remove Styling</strong>, Remove Styling on</td>
-<td>Styling removed from this email; bold, italic, underline, links and lists stay; no settings request (today it is sent twice)</td>
+<td>Styling removed from this email; bold, italic, underline, links and lists stay; no settings request</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>B-9</td>
 <td>Click <strong>×</strong>, Remove Styling on</td>
-<td>Styling removed (as today)</td>
+<td>Styling removed</td>
 <td>P1</td>
 </tr>
 <tr>
@@ -595,7 +489,7 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>B-13</td>
 <td>Bar is up</td>
-<td>Corner badge remains visible and unobscured</td>
+<td>Corner badge stays visible, not covered by the bar</td>
 <td>P2</td>
 </tr>
 <tr>
@@ -604,19 +498,13 @@ tr:hover td{background:var(--bg-secondary)}
 <td>Plain; no bar</td>
 <td>P0</td>
 </tr>
-<tr>
-<td>B-15</td>
-<td>Admin Settings page</td>
-<td>No "Pasting content" card; no workspace paste value stored</td>
-<td>P0</td>
-</tr>
 </tbody>
 </table></div>
 <h3 id="63-the-spintax-editor-add-spintax">6.3 The spintax editor (Add Spintax)</h3>
-<p><strong>What it's for.</strong> Variants are part of the email and follow the same rule.</p>
+<p><strong>What it's for.</strong> Variants are part of the email, so they follow the same rule.</p>
 <p><strong>What it must do</strong></p>
 <ul>
-<li>Apply §6.2 inside each variant field: same bar, same copy, both buttons, same semantics, shown in that variant's field.</li>
+<li>Apply §6.2 inside each variant field: same bar, same copy, both buttons and same behaviour, shown in that variant's field.</li>
 <li>Scope each action to its own variant. Keep or Remove in variant 1 does not touch variant 2 or the email body.</li>
 </ul>
 <div class="tbl-wrap"><table>
@@ -650,13 +538,13 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>V-4</td>
 <td>Literal <code>{{First Name}}</code> pasted into a variant</td>
-<td>Becomes a merge-tag chip (X-7 applies)</td>
+<td>Becomes a merge-tag chip</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>V-5</td>
 <td>Keep styling inside a variant, then Save → reopen the modal → save the step → send a test</td>
-<td>The spin still parses and spins. The chosen variant arrives styled under Remove Styling off, or stripped under on. No literal <code>{spin}</code> text in any output. <strong>Depends on Q2</strong></td>
+<td>The spin still parses and spins. The chosen variant arrives styled when Remove Styling is off, and stripped when it is on. No literal <code>{spin}</code> text in any output. <strong>Depends on Q2</strong></td>
 <td><strong>P0, release blocker</strong></td>
 </tr>
 </tbody>
@@ -681,8 +569,8 @@ tr:hover td{background:var(--bg-secondary)}
 <td>§6.2, §6.3</td>
 </tr>
 <tr>
-<td>Paste from web or Docs</td>
-<td>Already arrives without inline styles in Chrome (measured, one synthetic paste); the bar shows if any remain</td>
+<td>Paste from a web page or Google Docs</td>
+<td>Arrives without inline styles in Chrome already (measured, one synthetic paste). Bar shows if any remain</td>
 <td>§6.2</td>
 </tr>
 <tr>
@@ -691,14 +579,14 @@ tr:hover td{background:var(--bg-secondary)}
 <td>§6.2</td>
 </tr>
 <tr>
-<td>Opening a step with styled content</td>
+<td>Opening a step that has styled content</td>
 <td>Bar</td>
 <td>§6.2, B-7</td>
 </tr>
 <tr>
-<td>AI-generated content or templates applied to a step</td>
+<td>AI-generated content, or a template applied to a step</td>
 <td>Bar, if styled</td>
-<td>§6.2; template editor itself is Q3</td>
+<td>§6.2. The template editor itself is Q3</td>
 </tr>
 <tr>
 <td>What is sent</td>
@@ -707,13 +595,153 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 </tbody>
 </table></div>
-<p>Nothing is deleted from Safety Settings. The one line of copy that makes the relationship legible is S-1.</p>
+<p>Nothing is removed from Safety Settings. The one line of copy that makes the relationship legible is S-1.</p>
 
 </section>
 <section id="8-cross-cutting" class="sec"><div class="sec-head"><span class="sec-num">8</span><h2>Cross-cutting</h2></div>
 
-<p><strong>Chip integrity – release blocker.</strong> X-1 to X-12 are carried from v2.2 unchanged in substance. X-8 and X-12 now read "in any Remove Styling state" in place of "setting on/off". The order of operations still holds: sanitise first, then promote tokens. Promotion applies whether styling is kept or removed.</p>
-<p><strong>Keyboard invariants</strong></p>
+<p><strong>Chip integrity – release blocker</strong></p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Case</th>
+<th>Expected</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C-1</td>
+<td>Copy a body containing all five chip types (error, date, merge, variable, spin) and paste it into the same editor</td>
+<td>All five reproduced as chips; none literal, none duplicated</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-2</td>
+<td>Paste over a selection that contains chips</td>
+<td>Selected chips removed with the selection; no leftover chip markup</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-3</td>
+<td>Chips elsewhere in the body during a paste</td>
+<td>Untouched</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-4</td>
+<td>Save, then reload</td>
+<td>Chips are still chips</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-5</td>
+<td>Paste literal <code>{spin}a\|b{endspin}</code></td>
+<td>Becomes a spin chip</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-6</td>
+<td>Paste malformed spintax (no <code>{endspin}</code>)</td>
+<td>Stays literal text; no crash, no partial chip</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-7</td>
+<td>Paste literal merge-tag syntax</td>
+<td>Becomes a merge-tag chip</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-8</td>
+<td>Paste a merge tag naming a field that does not exist</td>
+<td>Becomes the error chip, the same as typing it</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-9</td>
+<td>Paste literal tokens into the subject line</td>
+<td>They become chips there too</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-10</td>
+<td>Paste a token cut off by the paste boundary, or paste with the caret inside an existing token</td>
+<td>Stays literal; no partial chip; the surrounding chip is intact</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>C-11</td>
+<td>Paste styled content containing literal tokens, then click Keep or Remove Styling</td>
+<td>Chips survive either action</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table></div>
+<p>Order of operations: sanitise first, then promote tokens. Promotion runs whether styling is kept or removed.</p>
+<p><strong>General paste</strong></p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Case</th>
+<th>Expected</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G-1</td>
+<td>Clipboard holds only an image</td>
+<td>Existing image behaviour; no bar</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>G-2</td>
+<td>Rich content on the clipboard with no plain-text alternative</td>
+<td>Content lands; the insert is never empty</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>G-3</td>
+<td>Right-to-left or CJK text, or emoji joined into sequences</td>
+<td>Correct direction; never split mid-sequence</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>G-4</td>
+<td>Paste over a multi-paragraph selection, mid-word, or into an empty body</td>
+<td>Selection replaced, inserted at the caret, no blank first paragraph</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>G-5</td>
+<td>Paste rich text into the subject line</td>
+<td>One plain line; line breaks become spaces; no bar</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>G-6</td>
+<td>Drag and drop text into the editor</td>
+<td>Unchanged from today</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>G-7</td>
+<td>Paste while an IME composition is active</td>
+<td>No corruption</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>G-8</td>
+<td>Paragraphs and lists, through editor → save → send</td>
+<td>Preserved, not run together into one block</td>
+<td>P0</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Keyboard</strong></p>
 <div class="tbl-wrap"><table>
 <thead>
 <tr>
@@ -724,45 +752,35 @@ tr:hover td{background:var(--bg-secondary)}
 <tbody>
 <tr>
 <td><code>⌘⇧V</code> / <code>Ctrl+Shift+V</code></td>
-<td>Always plain, no bar, every surface</td>
+<td>Always plain, no bar, on every surface</td>
 </tr>
 <tr>
 <td><code>⌘Z</code></td>
-<td>First press after a paste removes the paste. After Remove Styling, the first press restores the styling</td>
+<td>The first press after a paste removes the paste. After Remove Styling, the first press restores the styling</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Sanitisation floor.</strong> Scripts, embedded frames, event handlers and stylesheet blocks are never inserted, in every state (S2-8, S2-9 carried).</p>
+<p><strong>Sanitisation floor.</strong> Scripts, embedded frames, event handlers and stylesheet blocks are never inserted, in any state.</p>
 
 </section>
 <section id="9-implementation-notes" class="sec"><div class="sec-head"><span class="sec-num">9</span><h2>Implementation notes</h2></div>
 
 <ul>
-<li><strong>From PR #8129, keep:</strong></li>
-<li>The paste sanitiser</li>
-<li>Token promotion and the internal-copy marker</li>
-<li><code>⌘⇧V</code> handling</li>
-<li>Undo</li>
-<li>Analytics plumbing</li>
-<li><strong>From PR #8129, remove:</strong></li>
-<li>Plain-text conversion of the body</li>
-<li>The toast, rule chip and spotlight</li>
-<li>The Admin Settings card and the <code>/user/meta</code> paste rule</li>
-<li>The switch-off of the Styling Detected bar in step editors</li>
-<li>Always-plain variants</li>
-<li><strong>Close <a href="https://github.com/saleshandy/saleshandy-edge/pull/11339">edge #11339</a></strong> unmerged. It cites Jira DE-4596, which our Jira login cannot open.</li>
-<li><strong>Change the existing bar</strong> (<a href="https://github.com/saleshandy/saleshandy-webui/blob/a6e04a32782a2814da502d455366b160405ea310/src/components/sequence/shared/modals/email-modal/components/styling-detected-action-bar/styling-detected-action-bar.tsx#L27"><code>styling-detected-action-bar.tsx</code></a>) so that:</li>
+<li><strong>Build on the existing Styling Detected bar</strong> (<a href="https://github.com/saleshandy/saleshandy-webui/blob/a6e04a32782a2814da502d455366b160405ea310/src/components/sequence/shared/modals/email-modal/components/styling-detected-action-bar/styling-detected-action-bar.tsx#L27"><code>styling-detected-action-bar.tsx</code></a>). Change it so that:<ul>
 <li>Keep Styling stops writing <code>text-only-email</code>.</li>
-<li>No suppression persists after Keep.</li>
-<li>Remove Styling stops the duplicate settings write.</li>
-<li><strong>Add the bar to the variant field</strong> in the spintax modal. This is new UI, using the same component.</li>
-<li><strong>Resolve before estimation:</strong> whether the spin parser and send path tolerate markup inside <code>{spin}…{endspin}</code> (Q2). A known bug says they do not (<a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">to-do</a>). If that is unfixed, D11 includes that fix, and an estimate without it is wrong rather than approximate.</li>
+<li>Nothing silences the bar after Keep.</li>
+<li>Remove Styling sends no settings write.</li>
+</ul>
+</li>
+<li><strong>Add the same bar to each variant field</strong> in the spintax modal.</li>
+<li><strong>Reuse the paste sanitiser, token promotion, internal-copy detection and <code>⌘⇧V</code> handling</strong> already built in <a href="https://github.com/saleshandy/saleshandy-webui/pull/8129">webui PR #8129</a>.</li>
+<li><strong>Resolve before estimation:</strong> whether the spin parser and the send path tolerate markup inside <code>{spin}…{endspin}</code> (Q2). An open bug says they do not (<a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">to-do</a>). If that is still unfixed, the fix is part of D4. An estimate without it is wrong, not approximate.</li>
 </ul>
 
 </section>
 <section id="10-measurement" class="sec"><div class="sec-head"><span class="sec-num">10</span><h2>Measurement</h2></div>
 
-<p><strong>Never log pasted content:</strong> counts and enum labels only.</p>
+<p><strong>Never log pasted content.</strong> Counts and enum labels only.</p>
 <div class="tbl-wrap"><table>
 <thead>
 <tr>
@@ -802,17 +820,17 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td><strong>Settings writes from the editor</strong></td>
 <td><strong>0 (target)</strong></td>
-<td><strong>Any – D10 is broken. The single most important early signal</strong></td>
+<td><strong>Any – D3 is broken. The single most important early signal</strong></td>
 </tr>
 <tr>
 <td>Keep rate (keep ÷ shown), Remove Styling on</td>
 <td>No base rate; discovery</td>
-<td>High and sustained – writers want styling the sequence strips at send; review the default</td>
+<td>High and sustained – writers want styling that the sequence strips at send; review the default</td>
 </tr>
 <tr>
 <td>Bar shows per session, 90th percentile</td>
 <td>≤ 5 (assumed; confirm at day 14)</td>
-<td>Higher – the bar reads as nagging under D10</td>
+<td>Higher – the bar reads as nagging</td>
 </tr>
 </tbody>
 </table></div>
@@ -826,7 +844,7 @@ tr:hover td{background:var(--bg-secondary)}
 <tbody>
 <tr>
 <td>Share of new sequences with Remove Styling on</td>
-<td>≥ 81.9% (target, the measured baseline): Keep no longer switches it off, so it should not fall</td>
+<td>≥ 81.9% (target, the measured baseline)</td>
 </tr>
 <tr>
 <td>"Formatting" support tickets per 1,000 active users</td>
@@ -849,7 +867,7 @@ tr:hover td{background:var(--bg-secondary)}
 <td>Roll back</td>
 </tr>
 <tr>
-<td>Spin fails to parse after styling kept in a variant</td>
+<td>Spin fails to parse after styling is kept in a variant</td>
 <td>Any</td>
 <td>Roll back</td>
 </tr>
@@ -860,12 +878,12 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 </tbody>
 </table></div>
-<p><strong>Success at day 30, 100% exposure:</strong> zero settings writes from the editor; zero chip or spin corruption; no ticket rise. All three are non-negotiable.</p>
+<p><strong>Success at day 30, 100% exposure:</strong> zero settings writes from the editor, zero chip or spin corruption, and no rise in tickets. All three are non-negotiable.</p>
 
 </section>
 <section id="11-rollout" class="sec"><div class="sec-head"><span class="sec-num">11</span><h2>Rollout</h2></div>
 
-<p>The change is per sequence and shows the same UI to everyone, so staged exposure is blast-radius control, not an A/B cohort. No stage starts until B-5 is signed off and V-5 passes.</p>
+<p>The behaviour is the same for everyone, so staged exposure is blast-radius control, not an A/B cohort. No stage starts until B-5 is signed off and V-5 passes.</p>
 <div class="tbl-wrap"><table>
 <thead>
 <tr>
@@ -883,7 +901,7 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>2</td>
 <td>5% of workspaces</td>
-<td>One week, no guardrail breached, settings writes from the editor = 0</td>
+<td>One week, no guardrail breached, zero settings writes from the editor</td>
 </tr>
 <tr>
 <td>3</td>
@@ -908,27 +926,27 @@ tr:hover td{background:var(--bg-secondary)}
 <tbody>
 <tr>
 <td>Q1</td>
-<td>With Remove Styling <strong>off</strong>, should <strong>Remove Styling</strong> in the bar also switch the sequence's setting on? (It does today)</td>
-<td>It is the same class of silent sequence-wide change D10 removes for Keep</td>
-<td><strong>This email only</strong>, consistent with D10. <strong>Blocking for build.</strong> Hitesh</td>
+<td>With Remove Styling <strong>off</strong>, should <strong>Remove Styling</strong> in the bar also switch the sequence's setting on?</td>
+<td>It would be a sequence-wide change from one click in one email, the thing D3 rules out for Keep</td>
+<td><strong>This email only.</strong> Blocking for build. Hitesh</td>
 </tr>
 <tr>
 <td>Q2</td>
 <td>Does the spin parser tolerate styling inside a variant through save, reopen and send?</td>
-<td>D11 allows it. A known bug says it breaks</td>
+<td>D4 allows styling in variants, and an open bug says it breaks</td>
 <td>Rajat confirms before estimation; if it breaks, the fix ships with this. <strong>Blocking for estimation</strong></td>
 </tr>
 <tr>
 <td>Q3</td>
-<td>Template editor: no sequence, so no rule</td>
+<td>The template editor has no sequence, so no rule</td>
 <td>A template can carry styling into many sequences</td>
-<td>Leave as today; the bar applies once the template is used in a step. Revisit if tickets appear</td>
+<td>Leave it as is; the bar applies once the template is used in a step. Revisit if tickets appear</td>
 </tr>
 <tr>
 <td>Q4</td>
-<td>Text-only paste behaviour was not checked in production</td>
-<td>D12 may differ from what ships today</td>
-<td>Verify at TA; build to D12</td>
+<td>Text-only paste behaviour has not been checked in the live app</td>
+<td>D5 may differ from what happens there now</td>
+<td>Verify at technical analysis; build to D5</td>
 </tr>
 </tbody>
 </table></div>
@@ -957,7 +975,7 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 <tr>
 <td>Release gate</td>
-<td>§8 chip integrity, B-5 named sign-off, V-5</td>
+<td>Chip integrity (§8), B-5 named sign-off, V-5</td>
 <td>Rajat</td>
 </tr>
 <tr>
@@ -966,8 +984,8 @@ tr:hover td{background:var(--bg-secondary)}
 <td>Hitesh</td>
 </tr>
 <tr>
-<td>PR #8129 rework, edge #11339 closure</td>
-<td>Dev</td>
+<td>Build</td>
+<td>Not started</td>
 <td>Sunny</td>
 </tr>
 </tbody>
@@ -976,18 +994,19 @@ tr:hover td{background:var(--bg-secondary)}
 </section>
 <section id="appendix-reference-index" class="sec"><div class="sec-head"><span class="sec-num">–</span><h2>Appendix – reference index</h2></div>
 
-<p><strong>Design</strong>
-- <a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">Prototype</a> – design of record: tab 1 is §6.1, tab 2 is §6.2, tab 3 is §6.3.
-- Saleshandy Design System v3 tokens, as used across the canvas.</p>
-<p><strong>Evidence</strong>
-- Production behaviour checked live on 7 Oct on sequence 964458: bar, Keep and Remove writes, and the duplicate request.
-- Metabase query, Leo db: <code>sequence</code> joined to <code>sequence_setting</code> on <code>code = 'text-only-email'</code>, created ≥ 1 Jul 2026, run 6 Oct.</p>
-<p><strong>Related</strong>
-- <a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873">Card</a>
-- <a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873#__recording_10371718163">Sunny's five points</a>
-- <a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">Spintax styling bug</a></p>
-<p><strong>Superseded</strong>
-- <a href="https://product-team-sh.github.io/prd-paste-as-plain-text/">PRD v2.2</a>, with <a href="https://product-team-sh.github.io/prd-paste-as-plain-text/prototype/">its prototype</a>.</p></section>
+<ul>
+<li><strong><a href="https://product-team-sh.github.io/prd-pasting-styled-content/prototype/">Prototype</a></strong> – design of record. Tab 1 is §6.1, tab 2 is §6.2, tab 3 is §6.3.</li>
+<li><strong>Evidence:</strong><ul>
+<li>Live-app check on 7 Oct, sequence 964458: the bar, what Keep and Remove write, and the duplicate request.</li>
+<li>Metabase query on the Leo db: <code>sequence</code> joined to <code>sequence_setting</code> on <code>code = 'text-only-email'</code>, created on or after 1 Jul 2026.</li>
+</ul>
+</li>
+<li><strong>Related:</strong><ul>
+<li><a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873">Card</a></li>
+<li><a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">Spintax styling bug</a></li>
+</ul>
+</li>
+</ul></section>
 
   </main>
 </div>
