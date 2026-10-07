@@ -193,7 +193,7 @@ tr:hover td{background:var(--bg-secondary)}
 
 <ol>
 <li><strong>Remove Styling Automatically (per sequence) is the only rule for styling</strong>, at paste and at send. There is no new setting.</li>
-<li><strong>With Remove Styling on, styling is removed as you paste or apply it, and the bar tells you.</strong> Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo.</li>
+<li><strong>With Remove Styling on, styling is removed as you paste or apply it, and the bar tells you.</strong> Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo. With the setting off, the bar asks once per sequence, until the writer answers.</li>
 <li><strong>Literal merge-tag and spintax tokens in a paste become chips.</strong></li>
 </ol>
 
@@ -225,8 +225,8 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 <tr>
 <td><strong>Off</strong></td>
-<td>Lands as is; bar: Styling Detected</td>
-<td>Stays; bar: Styling Detected</td>
+<td>Lands as is; bar: Styling Detected, <strong>until the sequence is answered</strong></td>
+<td>Stays; same as paste</td>
 </tr>
 <tr>
 <td><strong>Text only</strong></td>
@@ -251,7 +251,7 @@ tr:hover td{background:var(--bg-secondary)}
 <td><strong>Keep Styling</strong> · <code>×</code></td>
 </tr>
 <tr>
-<td>Styling Detected (setting off)</td>
+<td>Styling Detected (setting off, not yet answered)</td>
 <td><em>"Styling Detected (Remove to avoid spam filters):"</em></td>
 <td><strong>Remove Styling</strong> · <strong>Keep Styling</strong> · <code>×</code></td>
 </tr>
@@ -260,25 +260,36 @@ tr:hover td{background:var(--bg-secondary)}
 <td><em>"ⓘ Styling kept. Remove Styling is now off for this sequence."</em></td>
 <td><strong>Undo</strong> · <code>×</code></td>
 </tr>
+<tr>
+<td>After Remove Styling, with the setting off</td>
+<td><em>"ⓘ Styling removed. Remove Styling is now on for this sequence."</em></td>
+<td><strong>Undo</strong> · <code>×</code></td>
+</tr>
 </tbody>
 </table></div>
 <p><strong>Screens</strong></p>
 <figure><figcaption>Setting on, after a Word paste: styling removed as it landed. Bold and the link stay.</figcaption><img src="screens/02-on-paste-removed.png" style="max-width:885px" alt="Setting on: the paste has landed without Word's styling, and the bar reads Styling removed from your paste, with Keep Styling and the badge on the same row." loading="lazy"></figure>
 <figure><figcaption>After "Keep Styling": styling restored, the setting is off, and Undo is offered. The badge is gone because the setting is now off.</figcaption><img src="screens/03-on-keep-setting-off.png" style="max-width:885px" alt="After Keep Styling: Word's styling is back and the bar reads Styling kept. Remove Styling is now off for this sequence, with Undo." loading="lazy"></figure>
-<figure><figcaption>Setting off, after a Word paste: lands as is, and the Styling Detected bar offers both buttons.</figcaption><img src="screens/04-off-paste-detected.png" style="max-width:885px" alt="Setting off: the paste keeps Word's styling and the Styling Detected bar shows Remove Styling and Keep Styling." loading="lazy"></figure>
+<figure><figcaption>Setting off, first styled paste in this sequence: lands as is, and the Styling Detected bar asks.</figcaption><img src="screens/04-off-paste-detected.png" style="max-width:885px" alt="Setting off: the paste keeps Word's styling and the Styling Detected bar shows Remove Styling and Keep Styling." loading="lazy"></figure>
 <figure><figcaption>Setting on, toolbar colour: removed straight away, like a paste, with the same bar and Keep Styling.</figcaption><img src="screens/05-on-toolbar-removed.png" style="max-width:885px" alt="Setting on: a toolbar colour removed straight away, and the bar reads Styling removed (Remove Styling is on for this sequence) with Keep Styling." loading="lazy"></figure>
+<figure><figcaption>Setting off, after "Remove Styling": this email is cleaned and the setting turns on, with Undo.</figcaption><img src="screens/09-off-remove-turned-on.png" style="max-width:885px" alt="Setting off, after Remove Styling: styling removed, and the bar reads Styling removed. Remove Styling is now on for this sequence, with Undo." loading="lazy"></figure>
 <figure><figcaption>Text only: plain text, no bar, styling controls disabled.</figcaption><img src="screens/06-text-only.png" style="max-width:885px" alt="Text only: the paste lands as plain text, styling controls are disabled, and the Text only email badge shows." loading="lazy"></figure>
 <p><strong>Actions</strong></p>
 <ul>
 <li><strong>Keep Styling, with the setting on:</strong><ul>
 <li>Restores the styling that was removed.</li>
-<li>Turns the setting <strong>off</strong> for the sequence.</li>
-<li>Shows the "Styling kept" bar. <strong>Undo</strong> removes the styling again and turns the setting back on.</li>
+<li>Turns the setting <strong>off</strong> for the sequence, and marks the sequence <strong>answered</strong>.</li>
+<li>Shows the "Styling kept" bar. <strong>Undo</strong> removes the styling again, turns the setting back on, and restores the answered state.</li>
 </ul>
 </li>
-<li><strong>Keep Styling, with the setting off:</strong> keeps the styling in this email. The setting is unchanged.</li>
-<li><strong>Remove Styling:</strong> removes styling from this email. Bold, italic, underline, links and lists stay; fonts, sizes, colours and highlights go. The setting is unchanged.</li>
-<li><strong><code>×</code>:</strong> closes the bar. The editor content stays as it is.</li>
+<li><strong>Setting off: the bar asks until the writer answers, once per sequence.</strong><ul>
+<li><strong>Keep Styling:</strong> keeps the styling and marks the sequence <strong>answered</strong>. The bar never shows again in this sequence, in any step, variant or session.</li>
+<li><strong>Remove Styling:</strong> removes styling from this email (bold, italic, underline, links and lists stay) and turns the setting <strong>on</strong>. Shows the "now on" bar. <strong>Undo</strong> restores the styling and turns the setting back off; the sequence stays unanswered.</li>
+<li><strong><code>×</code>:</strong> means "not now". The bar closes and the styling stays. The sequence is <strong>not</strong> answered, so the next styled paste or style asks again.</li>
+</ul>
+</li>
+<li><strong><code>×</code> on any other bar:</strong> closes the bar. The editor content stays as it is.</li>
+<li><strong>"Answered" is stored per sequence.</strong> It is not shown in Safety Settings. Turning the setting on, from any path, clears it, so if the setting is later turned off again, writers are asked once more.</li>
 </ul>
 <p><strong>Also</strong></p>
 <ul>
@@ -291,7 +302,7 @@ tr:hover td{background:var(--bg-secondary)}
 <section id="5-spintax-editor-prototype-tab-3" class="sec"><div class="sec-head"><span class="sec-num">5</span><h2>Spintax editor (prototype tab 3)</h2></div>
 
 <ul>
-<li><strong>Same as §4 inside each variant field:</strong> same bars, same actions, following the sequence's setting.</li>
+<li><strong>Same as §4 inside each variant field:</strong> same bars, same actions, following the sequence's setting. Variants share the sequence's answered state with the email body.</li>
 <li><strong>Keep Styling in a variant, with the setting on,</strong> turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.</li>
 <li><strong>Literal tokens pasted into a variant become chips.</strong></li>
 </ul>
@@ -320,90 +331,120 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>A2</td>
 <td>A1, then <strong>Keep Styling</strong></td>
-<td>Styling restored. <strong>One</strong> <code>PATCH /sequences/{id}/settings</code> sets <code>text-only-email</code> to <code>0</code>; <code>GET /sequences/{id}/config</code> confirms it. "Styling kept" bar shows with Undo; badge disappears</td>
+<td>Styling restored. <strong>One</strong> <code>PATCH /sequences/{id}/settings</code> sets <code>text-only-email</code> to <code>0</code>; <code>GET /sequences/{id}/config</code> confirms it. Sequence marked answered. "Styling kept" bar shows with Undo; badge disappears</td>
 <td><strong>P0, sign off by name. Owner: TBD</strong></td>
 </tr>
 <tr>
 <td>A3</td>
 <td>A2, then <strong>Undo</strong></td>
-<td>Styling removed again; <code>text-only-email</code> back to <code>1</code>; badge returns</td>
+<td>Styling removed again; <code>text-only-email</code> back to <code>1</code>; answered state restored; badge returns</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A4</td>
-<td>Setting <strong>off</strong>: paste Word content</td>
+<td>Setting <strong>off</strong>, sequence not answered: paste Word content</td>
 <td>Lands styled; Styling Detected bar with both buttons</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A5</td>
-<td>Setting <strong>off</strong>: <strong>Remove Styling</strong> or <strong>Keep Styling</strong></td>
-<td>Acts on this email only; no settings request</td>
+<td>A4, then <strong>Keep Styling</strong></td>
+<td>Bar closes, styling stays, no change to <code>text-only-email</code>. Sequence marked answered, and the answered state reads back from <code>GET /sequences/{id}/config</code></td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A6</td>
+<td>Setting off, sequence answered: paste or style in another step, in a variant, and after reopening the editor</td>
+<td>No bar anywhere; styling stays</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>A4, then <strong><code>×</code></strong>, then a new styled paste or toolbar style</td>
+<td>Bar closes, styling stays, no request. The next styled paste or style shows the bar again</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>A8</td>
+<td>A4, then <strong>Remove Styling</strong></td>
+<td>Styling removed from this email. <strong>One</strong> <code>PATCH</code> sets <code>text-only-email</code> to <code>1</code>. "Styling removed. Remove Styling is now on" bar with Undo; badge appears</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>A9</td>
+<td>A8, then <strong>Undo</strong></td>
+<td>Styling back; <code>text-only-email</code> back to <code>0</code>; sequence still unanswered, so the next styled paste asks</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>A10</td>
 <td>Setting <strong>on</strong>: apply a text colour from the toolbar</td>
 <td>Colour removed straight away; bar reads "Styling removed (Remove Styling is on for this sequence)" with <strong>Keep Styling</strong>, which restores the colour and behaves as A2</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A6b</td>
-<td>Setting <strong>off</strong>: apply a text colour from the toolbar</td>
-<td>Colour stays; Styling Detected bar with both buttons. <strong>Remove Styling</strong> removes it with no settings request; <strong>Keep Styling</strong> acts as A5</td>
-<td>P0</td>
+<td>A11</td>
+<td>Setting off and answered; turn it on in Safety Settings, then off again</td>
+<td>The first styled paste asks again</td>
+<td>P1</td>
 </tr>
 <tr>
-<td>A7</td>
+<td>A12</td>
 <td>Text only: paste Word content</td>
 <td>Plain; no bar; "Text only email" badge</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A8</td>
+<td>A13</td>
 <td>Paste plain text</td>
 <td>No bar</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A9</td>
+<td>A14</td>
 <td>Copy and paste within Saleshandy</td>
-<td>Chips stay chips; any styling follows A1 or A4</td>
+<td>Chips stay chips; any styling follows A1, A4 or A6</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A10</td>
+<td>A15</td>
 <td>Paste literal <code>{{First Name}}</code> or <code>{spin}a\|b{endspin}</code></td>
 <td>Becomes a chip, in the body and in variants</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A11</td>
+<td>A16</td>
 <td><code>⌘⇧V</code> in any state</td>
 <td>Plain; no bar</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A12</td>
+<td>A17</td>
 <td>Safety Settings</td>
 <td>Remove Styling description reads exactly as in §3; no separate spintax control</td>
 <td>P1</td>
 </tr>
 <tr>
-<td>A13</td>
+<td>A18</td>
 <td>Spintax, setting on: paste into variant 1, then <strong>Keep Styling</strong></td>
 <td>Variant 1 restored; setting off for the sequence; "Styling kept" bar in variant 1</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A14</td>
+<td>A19</td>
+<td>Spintax, setting off: <strong>Keep Styling</strong> in a variant, then paste styled content into the email body</td>
+<td>No bar in the body; answered is shared across the sequence</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>A20</td>
 <td>Spintax: keep styling in a variant, save, reopen, send a test</td>
 <td>The spin still parses and spins; no literal <code>{spin}</code> in any output</td>
 <td><strong>P0, release blocker</strong></td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Open before estimation:</strong> A14 depends on the spin parser tolerating styling inside a variant. An <a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">open bug</a> says it does not today. Owner: Rajat.</p>
+<p><strong>Open before estimation:</strong> A20 depends on the spin parser tolerating styling inside a variant. An <a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">open bug</a> says it does not today. Owner: Rajat.</p>
 
 <p><strong>Related:</strong> <a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873">card</a> · <a href="https://github.com/saleshandy/saleshandy-webui/pull/8129">webui PR #8129</a> (reuse its paste sanitiser and token-to-chip handling)</p></section>
 
