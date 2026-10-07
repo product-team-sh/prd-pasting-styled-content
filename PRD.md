@@ -89,6 +89,7 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 
 - **What counts as text only:** "Send emails as text only" for all emails, or for step 1 when it is set to first email only.
 - **The corner badge** ("Styling Removes Automatically" / "Text only email") sits in the bar row, just before `×`, while a bar is showing. Otherwise it stays in the editor's corner.
+- **When the bar is too narrow** (the editor is about 790px wide today): "(Remove Styling is on for this sequence)" drops first, then the badge shows only its dot. Buttons and `×` never shrink or wrap.
 - **`⌘⇧V` / `Ctrl+Shift+V`** always pastes plain, with no bar.
 
 ## 5. Spintax editor (prototype tab 3)

@@ -110,6 +110,11 @@
     .badge:hover { background:var(--sh-gray-50); }
     .badge-dot { width:8px; height:8px; border-radius:50%; background:#34d399; }
     .badge-inline { position:static; flex-shrink:0; padding:0 4px; }
+    /* narrow editors: the reason drops first, then the badge keeps only its dot; buttons and x never shrink */
+    .sbar { container-type:inline-size; }
+    .sbar .sbar-btn, .sbar .lnk, .sbar .xbtn { flex-shrink:0; }
+    @container (max-width: 780px) { .sbar-why { display:none; } }
+    @container (max-width: 640px) { .badge-inline .badge-txt { display:none; } }
     .badge-txt { font-size:12px; line-height:16px; color:#9ca3af; white-space:nowrap; }
     .pop { position:absolute; right:8px; bottom:36px; width:300px; padding:12px; background:#fff; border:1px solid var(--sh-border-default);
            border-radius:var(--sh-radius-md); box-shadow:0 16px 48px -4px rgba(4,21,76,0.18),0 4px 24px 0 rgba(4,21,76,0.08); z-index:50;
@@ -290,7 +295,7 @@
             </sc-if>
             <sc-if value="{{c.barRemoved}}" hint-placeholder-val="{{ false }}">
               <div class="sbar">
-                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-green-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.71 6.3a1 1 0 0 1 0 1.41l-10 10a1 1 0 0 1-1.42 0l-5-5a1 1 0 1 1 1.42-1.41L10 15.59l9.29-9.3a1 1 0 0 1 1.42 0Z" fill="currentColor"/></svg>{{c.removedLbl}} <span style="font-weight:400;color:var(--sh-fg-secondary)">(Remove Styling is on for this sequence):</span></span>
+                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-green-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.71 6.3a1 1 0 0 1 0 1.41l-10 10a1 1 0 0 1-1.42 0l-5-5a1 1 0 1 1 1.42-1.41L10 15.59l9.29-9.3a1 1 0 0 1 1.42 0Z" fill="currentColor"/></svg><span>{{c.removedLbl}}<span class="sbar-why" style="font-weight:400;color:var(--sh-fg-secondary)"> (Remove Styling is on for this sequence)</span>:</span></span>
                 <button class="sbar-btn" onClick="{{c.keep}}">&#10227; Keep Styling</button>
                 <div style="flex-grow:1"></div>
                 <sc-if value="{{c.badgeOn}}" hint-placeholder-val="{{ true }}"><span class="badge badge-inline"><span class="badge-dot"></span><span class="badge-txt">{{c.badgeText}}</span></span></sc-if>
@@ -370,7 +375,7 @@ Worth a 15-minute call next week?</p></sc-if>
             </sc-if>
             <sc-if value="{{s.barRemoved}}" hint-placeholder-val="{{ false }}">
               <div class="sbar">
-                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-green-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.71 6.3a1 1 0 0 1 0 1.41l-10 10a1 1 0 0 1-1.42 0l-5-5a1 1 0 1 1 1.42-1.41L10 15.59l9.29-9.3a1 1 0 0 1 1.42 0Z" fill="currentColor"/></svg>{{s.removedLbl}} <span style="font-weight:400;color:var(--sh-fg-secondary)">(Remove Styling is on for this sequence):</span></span>
+                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-green-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.71 6.3a1 1 0 0 1 0 1.41l-10 10a1 1 0 0 1-1.42 0l-5-5a1 1 0 1 1 1.42-1.41L10 15.59l9.29-9.3a1 1 0 0 1 1.42 0Z" fill="currentColor"/></svg><span>{{s.removedLbl}}<span class="sbar-why" style="font-weight:400;color:var(--sh-fg-secondary)"> (Remove Styling is on for this sequence)</span>:</span></span>
                 <button class="sbar-btn" onClick="{{s.keep}}">&#10227; Keep Styling</button>
                 <div style="flex-grow:1"></div>
                 <button class="xbtn" onClick="{{s.dismiss}}">&times;</button>
