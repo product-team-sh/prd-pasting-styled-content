@@ -59,7 +59,7 @@ These prototype elements are review aids, not product UI:
 **Also**
 
 - **What counts as text only:** "Send emails as text only" for all emails, or for step 1 when it is set to first email only.
-- **The corner badge** ("Styling Removes Automatically" / "Text only email") stays visible above the bar.
+- **The corner badge** ("Styling Removes Automatically" / "Text only email") sits in the bar row, just before `×`, while a bar is showing. Otherwise it stays in the editor's corner.
 - **`⌘⇧V` / `Ctrl+Shift+V`** always pastes plain, with no bar.
 
 ## 5. Spintax editor (prototype tab 3)

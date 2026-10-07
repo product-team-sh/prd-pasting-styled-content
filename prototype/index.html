@@ -109,6 +109,7 @@
              border-radius:11px; background:#fff; cursor:pointer; z-index:30; }
     .badge:hover { background:var(--sh-gray-50); }
     .badge-dot { width:8px; height:8px; border-radius:50%; background:#34d399; }
+    .badge-inline { position:static; flex-shrink:0; padding:0 4px; }
     .badge-txt { font-size:12px; line-height:16px; color:#9ca3af; white-space:nowrap; }
     .pop { position:absolute; right:8px; bottom:36px; width:300px; padding:12px; background:#fff; border:1px solid var(--sh-border-default);
            border-radius:var(--sh-radius-md); box-shadow:0 16px 48px -4px rgba(4,21,76,0.18),0 4px 24px 0 rgba(4,21,76,0.08); z-index:50;
@@ -269,7 +270,7 @@
                 <div class="word"><p>Hi <span class="chip">First Name</span>,</p><p style="margin-top:8px">I noticed <span class="word-link">Northwind</span> just opened a <b class="word-hl">second warehouse</b> in <span class="{{c.colourCls}}">Pune</span> &ndash; congratulations.</p><p style="margin-top:8px">Worth a 15-minute call next week?</p></div>
               </sc-if>
             </div>
-            <sc-if value="{{c.badgeOn}}" hint-placeholder-val="{{ true }}">
+            <sc-if value="{{c.badgeFloat}}" hint-placeholder-val="{{ true }}">
               <div class="badge" style="bottom:{{c.badgeBottom}}"><span class="badge-dot"></span><span class="badge-txt">{{c.badgeText}}</span></div>
             </sc-if>
 
@@ -283,6 +284,7 @@
                   <button class="sbar-btn" onClick="{{c.keep}}">&#10227; Keep Styling</button>
                 </sc-if>
                 <div style="flex-grow:1"></div>
+                <sc-if value="{{c.badgeOn}}" hint-placeholder-val="{{ true }}"><span class="badge badge-inline"><span class="badge-dot"></span><span class="badge-txt">{{c.badgeText}}</span></span></sc-if>
                 <button class="xbtn" onClick="{{c.dismiss}}">&times;</button>
               </div>
             </sc-if>
@@ -291,6 +293,7 @@
                 <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-green-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.71 6.3a1 1 0 0 1 0 1.41l-10 10a1 1 0 0 1-1.42 0l-5-5a1 1 0 1 1 1.42-1.41L10 15.59l9.29-9.3a1 1 0 0 1 1.42 0Z" fill="currentColor"/></svg>Styling removed from your paste <span style="font-weight:400;color:var(--sh-fg-secondary)">(Remove Styling is on for this sequence):</span></span>
                 <button class="sbar-btn" onClick="{{c.keep}}">&#10227; Keep Styling</button>
                 <div style="flex-grow:1"></div>
+                <sc-if value="{{c.badgeOn}}" hint-placeholder-val="{{ true }}"><span class="badge badge-inline"><span class="badge-dot"></span><span class="badge-txt">{{c.badgeText}}</span></span></sc-if>
                 <button class="xbtn" onClick="{{c.dismiss}}">&times;</button>
               </div>
             </sc-if>
@@ -299,6 +302,7 @@
                 <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-yellow-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9ZM1 12C1 5.92 5.92 1 12 1s11 4.92 11 11-4.92 11-11 11S1 18.08 1 12Zm11-2a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1Zm1.25-2.25a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0Z" fill="currentColor"/></svg>Styling kept. Remove Styling is now off for this sequence.</span>
                 <button class="lnk" onClick="{{c.undo}}">Undo</button>
                 <div style="flex-grow:1"></div>
+                <sc-if value="{{c.badgeOn}}" hint-placeholder-val="{{ true }}"><span class="badge badge-inline"><span class="badge-dot"></span><span class="badge-txt">{{c.badgeText}}</span></span></sc-if>
                 <button class="xbtn" onClick="{{c.closeKept}}">&times;</button>
               </div>
             </sc-if>
@@ -473,7 +477,7 @@ class Component extends DCLogic {
         colourCls:s.coloured?'colour-word':'',
         styleCtl: rule==='text' ? 'tb-off' : '', emCtl: rule==='text' ? 'tb-off' : '', ctlTip: rule==='text' ? 'Text only email' : '', ctlNote: rule==='text',
         badgeOn: rule!=='off', badgeText: rule==='strip' ? 'Styling Removes Automatically' : 'Text only email',
-        badgeBottom: filled && s.bar ? '44px' : '8px',
+        badgeBottom: '8px', badgeFloat: rule!=='off' && !(filled && s.bar),
         barDetected: filled && s.bar==='detected', barRemoved: filled && s.bar==='removed', barKept: filled && s.bar==='kept',
         detectedHint: '(Remove to avoid spam filters)',
         keepOn: true,
