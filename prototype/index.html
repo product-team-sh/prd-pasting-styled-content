@@ -176,12 +176,7 @@
               <div class="srow srow-click" onClick="{{set.rsToggle}}">
                 <span class="tgl {{set.rsCls}}"></span>
                 <div><p class="lbl">Remove Styling Automatically</p>
-                  <p class="desc">Send your emails without any special formatting, like colors or fonts. This makes them look more human-like and helps them land directly in the inbox. <span class="ins">Styling you paste or add in the editor is flagged there, with an option to remove it.</span></p></div>
-              </div>
-              <div class="lock" style="align-items:center">
-                <span style="color:var(--sh-fg-tertiary);font-size:14px;line-height:20px">&#8627;</span>
-                <p class="lbl" style="font-weight:400"><span class="ins">Spintax variants: same as above</span></p>
-                <span class="tag" style="{{set.spinTagStyle}}">{{set.spinTag}}</span>
+                  <p class="desc">Send your emails without any special formatting, like colors or fonts. This makes them look more human-like and helps them land directly in the inbox. <span class="ins">Styling is also removed from content you paste, including in spintax variants.</span></p></div>
               </div>
             </div>
             <div class="srow"><span class="tgl"></span><div><p class="lbl" style="font-weight:400">Only trigger one subsequence per prospect</p><p class="desc">A prospect will enter only one matching subsequence and will never move into another subsequence of this sequence.</p></div></div>
@@ -204,7 +199,7 @@
         <div class="side">
           <div class="side-card">
             <p class="side-h">What changes on this screen</p>
-            <p class="side-p">One sentence in the Remove Styling description, and a spintax line under it that always shows the same value as Remove Styling (highlighted). No separate spintax control. Everything else stays as it is.</p>
+            <p class="side-p">One sentence added to the Remove Styling description (highlighted). Everything else stays as it is.</p>
           </div>
           <div class="side-card" style="margin-top:12px">
             <p class="side-h">Rule for step 1</p>
@@ -291,6 +286,22 @@
                 <button class="xbtn" onClick="{{c.dismiss}}">&times;</button>
               </div>
             </sc-if>
+            <sc-if value="{{c.barRemoved}}" hint-placeholder-val="{{ false }}">
+              <div class="sbar">
+                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-green-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.71 6.3a1 1 0 0 1 0 1.41l-10 10a1 1 0 0 1-1.42 0l-5-5a1 1 0 1 1 1.42-1.41L10 15.59l9.29-9.3a1 1 0 0 1 1.42 0Z" fill="currentColor"/></svg>Styling removed from your paste <span style="font-weight:400;color:var(--sh-fg-secondary)">(Remove Styling is on for this sequence):</span></span>
+                <button class="sbar-btn" onClick="{{c.keep}}">&#10227; Keep Styling</button>
+                <div style="flex-grow:1"></div>
+                <button class="xbtn" onClick="{{c.dismiss}}">&times;</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{c.barKept}}" hint-placeholder-val="{{ false }}">
+              <div class="sbar">
+                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-yellow-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9ZM1 12C1 5.92 5.92 1 12 1s11 4.92 11 11-4.92 11-11 11S1 18.08 1 12Zm11-2a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1Zm1.25-2.25a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0Z" fill="currentColor"/></svg>Styling kept. Remove Styling is now off for this sequence.</span>
+                <button class="lnk" onClick="{{c.undo}}">Undo</button>
+                <div style="flex-grow:1"></div>
+                <button class="xbtn" onClick="{{c.closeKept}}">&times;</button>
+              </div>
+            </sc-if>
           </div>
         </div>
 
@@ -343,7 +354,7 @@ Worth a 15-minute call next week?</p></sc-if>
               <sc-if value="{{s.showClean}}" hint-placeholder-val="{{ false }}"><span>just opened a <b>second warehouse</b> in <span class="{{s.colourCls}}">Pune</span></span></sc-if>
               <sc-if value="{{s.showWord}}" hint-placeholder-val="{{ false }}"><span class="word">just opened a <b class="word-hl">second warehouse</b> in <span class="{{s.colourCls}}">Pune</span></span></sc-if>
             </div>
-            <sc-if value="{{s.barOn}}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{s.barDetected}}" hint-placeholder-val="{{ false }}">
               <div class="sbar">
                 <span class="sbar-lbl">Styling Detected <span>(Remove to avoid spam filters)</span>:</span>
                 <button class="sbar-btn" onClick="{{s.remove}}"><span style="font-family:Georgia,serif;font-weight:700">T</span><span style="margin-left:-5px;font-size:10px">&times;</span> Remove Styling</button>
@@ -351,6 +362,22 @@ Worth a 15-minute call next week?</p></sc-if>
                 <button class="sbar-btn" onClick="{{s.keep}}">&#10227; Keep Styling</button>
                 <div style="flex-grow:1"></div>
                 <button class="xbtn" onClick="{{s.dismiss}}">&times;</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{s.barRemoved}}" hint-placeholder-val="{{ false }}">
+              <div class="sbar">
+                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-green-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.71 6.3a1 1 0 0 1 0 1.41l-10 10a1 1 0 0 1-1.42 0l-5-5a1 1 0 1 1 1.42-1.41L10 15.59l9.29-9.3a1 1 0 0 1 1.42 0Z" fill="currentColor"/></svg>Styling removed from your paste <span style="font-weight:400;color:var(--sh-fg-secondary)">(Remove Styling is on for this sequence):</span></span>
+                <button class="sbar-btn" onClick="{{s.keep}}">&#10227; Keep Styling</button>
+                <div style="flex-grow:1"></div>
+                <button class="xbtn" onClick="{{s.dismiss}}">&times;</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{s.barKept}}" hint-placeholder-val="{{ false }}">
+              <div class="sbar">
+                <span class="sbar-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="color:var(--sh-yellow-700)"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9ZM1 12C1 5.92 5.92 1 12 1s11 4.92 11 11-4.92 11-11 11S1 18.08 1 12Zm11-2a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0v-5a1 1 0 0 1 1-1Zm1.25-2.25a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0Z" fill="currentColor"/></svg>Styling kept. Remove Styling is now off for this sequence.</span>
+                <button class="lnk" onClick="{{s.undo}}">Undo</button>
+                <div style="flex-grow:1"></div>
+                <button class="xbtn" onClick="{{s.closeKept}}">&times;</button>
               </div>
             </sc-if>
           </div>
@@ -372,38 +399,41 @@ class Component extends DCLogic {
     // Prototype for the PRD: Pasting styled content.
     // rs = Remove Styling Automatically; to = text only: 'off' | 'first' | 'all'. The composer is step 1.
     // content: 'plain' | 'clean' (styling removed: bold, link stay) | 'word' (Word's own styling)
-    this.state = { screen:'s2', rs:true, to:'off', stage:'empty', content:'clean', coloured:false, bar:null,
-                   last:null, keptSession:false, spinStage:null, spinColoured:false, spinBar:false, spinLast:null, flash:null };
+    // bar: null | 'detected' (asks: Remove / Keep) | 'removed' (cleaned on paste: Keep) | 'kept' (setting turned off: Undo)
+    this.state = { screen:'s2', rs:true, to:'off', stage:'empty', content:'clean', coloured:false, bar:null, last:null,
+                   spinStage:null, spinColoured:false, spinBar:null, spinLast:null, flash:null };
   }
   rule() { const s = this.state; return s.to !== 'off' ? 'text' : (s.rs ? 'strip' : 'off'); }
-  setRule(extra) { this.setState(Object.assign({ stage:'empty', bar:null, coloured:false, last:null, keptSession:false, spinStage:null, spinColoured:false, spinBar:false, spinLast:null, flash:null }, extra)); }
+  setRule(extra) { this.setState(Object.assign({ stage:'empty', bar:null, coloured:false, last:null,
+    spinStage:null, spinColoured:false, spinBar:null, spinLast:null, flash:null }, extra)); }
   renderVals() {
     const s = this.state, rule = this.rule(), filled = s.stage === 'filled';
     const ruleName = rule === 'strip' ? 'On' : rule === 'text' ? 'Text only' : 'Off';
-    const ruleWhy = rule === 'strip' ? 'Styled pastes and toolbar styling land as they are; the Styling Detected bar offers to remove them. Send strips them either way.'
+    const ruleWhy = rule === 'strip' ? 'Pastes land without styling, and the bar says so. Keep Styling brings it back and turns this setting off.'
       : rule === 'text' ? (s.to === 'first' ? 'First email only, and this is step 1: pastes land as plain text.' : 'Pastes land as plain text.')
-      : 'Styled pastes and toolbar styling land as they are; the same bar offers to remove them.';
+      : 'Styled pastes land as they are; the Styling Detected bar offers to remove them.';
     const spinStyled = !!s.spinSaved && (s.savedStage === 'word' || s.savedColoured);
     const differs = (filled && rule === 'strip' && (s.content === 'word' || s.coloured)) || (rule === 'strip' && spinStyled);
     const pvContent = rule === 'strip' && s.content === 'word' ? 'clean' : s.content;
-    const barFor = () => 'detected';  // the bar asks every time styling appears
 
     let note;
-    if (s.flash === 'spinSaved') note = 'Spintax saved into the email. Variant 1 keeps whatever you chose in the bar; at send, this sequence\u2019s Remove Styling applies to variants exactly as to the body.';
+    if (s.flash === 'spinSaved') note = 'Spintax saved into the email. At send, this sequence’s Remove Styling applies to variants exactly as to the body.';
     else if (s.flash === 'spinCancel') note = 'Spintax cancelled. Nothing changed in the email.';
-    else if (!filled) note = 'Styled content from any source is flagged by the Styling Detected bar, every time, with both buttons. Keep Styling never changes the sequence setting. Literal tokens become chips.';
+    else if (!filled) note = 'Remove Styling on: styling is removed as you paste, and the bar tells you. Keep Styling brings it back and turns Remove Styling off for this sequence. Literal tokens become chips.';
     else if (s.last === 'shortcut') note = 'Cmd+Shift+V always pastes plain text, with no bar, whatever the setting.';
     else if (rule === 'text') note = 'Text only: pastes land as plain text, with no bar. The literal {{First Name}} became a chip.';
-    else if (s.flash === 'keepOn') note = 'Kept in this email. Remove Styling stays on for the sequence, and send still strips the styling, so the preview differs. Paste or colour again: the bar asks again.';
-    else if (s.flash === 'removeOff') note = 'Styling removed from this email only. The sequence’s Remove Styling stays off (PRD Q1).';
-    else if (s.flash === 'removeOn') note = 'Styling removed from this email; bold and the link stay. The setting is not touched.';
-    else if (s.flash === 'xOn') note = 'With Remove Styling on, closing the bar with × also removes the styling.';
-    else if (s.flash === 'keepOff') note = 'Kept in this email; the setting is untouched. The bar asks again the next time styling is pasted or added.';
-    else if (s.bar === 'detected' && s.last === 'colour') note = 'Toolbar styling gets the same bar, whether Remove Styling is on or off.';
-    else if (rule === 'strip' && s.bar === 'detected') note = 'With Remove Styling on, a Word paste lands with its styling and the bar asks. Nothing is removed until you click Remove Styling or ×. The preview shows it stripped, because send strips it. The literal {{First Name}} became a chip.';
-    else if (rule === 'off' && s.bar === 'detected') note = 'Remove Styling off: the same bar, the same copy, the same two buttons. The literal {{First Name}} became a chip.';
-    else if (differs) note = 'Styling kept in the editor; this sequence strips it at send, so the preview differs.';
+    else if (s.bar === 'removed') note = 'Removed as you pasted, because Remove Styling is on for this sequence. Bold and the link stay; Word’s font, size and highlight are gone. The literal {{First Name}} became a chip.';
+    else if (s.bar === 'kept') note = 'Styling is back, and Remove Styling is now off for the whole sequence: every email in it now sends styling as written. Undo puts both back.';
+    else if (s.flash === 'undo') note = 'Undone: styling removed again, and Remove Styling is back on for this sequence.';
+    else if (s.bar === 'detected' && s.last === 'colour') note = 'Toolbar styling gets the Styling Detected bar. With Remove Styling on, Keep Styling turns the setting off, as it does for a paste.';
+    else if (rule === 'off' && s.bar === 'detected') note = 'Remove Styling off: the paste keeps its styling and the bar asks. Both buttons act on this email only. The literal {{First Name}} became a chip.';
+    else if (s.flash === 'removed') note = 'Styling removed from this email; bold and the link stay.';
+    else if (s.flash === 'keptOff') note = 'Kept in this email. Remove Styling was already off.';
+    else if (s.flash === 'xOn') note = 'Closing the bar with × leaves the styling removed.';
     else note = 'The editor and the preview agree.';
+
+    // Keep Styling, with Remove Styling on: restore the styling and turn the setting off for the sequence
+    const keepTurnsOff = (extra) => this.setState(Object.assign({ prevContent: s.content, prevColoured: s.coloured, rs:false, flash:null }, extra));
 
     return {
       n: { s1:s.screen==='s1', s2:s.screen==='s2', s3:s.screen==='s3',
@@ -416,31 +446,35 @@ class Component extends DCLogic {
         toToggle:()=>this.setRule({to:s.to==='off'?'first':'off'}),
         firstCls:s.to==='first'?'radio-on':'', allCls:s.to==='all'?'radio-on':'',
         pickFirst:()=>this.setRule({to:'first'}), pickAll:()=>this.setRule({to:'all'}),
-        spinTag: (s.to==='all'||s.rs) ? 'On' : 'Off',
-        spinTagStyle: (s.to==='all'||s.rs) ? 'background:var(--sh-primary-50);color:var(--sh-primary-700)' : '',
         ruleName, ruleWhy,
       },
       c: {
         segRs:rule==='strip'?'sw-on':'', segOff:rule==='off'?'sw-on':'', segTo:rule==='text'?'sw-on':'',
         useRs:()=>this.setRule({rs:true,to:'off'}), useOff:()=>this.setRule({rs:false,to:'off'}), useTo:()=>this.setRule({to:'all'}),
         paste:()=>this.setState({ stage:'filled', coloured:false, last:'paste', flash:null,
-          content: rule==='text' ? 'plain' : 'word', bar: rule==='text' ? null : barFor() }),
+          content: rule==='text' ? 'plain' : rule==='strip' ? 'clean' : 'word',
+          bar: rule==='text' ? null : rule==='strip' ? 'removed' : 'detected' }),
         shortcut:()=>this.setState({ stage:'filled', content:'plain', coloured:false, bar:null, last:'shortcut', flash:null }),
         colour:()=>{ if (rule==='text') return;
-          this.setState({ stage:'filled', content: filled ? s.content : 'clean', coloured:true, bar:barFor(), last:'colour', flash:null }); },
+          this.setState({ stage:'filled', content: filled ? s.content : 'clean', coloured:true, bar:'detected', last:'colour', flash:null }); },
         clear:()=>this.setState({ stage:'empty', bar:null, coloured:false, last:null, flash:null }),
-        remove:()=>this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, last:'remove',
-          flash: rule==='off' ? 'removeOff' : 'removeOn' }),
-        // Keep Styling keeps this styling only. The sequence setting is never touched.
-        keep:()=>this.setState({ bar:null, last:'keep', flash: rule==='strip' ? 'keepOn' : 'keepOff' }),
-        dismiss:()=>{ if (rule==='strip') this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, flash:'xOn' });
-          else this.setState({ bar:null, flash:null }); },
+        remove:()=>this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, last:'remove', flash:'removed' }),
+        keep:()=>{
+          if (rule==='strip') keepTurnsOff({ content: s.bar==='removed' ? 'word' : s.content, bar:'kept', last:'keep' });
+          else this.setState({ bar:null, last:'keep', flash:'keptOff' });
+        },
+        undo:()=>this.setState({ content: s.prevContent || 'clean', coloured: false, rs:true, bar:null, flash:'undo' }),
+        closeKept:()=>this.setState({ bar:null, flash:null }),
+        dismiss:()=>{
+          if (rule==='strip') this.setState({ content: s.content==='plain'?'plain':'clean', coloured:false, bar:null, flash:'xOn' });
+          else this.setState({ bar:null, flash:null });
+        },
         empty:!filled, showPlain:filled&&s.content==='plain', showClean:filled&&s.content==='clean', showWord:filled&&s.content==='word',
         colourCls:s.coloured?'colour-word':'',
         styleCtl: rule==='text' ? 'tb-off' : '', emCtl: rule==='text' ? 'tb-off' : '', ctlTip: rule==='text' ? 'Text only email' : '', ctlNote: rule==='text',
         badgeOn: rule!=='off', badgeText: rule==='strip' ? 'Styling Removes Automatically' : 'Text only email',
         badgeBottom: filled && s.bar ? '44px' : '8px',
-        barDetected: filled && s.bar==='detected',
+        barDetected: filled && s.bar==='detected', barRemoved: filled && s.bar==='removed', barKept: filled && s.bar==='kept',
         detectedHint: '(Remove to avoid spam filters)',
         keepOn: true,
         sendLabel: rule==='text' ? 'Sent as plain text' : rule==='strip' ? 'Sent as HTML, styling removed' : 'Sent as HTML, as written',
@@ -455,31 +489,40 @@ class Component extends DCLogic {
         pvColourCls: rule==='off' && s.coloured ? 'colour-word' : '',
         note,
         spinSaved: !!s.spinSaved,
-        spinV1: s.spinSaved && s.savedStage !== null ? 'just opened a second warehouse in Pune' : '',
+        spinV1: s.spinSaved ? 'just opened a second warehouse in Pune' : '',
         spinV1Cls: !s.spinSaved ? '' : (s.savedStage==='word' ? 'word word-hl' : '') + (s.savedColoured ? ' colour-word' : ''),
       },
       s: {
-        // variants follow the sequence's Remove Styling: same bar, same two buttons, asks every time
+        // variants follow the sequence's Remove Styling, exactly like the email body
         useRs:()=>this.setRule({rs:true,to:'off'}), useOff:()=>this.setRule({rs:false,to:'off'}), useTo:()=>this.setRule({to:'all'}),
         empty: !s.spinStage, showPlain: s.spinStage==='plain', showClean: s.spinStage==='clean', showWord: s.spinStage==='word',
         colourCls: s.spinColoured ? 'colour-word' : '',
-        barOn: !!s.spinBar,
-        paste:()=>this.setState(rule==='text' ? { spinStage:'plain', spinColoured:false, spinBar:false, spinLast:'paste' }
-                                              : { spinStage:'word', spinColoured:false, spinBar:true, spinLast:'paste' }),
-        colour:()=>{ if (rule==='text') return; this.setState({ spinStage: s.spinStage || 'clean', spinColoured:true, spinBar:true, spinLast:'colour' }); },
-        remove:()=>this.setState({ spinStage: s.spinStage==='plain' ? 'plain' : 'clean', spinColoured:false, spinBar:false, spinLast:'remove' }),
-        keep:()=>this.setState({ spinBar:false, spinLast:'keep' }),
-        dismiss:()=>{ if (rule==='strip') this.setState({ spinStage: s.spinStage==='plain' ? 'plain' : 'clean', spinColoured:false, spinBar:false, spinLast:'x' });
-                      else this.setState({ spinBar:false, spinLast:'x' }); },
-        clear:()=>this.setState({ spinStage:null, spinColoured:false, spinBar:false, spinLast:null }),
+        barDetected: s.spinBar==='detected', barRemoved: s.spinBar==='removed', barKept: s.spinBar==='kept',
+        paste:()=>this.setState(rule==='text' ? { spinStage:'plain', spinColoured:false, spinBar:null, spinLast:'paste' }
+          : rule==='strip' ? { spinStage:'clean', spinColoured:false, spinBar:'removed', spinLast:'paste' }
+          : { spinStage:'word', spinColoured:false, spinBar:'detected', spinLast:'paste' }),
+        colour:()=>{ if (rule==='text') return; this.setState({ spinStage: s.spinStage || 'clean', spinColoured:true, spinBar:'detected', spinLast:'colour' }); },
+        remove:()=>this.setState({ spinStage: s.spinStage==='plain' ? 'plain' : 'clean', spinColoured:false, spinBar:null, spinLast:'remove' }),
+        keep:()=>{
+          if (rule==='strip') this.setState({ spinPrev: s.spinStage, spinStage: s.spinBar==='removed' ? 'word' : s.spinStage, rs:false, spinBar:'kept', spinLast:'keep' });
+          else this.setState({ spinBar:null, spinLast:'keepOff' });
+        },
+        undo:()=>this.setState({ spinStage: s.spinPrev || 'clean', spinColoured:false, rs:true, spinBar:null, spinLast:'undo' }),
+        closeKept:()=>this.setState({ spinBar:null }),
+        dismiss:()=>{ if (rule==='strip') this.setState({ spinStage: s.spinStage==='plain' ? 'plain' : 'clean', spinColoured:false, spinBar:null, spinLast:'x' });
+                      else this.setState({ spinBar:null, spinLast:'x' }); },
+        clear:()=>this.setState({ spinStage:null, spinColoured:false, spinBar:null, spinLast:null }),
         // Cancel discards this modal's changes; Save puts the spintax into the email body. Both close the modal.
-        cancel:()=>this.setState({ screen:'s2', spinStage:null, spinColoured:false, spinBar:false, spinLast:null, flash:'spinCancel' }),
-        save:()=>this.setState({ screen:'s2', spinSaved:true, savedStage: s.spinStage || 'plain', savedColoured: s.spinColoured, spinBar:false, flash:'spinSaved' }),
-        note: !s.spinStage ? 'Variants follow this sequence\u2019s Remove Styling, exactly like the email body. Paste from Word or colour a word in variant 1.'
+        cancel:()=>this.setState({ screen:'s2', spinStage:null, spinColoured:false, spinBar:null, spinLast:null, flash:'spinCancel' }),
+        save:()=>this.setState({ screen:'s2', spinSaved:true, savedStage: s.spinStage || 'plain', savedColoured: s.spinColoured, spinBar:null, flash:'spinSaved' }),
+        note: !s.spinStage ? 'Variants follow this sequence’s Remove Styling, exactly like the email body. Paste from Word or colour a word in variant 1.'
             : rule==='text' ? 'Text only: the paste lands as plain text, no bar, same as the email body.'
-            : s.spinLast==='keep' ? 'Kept in this variant; the setting is untouched. The bar asks again the next time styling is pasted or added.'
+            : s.spinBar==='removed' ? 'Removed as you pasted, because Remove Styling is on for this sequence, same as the email body.'
+            : s.spinBar==='kept' ? 'Styling is back in this variant, and Remove Styling is now off for the whole sequence, body included. Undo puts both back.'
+            : s.spinLast==='undo' ? 'Undone: styling removed again, and Remove Styling is back on.'
+            : s.spinBar==='detected' ? 'Same Styling Detected bar as the email body, with both buttons.'
             : s.spinLast==='remove' ? 'Styling removed from this variant; bold stays, as in the email body.'
-            : s.spinBar ? 'Same bar as the email body, with both buttons. Remove Styling is ' + (rule==='strip' ? 'on' : 'off') + ' for this sequence, and variants follow it.'
+            : s.spinLast==='keepOff' ? 'Kept in this variant. Remove Styling was already off.'
             : 'Done.',
       },
     };

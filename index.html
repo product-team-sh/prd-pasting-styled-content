@@ -184,14 +184,14 @@ tr:hover td{background:var(--bg-secondary)}
 <ul>
 <li><strong>Styling from Word goes unnoticed.</strong> Pasted Word content brings fonts, colours, sizes and highlights the writer didn't choose. With Remove Styling on, send strips them, so the editor shows something the prospect never gets.</li>
 <li><strong>Tokens arrive broken.</strong> Literal <code>{{First Name}}</code> or <code>{spin}…{endspin}</code> in pasted text stays as braces instead of becoming a chip (<a href="https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915">escalation</a>).</li>
-<li><strong>Keep Styling changes the whole sequence.</strong> Today, one click on Keep Styling turns Remove Styling off for every email in the sequence, and the bar stops asking.</li>
+<li><strong>Keep Styling switches the setting off without saying so.</strong> Today, Keep Styling turns Remove Styling off for every email in the sequence, and nothing tells the writer.</li>
 </ul>
 </section>
 <section id="2-what-were-building" class="sec"><div class="sec-head"><span class="sec-num">2</span><h2>What we're building</h2></div>
 
 <ol>
-<li><strong>Remove Styling Automatically (per sequence) is the only rule for styling.</strong> No new setting.</li>
-<li><strong>The existing Styling Detected bar flags styled content from any source, every time, with both buttons</strong>, in the email body and in spintax variants. Neither button ever changes the setting.</li>
+<li><strong>Remove Styling Automatically (per sequence) is the only rule for styling</strong>, at paste and at send. There is no new setting.</li>
+<li><strong>With Remove Styling on, styling is removed as you paste, and the bar tells you.</strong> Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo.</li>
 <li><strong>Literal merge-tag and spintax tokens in a paste become chips.</strong></li>
 </ol>
 
@@ -199,8 +199,7 @@ tr:hover td{background:var(--bg-secondary)}
 <section id="3-safety-settings-prototype-tab-1" class="sec"><div class="sec-head"><span class="sec-num">3</span><h2>Safety Settings (prototype tab 1)</h2></div>
 
 <ul>
-<li>Add one sentence to the Remove Styling Automatically description: <em>"Styling you paste or add in the editor is flagged there, with an option to remove it."</em></li>
-<li>Under Remove Styling, add <em>"Spintax variants: same as above"</em> with an <strong>On</strong> / <strong>Off</strong> tag that mirrors the toggle. It is text, not a control.</li>
+<li>Add one sentence to the Remove Styling Automatically description: <em>"Styling is also removed from content you paste, including in spintax variants."</em></li>
 <li>Everything else stays as it is.</li>
 </ul>
 </section>
@@ -210,48 +209,79 @@ tr:hover td{background:var(--bg-secondary)}
 <thead>
 <tr>
 <th>Remove Styling</th>
-<th>Styled paste, or toolbar styling</th>
-<th>Bar</th>
-<th>×</th>
+<th>Styled paste</th>
+<th>Toolbar styling</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>On</strong></td>
-<td>Lands as is</td>
-<td>Shows</td>
-<td>Removes styling</td>
+<td>Lands <strong>without styling</strong>; bar: removed on paste</td>
+<td>Stays; bar: Styling Detected</td>
 </tr>
 <tr>
 <td><strong>Off</strong></td>
-<td>Lands as is</td>
-<td>Shows</td>
-<td>Closes the bar; styling stays</td>
+<td>Lands as is; bar: Styling Detected</td>
+<td>Stays; bar: Styling Detected</td>
 </tr>
 <tr>
 <td><strong>Text only</strong></td>
-<td>Lands as plain text</td>
-<td>None</td>
-<td>–</td>
+<td>Lands as plain text; no bar</td>
+<td>Controls disabled</td>
 </tr>
 </tbody>
 </table></div>
+<p><strong>The bar, by state</strong></p>
+<div class="tbl-wrap"><table>
+<thead>
+<tr>
+<th>Bar</th>
+<th>Copy</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Removed on paste</td>
+<td><em>"✓ Styling removed from your paste (Remove Styling is on for this sequence):"</em></td>
+<td><strong>Keep Styling</strong> · <code>×</code></td>
+</tr>
+<tr>
+<td>Styling Detected</td>
+<td><em>"Styling Detected (Remove to avoid spam filters):"</em></td>
+<td><strong>Remove Styling</strong> · <strong>Keep Styling</strong> · <code>×</code></td>
+</tr>
+<tr>
+<td>After Keep, Remove Styling was on</td>
+<td><em>"ⓘ Styling kept. Remove Styling is now off for this sequence."</em></td>
+<td><strong>Undo</strong> · <code>×</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Actions</strong></p>
 <ul>
-<li><strong>Remove Styling</strong> removes styling from this email. <strong>Keep Styling</strong> keeps it in this email. Both behave the same whether the setting is on or off.</li>
-<li><strong>Bar copy:</strong> <code>Styling Detected (Remove to avoid spam filters):</code> · <strong>Remove Styling</strong> · <strong>Keep Styling</strong> · <code>×</code>. Both buttons always show.</li>
-<li><strong>The bar asks every time</strong> styling appears: each paste, each toolbar style, and on opening a step that has styling. Keep Styling never silences it.</li>
-<li><strong>What Remove Styling keeps:</strong> bold, italic, underline, links and lists. Fonts, sizes, colours and highlights go.</li>
-<li><strong>No control in the bar or editor writes the sequence setting.</strong></li>
-<li><strong>Text only</strong> means "Send emails as text only" for all emails, or for step 1 when it is set to first email only. In text only, the font, size, colour and B/I/U controls are disabled.</li>
+<li><strong>Keep Styling, Remove Styling on:</strong><ul>
+<li>Restores the pasted styling.</li>
+<li>Turns Remove Styling <strong>off</strong> for the sequence.</li>
+<li>Shows the "Styling kept" bar. <strong>Undo</strong> removes the styling again and turns the setting back on.</li>
+</ul>
+</li>
+<li><strong>Keep Styling, Remove Styling off:</strong> keeps it in this email. The setting is unchanged.</li>
+<li><strong>Remove Styling:</strong> removes styling from this email. Bold, italic, underline, links and lists stay; fonts, sizes, colours and highlights go. The setting is unchanged.</li>
+<li><strong><code>×</code>:</strong> closes the bar. On a Styling Detected bar with Remove Styling on, it also removes the styling.</li>
+</ul>
+<p><strong>Also</strong></p>
+<ul>
+<li><strong>What counts as text only:</strong> "Send emails as text only" for all emails, or for step 1 when it is set to first email only.</li>
 <li><strong>The corner badge</strong> ("Styling Removes Automatically" / "Text only email") stays visible above the bar.</li>
-<li><strong>Shortcut:</strong> <code>⌘⇧V</code> / <code>Ctrl+Shift+V</code> always pastes plain, with no bar.</li>
+<li><strong><code>⌘⇧V</code> / <code>Ctrl+Shift+V</code></strong> always pastes plain, with no bar.</li>
 </ul>
 </section>
 <section id="5-spintax-editor-prototype-tab-3" class="sec"><div class="sec-head"><span class="sec-num">5</span><h2>Spintax editor (prototype tab 3)</h2></div>
 
 <ul>
-<li><strong>Same as §4 inside each variant field:</strong> same bar, same buttons, same behaviour, following the sequence's Remove Styling.</li>
-<li><strong>Actions stay in their own variant.</strong> Keep or Remove in one variant does not touch other variants or the email body.</li>
+<li><strong>Same as §4 inside each variant field:</strong> same bars, same actions, following the sequence's Remove Styling.</li>
+<li><strong>Keep Styling in a variant, with Remove Styling on,</strong> turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.</li>
 <li><strong>Literal tokens pasted into a variant become chips.</strong></li>
 </ul>
 
@@ -270,39 +300,39 @@ tr:hover td{background:var(--bg-secondary)}
 <tbody>
 <tr>
 <td>A1</td>
-<td>Remove Styling on or off: paste Word content with font, colour and highlight</td>
-<td>Lands styled; bar shows with both buttons</td>
+<td>Remove Styling <strong>on</strong>: paste Word content with font, colour and highlight</td>
+<td>Lands without styling (bold and links stay); bar reads "Styling removed from your paste (Remove Styling is on for this sequence)" with <strong>Keep Styling</strong></td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A2</td>
-<td>Remove Styling on or off: apply a text colour from the toolbar</td>
-<td>Colour stays; bar shows with both buttons</td>
-<td>P0</td>
-</tr>
-<tr>
-<td>A3</td>
-<td>Click <strong>Keep Styling</strong></td>
-<td>Bar closes; styling stays. <strong>No request to <code>PATCH /sequences/{id}/settings</code>.</strong> Read back with <code>GET /sequences/{id}/config</code>: <code>text-only-email</code> unchanged</td>
+<td>A1, then <strong>Keep Styling</strong></td>
+<td>Styling restored. <strong>One</strong> <code>PATCH /sequences/{id}/settings</code> sets <code>text-only-email</code> to <code>0</code>; <code>GET /sequences/{id}/config</code> confirms it. "Styling kept" bar shows with Undo; badge disappears</td>
 <td><strong>P0, sign off by name. Owner: TBD</strong></td>
 </tr>
 <tr>
+<td>A3</td>
+<td>A2, then <strong>Undo</strong></td>
+<td>Styling removed again; <code>text-only-email</code> back to <code>1</code>; badge returns</td>
+<td>P0</td>
+</tr>
+<tr>
 <td>A4</td>
-<td>After Keep Styling, paste or style again in the same session</td>
-<td>Bar shows again</td>
+<td>Remove Styling <strong>off</strong>: paste Word content</td>
+<td>Lands styled; Styling Detected bar with both buttons</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A5</td>
-<td>Click <strong>Remove Styling</strong></td>
-<td>Styling removed; bold, italic, underline, links and lists stay; no settings request</td>
+<td>Remove Styling <strong>off</strong>: Remove Styling or Keep Styling</td>
+<td>Acts on this email only; no settings request</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A6</td>
-<td>Click <strong>×</strong></td>
-<td>On: styling removed. Off: bar closes, styling stays. No settings request either way</td>
-<td>P1</td>
+<td>Remove Styling on or off: apply a text colour from the toolbar</td>
+<td>Colour stays; Styling Detected bar with both buttons</td>
+<td>P0</td>
 </tr>
 <tr>
 <td>A7</td>
@@ -330,14 +360,14 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 <tr>
 <td>A11</td>
-<td>Safety Settings: toggle Remove Styling</td>
-<td>Spintax tag switches between On and Off</td>
+<td>Safety Settings</td>
+<td>Remove Styling description carries the new sentence; no separate spintax control</td>
 <td>P1</td>
 </tr>
 <tr>
 <td>A12</td>
-<td>Spintax: styled paste in variant 1, then Keep</td>
-<td>Bar in variant 1 only; styling stays in variant 1; other variants and the body untouched</td>
+<td>Spintax, Remove Styling on: paste into variant 1, then Keep</td>
+<td>Variant 1 restored; Remove Styling off for the sequence; "Styling kept" bar in variant 1</td>
 <td>P0</td>
 </tr>
 <tr>
