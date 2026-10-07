@@ -175,6 +175,7 @@ tr:hover td{background:var(--bg-secondary)}
 <ul>
 <li>the Simulate buttons</li>
 <li>the Remove Styling switcher above the editor and in the spintax header</li>
+<li>the side cards on the Safety Settings tab</li>
 <li>the "Same as the editor" / "Differs from editor" label</li>
 <li>the "How this is handled" notes</li>
 </ul>
@@ -183,7 +184,7 @@ tr:hover td{background:var(--bg-secondary)}
 
 <ul>
 <li><strong>Styling from Word goes unnoticed.</strong> Pasted Word content brings fonts, colours, sizes and highlights the writer didn't choose. With Remove Styling on, send strips them, so the editor shows something the prospect never gets.</li>
-<li><strong>Tokens arrive broken.</strong> Literal <code>{{First Name}}</code> or <code>{spin}…{endspin}</code> in pasted text stays as braces instead of becoming a chip (<a href="https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915">escalation</a>).</li>
+<li><strong>Tokens arrive broken.</strong> Literal <code>{{First Name}}</code> or <code>{spin}…{endspin}</code> in pasted text can arrive as literal text instead of a chip (<a href="https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915">escalation</a>).</li>
 <li><strong>Keep Styling switches the setting off without saying so.</strong> Today, Keep Styling turns Remove Styling off for every email in the sequence, and nothing tells the writer.</li>
 </ul>
 </section>
@@ -205,10 +206,11 @@ tr:hover td{background:var(--bg-secondary)}
 </section>
 <section id="4-email-editor-prototype-tab-2" class="sec"><div class="sec-head"><span class="sec-num">4</span><h2>Email editor (prototype tab 2)</h2></div>
 
+<p>In this section, <strong>"the setting"</strong> means the sequence's Remove Styling Automatically. <strong>Remove Styling</strong> and <strong>Keep Styling</strong> in bold are the bar's buttons.</p>
 <div class="tbl-wrap"><table>
 <thead>
 <tr>
-<th>Remove Styling</th>
+<th>The setting</th>
 <th>Styled paste</th>
 <th>Toolbar styling</th>
 </tr>
@@ -227,7 +229,7 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td><strong>Text only</strong></td>
 <td>Lands as plain text; no bar</td>
-<td>Controls disabled</td>
+<td>Font, size, colour and B/I/U controls disabled</td>
 </tr>
 </tbody>
 </table></div>
@@ -252,7 +254,7 @@ tr:hover td{background:var(--bg-secondary)}
 <td><strong>Remove Styling</strong> · <strong>Keep Styling</strong> · <code>×</code></td>
 </tr>
 <tr>
-<td>After Keep, Remove Styling was on</td>
+<td>After Keep, with the setting on</td>
 <td><em>"ⓘ Styling kept. Remove Styling is now off for this sequence."</em></td>
 <td><strong>Undo</strong> · <code>×</code></td>
 </tr>
@@ -260,15 +262,15 @@ tr:hover td{background:var(--bg-secondary)}
 </table></div>
 <p><strong>Actions</strong></p>
 <ul>
-<li><strong>Keep Styling, Remove Styling on:</strong><ul>
-<li>Restores the pasted styling.</li>
-<li>Turns Remove Styling <strong>off</strong> for the sequence.</li>
+<li><strong>Keep Styling, with the setting on:</strong><ul>
+<li>Keeps the styling, restoring it if it was removed on paste.</li>
+<li>Turns the setting <strong>off</strong> for the sequence.</li>
 <li>Shows the "Styling kept" bar. <strong>Undo</strong> removes the styling again and turns the setting back on.</li>
 </ul>
 </li>
-<li><strong>Keep Styling, Remove Styling off:</strong> keeps it in this email. The setting is unchanged.</li>
+<li><strong>Keep Styling, with the setting off:</strong> keeps the styling in this email. The setting is unchanged.</li>
 <li><strong>Remove Styling:</strong> removes styling from this email. Bold, italic, underline, links and lists stay; fonts, sizes, colours and highlights go. The setting is unchanged.</li>
-<li><strong><code>×</code>:</strong> closes the bar. On a Styling Detected bar with Remove Styling on, it also removes the styling.</li>
+<li><strong><code>×</code>:</strong> closes the bar. On a Styling Detected bar with the setting on, it also removes the styling.</li>
 </ul>
 <p><strong>Also</strong></p>
 <ul>
@@ -280,8 +282,8 @@ tr:hover td{background:var(--bg-secondary)}
 <section id="5-spintax-editor-prototype-tab-3" class="sec"><div class="sec-head"><span class="sec-num">5</span><h2>Spintax editor (prototype tab 3)</h2></div>
 
 <ul>
-<li><strong>Same as §4 inside each variant field:</strong> same bars, same actions, following the sequence's Remove Styling.</li>
-<li><strong>Keep Styling in a variant, with Remove Styling on,</strong> turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.</li>
+<li><strong>Same as §4 inside each variant field:</strong> same bars, same actions, following the sequence's setting.</li>
+<li><strong>Keep Styling in a variant, with the setting on,</strong> turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.</li>
 <li><strong>Literal tokens pasted into a variant become chips.</strong></li>
 </ul>
 
@@ -300,7 +302,7 @@ tr:hover td{background:var(--bg-secondary)}
 <tbody>
 <tr>
 <td>A1</td>
-<td>Remove Styling <strong>on</strong>: paste Word content with font, colour and highlight</td>
+<td>Setting <strong>on</strong>: paste Word content with font, colour and highlight</td>
 <td>Lands without styling (bold and links stay); bar reads "Styling removed from your paste (Remove Styling is on for this sequence)" with <strong>Keep Styling</strong></td>
 <td>P0</td>
 </tr>
@@ -318,20 +320,20 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 <tr>
 <td>A4</td>
-<td>Remove Styling <strong>off</strong>: paste Word content</td>
+<td>Setting <strong>off</strong>: paste Word content</td>
 <td>Lands styled; Styling Detected bar with both buttons</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A5</td>
-<td>Remove Styling <strong>off</strong>: Remove Styling or Keep Styling</td>
+<td>Setting <strong>off</strong>: <strong>Remove Styling</strong> or <strong>Keep Styling</strong></td>
 <td>Acts on this email only; no settings request</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A6</td>
-<td>Remove Styling on or off: apply a text colour from the toolbar</td>
-<td>Colour stays; Styling Detected bar with both buttons</td>
+<td>Setting on or off: apply a text colour from the toolbar</td>
+<td>Colour stays; Styling Detected bar with both buttons. <strong>Remove Styling</strong> removes it with no settings request. <strong>Keep Styling</strong> behaves as A2 when the setting is on, and as A5 when it is off</td>
 <td>P0</td>
 </tr>
 <tr>
@@ -342,43 +344,49 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 <tr>
 <td>A8</td>
-<td>Paste plain text, or copy and paste within Saleshandy</td>
-<td>No bar; chips stay chips</td>
+<td>Paste plain text</td>
+<td>No bar</td>
 <td>P0</td>
 </tr>
 <tr>
 <td>A9</td>
+<td>Copy and paste within Saleshandy</td>
+<td>Chips stay chips; any styling follows A1 or A4</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>A10</td>
 <td>Paste literal <code>{{First Name}}</code> or <code>{spin}a\|b{endspin}</code></td>
 <td>Becomes a chip, in the body and in variants</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A10</td>
+<td>A11</td>
 <td><code>⌘⇧V</code> in any state</td>
 <td>Plain; no bar</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A11</td>
+<td>A12</td>
 <td>Safety Settings</td>
 <td>Remove Styling description reads exactly as in §3; no separate spintax control</td>
 <td>P1</td>
 </tr>
 <tr>
-<td>A12</td>
-<td>Spintax, Remove Styling on: paste into variant 1, then Keep</td>
-<td>Variant 1 restored; Remove Styling off for the sequence; "Styling kept" bar in variant 1</td>
+<td>A13</td>
+<td>Spintax, setting on: paste into variant 1, then <strong>Keep Styling</strong></td>
+<td>Variant 1 restored; setting off for the sequence; "Styling kept" bar in variant 1</td>
 <td>P0</td>
 </tr>
 <tr>
-<td>A13</td>
+<td>A14</td>
 <td>Spintax: keep styling in a variant, save, reopen, send a test</td>
 <td>The spin still parses and spins; no literal <code>{spin}</code> in any output</td>
 <td><strong>P0, release blocker</strong></td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Open before estimation:</strong> A13 depends on the spin parser tolerating styling inside a variant. An <a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">open bug</a> says it does not today. Owner: Rajat.</p>
+<p><strong>Open before estimation:</strong> A14 depends on the spin parser tolerating styling inside a variant. An <a href="https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458">open bug</a> says it does not today. Owner: Rajat.</p>
 
 <p><strong>Related:</strong> <a href="https://app.basecamp.com/4378325/buckets/22269754/card_tables/cards/10216633873">card</a> · <a href="https://github.com/saleshandy/saleshandy-webui/pull/8129">webui PR #8129</a> (reuse its paste sanitiser and token-to-chip handling)</p></section>
 

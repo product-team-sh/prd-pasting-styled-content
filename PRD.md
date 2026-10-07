@@ -6,6 +6,7 @@ These prototype elements are review aids, not product UI:
 
 - the Simulate buttons
 - the Remove Styling switcher above the editor and in the spintax header
+- the side cards on the Safety Settings tab
 - the "Same as the editor" / "Differs from editor" label
 - the "How this is handled" notes
 
@@ -14,7 +15,7 @@ These prototype elements are review aids, not product UI:
 ## 1. Problem
 
 - **Styling from Word goes unnoticed.** Pasted Word content brings fonts, colours, sizes and highlights the writer didn't choose. With Remove Styling on, send strips them, so the editor shows something the prospect never gets.
-- **Tokens arrive broken.** Literal `{{First Name}}` or `{spin}…{endspin}` in pasted text stays as braces instead of becoming a chip ([escalation](https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915)).
+- **Tokens arrive broken.** Literal `{{First Name}}` or `{spin}…{endspin}` in pasted text can arrive as literal text instead of a chip ([escalation](https://app.basecamp.com/4378325/buckets/16408283/todos/10213661915)).
 - **Keep Styling switches the setting off without saying so.** Today, Keep Styling turns Remove Styling off for every email in the sequence, and nothing tells the writer.
 
 ## 2. What we're building
@@ -32,11 +33,13 @@ These prototype elements are review aids, not product UI:
 
 ## 4. Email editor (prototype tab 2)
 
-| Remove Styling | Styled paste | Toolbar styling |
+In this section, **"the setting"** means the sequence's Remove Styling Automatically. **Remove Styling** and **Keep Styling** in bold are the bar's buttons.
+
+| The setting | Styled paste | Toolbar styling |
 |---|---|---|
 | **On** | Lands **without styling**; bar: removed on paste | Stays; bar: Styling Detected |
 | **Off** | Lands as is; bar: Styling Detected | Stays; bar: Styling Detected |
-| **Text only** | Lands as plain text; no bar | Controls disabled |
+| **Text only** | Lands as plain text; no bar | Font, size, colour and B/I/U controls disabled |
 
 **The bar, by state**
 
@@ -44,17 +47,17 @@ These prototype elements are review aids, not product UI:
 |---|---|---|
 | Removed on paste | *"✓ Styling removed from your paste (Remove Styling is on for this sequence):"* | **Keep Styling** · `×` |
 | Styling Detected | *"Styling Detected (Remove to avoid spam filters):"* | **Remove Styling** · **Keep Styling** · `×` |
-| After Keep, Remove Styling was on | *"ⓘ Styling kept. Remove Styling is now off for this sequence."* | **Undo** · `×` |
+| After Keep, with the setting on | *"ⓘ Styling kept. Remove Styling is now off for this sequence."* | **Undo** · `×` |
 
 **Actions**
 
-- **Keep Styling, Remove Styling on:**
-    - Restores the pasted styling.
-    - Turns Remove Styling **off** for the sequence.
+- **Keep Styling, with the setting on:**
+    - Keeps the styling, restoring it if it was removed on paste.
+    - Turns the setting **off** for the sequence.
     - Shows the "Styling kept" bar. **Undo** removes the styling again and turns the setting back on.
-- **Keep Styling, Remove Styling off:** keeps it in this email. The setting is unchanged.
+- **Keep Styling, with the setting off:** keeps the styling in this email. The setting is unchanged.
 - **Remove Styling:** removes styling from this email. Bold, italic, underline, links and lists stay; fonts, sizes, colours and highlights go. The setting is unchanged.
-- **`×`:** closes the bar. On a Styling Detected bar with Remove Styling on, it also removes the styling.
+- **`×`:** closes the bar. On a Styling Detected bar with the setting on, it also removes the styling.
 
 **Also**
 
@@ -64,8 +67,8 @@ These prototype elements are review aids, not product UI:
 
 ## 5. Spintax editor (prototype tab 3)
 
-- **Same as §4 inside each variant field:** same bars, same actions, following the sequence's Remove Styling.
-- **Keep Styling in a variant, with Remove Styling on,** turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.
+- **Same as §4 inside each variant field:** same bars, same actions, following the sequence's setting.
+- **Keep Styling in a variant, with the setting on,** turns the setting off for the whole sequence, body included. The "Styling kept" bar and Undo appear in that variant.
 - **Literal tokens pasted into a variant become chips.**
 
 ---
@@ -74,21 +77,22 @@ These prototype elements are review aids, not product UI:
 
 | ID | Case | Expected | P |
 |---|---|---|---|
-| A1 | Remove Styling **on**: paste Word content with font, colour and highlight | Lands without styling (bold and links stay); bar reads "Styling removed from your paste (Remove Styling is on for this sequence)" with **Keep Styling** | P0 |
+| A1 | Setting **on**: paste Word content with font, colour and highlight | Lands without styling (bold and links stay); bar reads "Styling removed from your paste (Remove Styling is on for this sequence)" with **Keep Styling** | P0 |
 | A2 | A1, then **Keep Styling** | Styling restored. **One** `PATCH /sequences/{id}/settings` sets `text-only-email` to `0`; `GET /sequences/{id}/config` confirms it. "Styling kept" bar shows with Undo; badge disappears | **P0, sign off by name. Owner: TBD** |
 | A3 | A2, then **Undo** | Styling removed again; `text-only-email` back to `1`; badge returns | P0 |
-| A4 | Remove Styling **off**: paste Word content | Lands styled; Styling Detected bar with both buttons | P0 |
-| A5 | Remove Styling **off**: Remove Styling or Keep Styling | Acts on this email only; no settings request | P0 |
-| A6 | Remove Styling on or off: apply a text colour from the toolbar | Colour stays; Styling Detected bar with both buttons | P0 |
+| A4 | Setting **off**: paste Word content | Lands styled; Styling Detected bar with both buttons | P0 |
+| A5 | Setting **off**: **Remove Styling** or **Keep Styling** | Acts on this email only; no settings request | P0 |
+| A6 | Setting on or off: apply a text colour from the toolbar | Colour stays; Styling Detected bar with both buttons. **Remove Styling** removes it with no settings request. **Keep Styling** behaves as A2 when the setting is on, and as A5 when it is off | P0 |
 | A7 | Text only: paste Word content | Plain; no bar; "Text only email" badge | P0 |
-| A8 | Paste plain text, or copy and paste within Saleshandy | No bar; chips stay chips | P0 |
-| A9 | Paste literal `{{First Name}}` or `{spin}a\|b{endspin}` | Becomes a chip, in the body and in variants | P0 |
-| A10 | `⌘⇧V` in any state | Plain; no bar | P0 |
-| A11 | Safety Settings | Remove Styling description reads exactly as in §3; no separate spintax control | P1 |
-| A12 | Spintax, Remove Styling on: paste into variant 1, then Keep | Variant 1 restored; Remove Styling off for the sequence; "Styling kept" bar in variant 1 | P0 |
-| A13 | Spintax: keep styling in a variant, save, reopen, send a test | The spin still parses and spins; no literal `{spin}` in any output | **P0, release blocker** |
+| A8 | Paste plain text | No bar | P0 |
+| A9 | Copy and paste within Saleshandy | Chips stay chips; any styling follows A1 or A4 | P0 |
+| A10 | Paste literal `{{First Name}}` or `{spin}a\|b{endspin}` | Becomes a chip, in the body and in variants | P0 |
+| A11 | `⌘⇧V` in any state | Plain; no bar | P0 |
+| A12 | Safety Settings | Remove Styling description reads exactly as in §3; no separate spintax control | P1 |
+| A13 | Spintax, setting on: paste into variant 1, then **Keep Styling** | Variant 1 restored; setting off for the sequence; "Styling kept" bar in variant 1 | P0 |
+| A14 | Spintax: keep styling in a variant, save, reopen, send a test | The spin still parses and spins; no literal `{spin}` in any output | **P0, release blocker** |
 
-**Open before estimation:** A13 depends on the spin parser tolerating styling inside a variant. An [open bug](https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458) says it does not today. Owner: Rajat.
+**Open before estimation:** A14 depends on the spin parser tolerating styling inside a variant. An [open bug](https://app.basecamp.com/4378325/buckets/22269754/todos/10258397458) says it does not today. Owner: Rajat.
 
 ---
 
