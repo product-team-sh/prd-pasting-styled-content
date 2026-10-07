@@ -21,7 +21,7 @@ These prototype elements are review aids, not product UI:
 ## 2. What we're building
 
 1. **Remove Styling Automatically (per sequence) is the only rule for styling**, at paste and at send. There is no new setting.
-2. **With Remove Styling on, styling is removed as you paste, and the bar tells you.** Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo.
+2. **With Remove Styling on, styling is removed as you paste or apply it, and the bar tells you.** Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo.
 3. **Literal merge-tag and spintax tokens in a paste become chips.**
 
 ---
@@ -41,7 +41,7 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 
 | The setting | Styled paste | Toolbar styling |
 |---|---|---|
-| **On** | Lands **without styling**; bar: removed on paste | Stays; bar: Styling Detected |
+| **On** | Lands **without styling**; bar: styling removed | Removed straight away; bar: styling removed |
 | **Off** | Lands as is; bar: Styling Detected | Stays; bar: Styling Detected |
 | **Text only** | Lands as plain text; no bar | Font, size, colour and B/I/U controls disabled |
 
@@ -49,8 +49,8 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 
 | Bar | Copy | Actions |
 |---|---|---|
-| Removed on paste | *"✓ Styling removed from your paste (Remove Styling is on for this sequence):"* | **Keep Styling** · `×` |
-| Styling Detected | *"Styling Detected (Remove to avoid spam filters):"* | **Remove Styling** · **Keep Styling** · `×` |
+| Styling removed (setting on) | Paste: *"✓ Styling removed from your paste (Remove Styling is on for this sequence):"* Toolbar: *"✓ Styling removed (Remove Styling is on for this sequence):"* | **Keep Styling** · `×` |
+| Styling Detected (setting off) | *"Styling Detected (Remove to avoid spam filters):"* | **Remove Styling** · **Keep Styling** · `×` |
 | After Keep, with the setting on | *"ⓘ Styling kept. Remove Styling is now off for this sequence."* | **Undo** · `×` |
 
 **Screens**
@@ -67,9 +67,9 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 
 *Setting off, after a Word paste: lands as is, and the Styling Detected bar offers both buttons.*
 
-![Setting on: a word coloured red from the toolbar, and the Styling Detected bar with both buttons and the badge on the same row.](screens/05-on-toolbar-detected.png)
+![Setting on: a toolbar colour removed straight away, and the bar reads Styling removed (Remove Styling is on for this sequence) with Keep Styling.](screens/05-on-toolbar-removed.png)
 
-*Setting on, toolbar colour: the colour stays and the Styling Detected bar asks.*
+*Setting on, toolbar colour: removed straight away, like a paste, with the same bar and Keep Styling.*
 
 ![Text only: the paste lands as plain text, styling controls are disabled, and the Text only email badge shows.](screens/06-text-only.png)
 
@@ -78,12 +78,12 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 **Actions**
 
 - **Keep Styling, with the setting on:**
-    - Keeps the styling, restoring it if it was removed on paste.
+    - Restores the styling that was removed.
     - Turns the setting **off** for the sequence.
     - Shows the "Styling kept" bar. **Undo** removes the styling again and turns the setting back on.
 - **Keep Styling, with the setting off:** keeps the styling in this email. The setting is unchanged.
 - **Remove Styling:** removes styling from this email. Bold, italic, underline, links and lists stay; fonts, sizes, colours and highlights go. The setting is unchanged.
-- **`×`:** closes the bar. On a Styling Detected bar with the setting on, it also removes the styling.
+- **`×`:** closes the bar. The editor content stays as it is.
 
 **Also**
 
@@ -116,7 +116,8 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 | A3 | A2, then **Undo** | Styling removed again; `text-only-email` back to `1`; badge returns | P0 |
 | A4 | Setting **off**: paste Word content | Lands styled; Styling Detected bar with both buttons | P0 |
 | A5 | Setting **off**: **Remove Styling** or **Keep Styling** | Acts on this email only; no settings request | P0 |
-| A6 | Setting on or off: apply a text colour from the toolbar | Colour stays; Styling Detected bar with both buttons. **Remove Styling** removes it with no settings request. **Keep Styling** behaves as A2 when the setting is on, and as A5 when it is off | P0 |
+| A6 | Setting **on**: apply a text colour from the toolbar | Colour removed straight away; bar reads "Styling removed (Remove Styling is on for this sequence)" with **Keep Styling**, which restores the colour and behaves as A2 | P0 |
+| A6b | Setting **off**: apply a text colour from the toolbar | Colour stays; Styling Detected bar with both buttons. **Remove Styling** removes it with no settings request; **Keep Styling** acts as A5 | P0 |
 | A7 | Text only: paste Word content | Plain; no bar; "Text only email" badge | P0 |
 | A8 | Paste plain text | No bar | P0 |
 | A9 | Copy and paste within Saleshandy | Chips stay chips; any styling follows A1 or A4 | P0 |

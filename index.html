@@ -192,7 +192,7 @@ tr:hover td{background:var(--bg-secondary)}
 
 <ol>
 <li><strong>Remove Styling Automatically (per sequence) is the only rule for styling</strong>, at paste and at send. There is no new setting.</li>
-<li><strong>With Remove Styling on, styling is removed as you paste, and the bar tells you.</strong> Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo.</li>
+<li><strong>With Remove Styling on, styling is removed as you paste or apply it, and the bar tells you.</strong> Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo.</li>
 <li><strong>Literal merge-tag and spintax tokens in a paste become chips.</strong></li>
 </ol>
 
@@ -219,8 +219,8 @@ tr:hover td{background:var(--bg-secondary)}
 <tbody>
 <tr>
 <td><strong>On</strong></td>
-<td>Lands <strong>without styling</strong>; bar: removed on paste</td>
-<td>Stays; bar: Styling Detected</td>
+<td>Lands <strong>without styling</strong>; bar: styling removed</td>
+<td>Removed straight away; bar: styling removed</td>
 </tr>
 <tr>
 <td><strong>Off</strong></td>
@@ -245,12 +245,12 @@ tr:hover td{background:var(--bg-secondary)}
 </thead>
 <tbody>
 <tr>
-<td>Removed on paste</td>
-<td><em>"✓ Styling removed from your paste (Remove Styling is on for this sequence):"</em></td>
+<td>Styling removed (setting on)</td>
+<td>Paste: <em>"✓ Styling removed from your paste (Remove Styling is on for this sequence):"</em> Toolbar: <em>"✓ Styling removed (Remove Styling is on for this sequence):"</em></td>
 <td><strong>Keep Styling</strong> · <code>×</code></td>
 </tr>
 <tr>
-<td>Styling Detected</td>
+<td>Styling Detected (setting off)</td>
 <td><em>"Styling Detected (Remove to avoid spam filters):"</em></td>
 <td><strong>Remove Styling</strong> · <strong>Keep Styling</strong> · <code>×</code></td>
 </tr>
@@ -265,19 +265,19 @@ tr:hover td{background:var(--bg-secondary)}
 <figure><img src="screens/02-on-paste-removed.png" style="max-width:885px" alt="Setting on: the paste has landed without Word's styling, and the bar reads Styling removed from your paste, with Keep Styling and the badge on the same row." loading="lazy"><figcaption>Setting on, after a Word paste: styling removed as it landed. Bold and the link stay.</figcaption></figure>
 <figure><img src="screens/03-on-keep-setting-off.png" style="max-width:885px" alt="After Keep Styling: Word's styling is back and the bar reads Styling kept. Remove Styling is now off for this sequence, with Undo." loading="lazy"><figcaption>After "Keep Styling": styling restored, the setting is off, and Undo is offered. The badge is gone because the setting is now off.</figcaption></figure>
 <figure><img src="screens/04-off-paste-detected.png" style="max-width:885px" alt="Setting off: the paste keeps Word's styling and the Styling Detected bar shows Remove Styling and Keep Styling." loading="lazy"><figcaption>Setting off, after a Word paste: lands as is, and the Styling Detected bar offers both buttons.</figcaption></figure>
-<figure><img src="screens/05-on-toolbar-detected.png" style="max-width:885px" alt="Setting on: a word coloured red from the toolbar, and the Styling Detected bar with both buttons and the badge on the same row." loading="lazy"><figcaption>Setting on, toolbar colour: the colour stays and the Styling Detected bar asks.</figcaption></figure>
+<figure><img src="screens/05-on-toolbar-removed.png" style="max-width:885px" alt="Setting on: a toolbar colour removed straight away, and the bar reads Styling removed (Remove Styling is on for this sequence) with Keep Styling." loading="lazy"><figcaption>Setting on, toolbar colour: removed straight away, like a paste, with the same bar and Keep Styling.</figcaption></figure>
 <figure><img src="screens/06-text-only.png" style="max-width:885px" alt="Text only: the paste lands as plain text, styling controls are disabled, and the Text only email badge shows." loading="lazy"><figcaption>Text only: plain text, no bar, styling controls disabled.</figcaption></figure>
 <p><strong>Actions</strong></p>
 <ul>
 <li><strong>Keep Styling, with the setting on:</strong><ul>
-<li>Keeps the styling, restoring it if it was removed on paste.</li>
+<li>Restores the styling that was removed.</li>
 <li>Turns the setting <strong>off</strong> for the sequence.</li>
 <li>Shows the "Styling kept" bar. <strong>Undo</strong> removes the styling again and turns the setting back on.</li>
 </ul>
 </li>
 <li><strong>Keep Styling, with the setting off:</strong> keeps the styling in this email. The setting is unchanged.</li>
 <li><strong>Remove Styling:</strong> removes styling from this email. Bold, italic, underline, links and lists stay; fonts, sizes, colours and highlights go. The setting is unchanged.</li>
-<li><strong><code>×</code>:</strong> closes the bar. On a Styling Detected bar with the setting on, it also removes the styling.</li>
+<li><strong><code>×</code>:</strong> closes the bar. The editor content stays as it is.</li>
 </ul>
 <p><strong>Also</strong></p>
 <ul>
@@ -341,8 +341,14 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 <tr>
 <td>A6</td>
-<td>Setting on or off: apply a text colour from the toolbar</td>
-<td>Colour stays; Styling Detected bar with both buttons. <strong>Remove Styling</strong> removes it with no settings request. <strong>Keep Styling</strong> behaves as A2 when the setting is on, and as A5 when it is off</td>
+<td>Setting <strong>on</strong>: apply a text colour from the toolbar</td>
+<td>Colour removed straight away; bar reads "Styling removed (Remove Styling is on for this sequence)" with <strong>Keep Styling</strong>, which restores the colour and behaves as A2</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>A6b</td>
+<td>Setting <strong>off</strong>: apply a text colour from the toolbar</td>
+<td>Colour stays; Styling Detected bar with both buttons. <strong>Remove Styling</strong> removes it with no settings request; <strong>Keep Styling</strong> acts as A5</td>
 <td>P0</td>
 </tr>
 <tr>
