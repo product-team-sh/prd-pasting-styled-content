@@ -20,7 +20,7 @@ These prototype elements are review aids, not product UI:
 
 ## 2. What we're building
 
-1. **Remove Styling Automatically (per sequence) is the only rule for styling**, at paste and at send. There is no new setting.
+1. **Remove Styling Automatically (per sequence) is the only rule for styling**, at paste and at send. It lives in the sequence's Safety Settings. There is no new setting, and nothing in admin or account settings.
 2. **With Remove Styling on, styling is removed as you paste or apply it, and the bar tells you.** Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo. With the setting off, the bar asks once per sequence, until the writer answers.
 3. **Literal merge-tag and spintax tokens in a paste become chips.**
 
@@ -30,6 +30,7 @@ These prototype elements are review aids, not product UI:
 
 - Replace the Remove Styling Automatically description with: *"Removes colors, fonts and other styling, including from pasted content and spintax variants, so emails look human-written and land in the inbox."*
 - Everything else stays as it is.
+- **This is the only place the rule lives.** There is no paste setting in admin or account settings; paste follows the sequence.
 
 ![Safety Settings with Remove Styling Automatically on and its new one-sentence description.](screens/01-safety-settings.png)
 
@@ -91,7 +92,7 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
     - **Remove Styling:** removes styling from this email (bold, italic, underline, links and lists stay) and turns the setting **on**. Shows the "now on" bar. **Undo** restores the styling and turns the setting back off; the sequence stays unanswered.
     - **`×`:** means "not now". The bar closes and the styling stays. The sequence is **not** answered, so the next styled paste or style asks again.
 - **`×` on any other bar:** closes the bar. The editor content stays as it is.
-- **"Answered" is stored per sequence.** It is not shown in Safety Settings. Turning the setting on, from any path, clears it, so if the setting is later turned off again, writers are asked once more.
+- **"Answered" is stored per sequence, like the setting.** It holds across steps, variants, a page refresh, logout and another device. It is not shown in Safety Settings. Turning the setting on, from any path, clears it, so if the setting is later turned off again, writers are asked once more.
 
 **Also**
 
@@ -125,7 +126,7 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 | A3 | A2, then **Undo** | Styling removed again; `text-only-email` back to `1`; answered state restored; badge returns | P0 |
 | A4 | Setting **off**, sequence not answered: paste Word content | Lands styled; Styling Detected bar with both buttons | P0 |
 | A5 | A4, then **Keep Styling** | Bar closes, styling stays, no change to `text-only-email`. Sequence marked answered, and the answered state reads back from `GET /sequences/{id}/config` | P0 |
-| A6 | Setting off, sequence answered: paste or style in another step, in a variant, and after reopening the editor | No bar anywhere; styling stays | P0 |
+| A6 | Setting off, sequence answered: paste or style in another step, in a variant, after reopening the editor, after a page refresh, and after logging in on another browser | No bar anywhere; styling stays | P0 |
 | A7 | A4, then **`×`**, then a new styled paste or toolbar style | Bar closes, styling stays, no request. The next styled paste or style shows the bar again | P0 |
 | A8 | A4, then **Remove Styling** | Styling removed from this email. **One** `PATCH` sets `text-only-email` to `1`. "Styling removed. Remove Styling is now on" bar with Undo; badge appears | P0 |
 | A9 | A8, then **Undo** | Styling back; `text-only-email` back to `0`; sequence still unanswered, so the next styled paste asks | P0 |
@@ -136,7 +137,7 @@ In this section, **"the setting"** means the sequence's Remove Styling Automatic
 | A14 | Copy and paste within Saleshandy | Chips stay chips; any styling follows A1, A4 or A6 | P0 |
 | A15 | Paste literal `{{First Name}}` or `{spin}a\|b{endspin}` | Becomes a chip, in the body and in variants | P0 |
 | A16 | `⌘⇧V` in any state | Plain; no bar | P0 |
-| A17 | Safety Settings | Remove Styling description reads exactly as in §3; no separate spintax control | P1 |
+| A17 | Safety Settings | Remove Styling description reads exactly as in §3; no separate spintax control. Admin and account settings have no paste setting | P1 |
 | A18 | Spintax, setting on: paste into variant 1, then **Keep Styling** | Variant 1 restored; setting off for the sequence; "Styling kept" bar in variant 1 | P0 |
 | A19 | Spintax, setting off: **Keep Styling** in a variant, then paste styled content into the email body | No bar in the body; answered is shared across the sequence | P0 |
 | A20 | Spintax: keep styling in a variant, save, reopen, send a test | The spin still parses and spins; no literal `{spin}` in any output | **P0, release blocker** |

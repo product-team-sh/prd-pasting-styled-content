@@ -192,7 +192,7 @@ tr:hover td{background:var(--bg-secondary)}
 <section id="2-what-were-building" class="sec"><div class="sec-head"><span class="sec-num">2</span><h2>What we're building</h2></div>
 
 <ol>
-<li><strong>Remove Styling Automatically (per sequence) is the only rule for styling</strong>, at paste and at send. There is no new setting.</li>
+<li><strong>Remove Styling Automatically (per sequence) is the only rule for styling</strong>, at paste and at send. It lives in the sequence's Safety Settings. There is no new setting, and nothing in admin or account settings.</li>
 <li><strong>With Remove Styling on, styling is removed as you paste or apply it, and the bar tells you.</strong> Keep Styling brings it back and turns Remove Styling off for the sequence. The bar says so, with Undo. With the setting off, the bar asks once per sequence, until the writer answers.</li>
 <li><strong>Literal merge-tag and spintax tokens in a paste become chips.</strong></li>
 </ol>
@@ -203,6 +203,7 @@ tr:hover td{background:var(--bg-secondary)}
 <ul>
 <li>Replace the Remove Styling Automatically description with: <em>"Removes colors, fonts and other styling, including from pasted content and spintax variants, so emails look human-written and land in the inbox."</em></li>
 <li>Everything else stays as it is.</li>
+<li><strong>This is the only place the rule lives.</strong> There is no paste setting in admin or account settings; paste follows the sequence.</li>
 </ul>
 <figure><figcaption>The new description, highlighted. Nothing else on the card changes.</figcaption><img src="screens/01-safety-settings.png" style="max-width:660px" alt="Safety Settings with Remove Styling Automatically on and its new one-sentence description." loading="lazy"></figure>
 </section>
@@ -289,7 +290,7 @@ tr:hover td{background:var(--bg-secondary)}
 </ul>
 </li>
 <li><strong><code>×</code> on any other bar:</strong> closes the bar. The editor content stays as it is.</li>
-<li><strong>"Answered" is stored per sequence.</strong> It is not shown in Safety Settings. Turning the setting on, from any path, clears it, so if the setting is later turned off again, writers are asked once more.</li>
+<li><strong>"Answered" is stored per sequence, like the setting.</strong> It holds across steps, variants, a page refresh, logout and another device. It is not shown in Safety Settings. Turning the setting on, from any path, clears it, so if the setting is later turned off again, writers are asked once more.</li>
 </ul>
 <p><strong>Also</strong></p>
 <ul>
@@ -354,7 +355,7 @@ tr:hover td{background:var(--bg-secondary)}
 </tr>
 <tr>
 <td>A6</td>
-<td>Setting off, sequence answered: paste or style in another step, in a variant, and after reopening the editor</td>
+<td>Setting off, sequence answered: paste or style in another step, in a variant, after reopening the editor, after a page refresh, and after logging in on another browser</td>
 <td>No bar anywhere; styling stays</td>
 <td>P0</td>
 </tr>
@@ -421,7 +422,7 @@ tr:hover td{background:var(--bg-secondary)}
 <tr>
 <td>A17</td>
 <td>Safety Settings</td>
-<td>Remove Styling description reads exactly as in §3; no separate spintax control</td>
+<td>Remove Styling description reads exactly as in §3; no separate spintax control. Admin and account settings have no paste setting</td>
 <td>P1</td>
 </tr>
 <tr>
