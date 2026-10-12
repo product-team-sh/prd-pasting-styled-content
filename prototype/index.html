@@ -206,7 +206,6 @@
           <div class="side-card">
             <p class="side-h">What changes on this screen</p>
             <p class="side-p">The Remove Styling description is rewritten as one shorter sentence that covers pasted content and spintax variants (highlighted). Everything else stays as it is.</p>
-            <p class="side-p" style="margin-top:8px">This is the only place the rule lives. There is no paste setting in admin or account settings. The sequence also remembers whether a writer has answered the Styling Detected bar; that isn’t shown here.</p>
           </div>
           <div class="side-card" style="margin-top:12px">
             <p class="side-h">Rule for step 1</p>
@@ -456,7 +455,7 @@ class Component extends DCLogic {
     else if (s.flash === 'undo') note = 'Undone: styling removed again, and Remove Styling is back on for this sequence.';
     else if (s.flash === 'undoOn') note = 'Undone: styling is back and Remove Styling is off again. The bar will ask on the next styled paste or style.';
     else if (s.bar === 'detected') note = 'Remove Styling off: the bar asks until the writer answers, once per sequence. Keep Styling stops the questions for this sequence. Remove Styling cleans this email and turns the setting on. \u00d7 means not now. The literal {{First Name}} became a chip.';
-    else if (s.flash === 'answered') note = 'Kept. This sequence is now answered: the bar won\u2019t ask again in any step, session or device. Paste or colour again to see.';
+    else if (s.flash === 'answered') note = 'Kept. This sequence is now answered: the bar won\u2019t ask again in any step or session. Paste or colour again to see.';
     else if (s.flash === 'notNow') note = 'Not now: the bar closes and the styling stays. It asks again on the next styled paste or style.';
     else if (rule === 'off' && s.answered) note = 'Answered earlier for this sequence, so no bar: the styling stays as written.';
     else if (s.flash === 'xOn') note = 'Closing the bar with \u00d7 leaves the styling removed.';
